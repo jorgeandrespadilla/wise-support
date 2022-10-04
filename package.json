@@ -4,5 +4,17 @@
   "description": "Proyecto Final de Ingenieria Web",
   "private": true,
   "author": "Jorge Andres Padilla",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently --kill-others npm:start:*",
+    "start:client": "cd ./client && npm start",
+    "start:server": "cd ./server && npm start"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
 }

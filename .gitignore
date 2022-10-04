@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # Custom setup
-build
+*.code-workspace
