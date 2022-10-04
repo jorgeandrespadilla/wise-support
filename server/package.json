@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "start:production": "cross-env NODE_ENV=production node -r tsconfig-paths/register build/index.js",
-    "build": "rimraf build && tsc"
+    "build": "rimraf build && tsc",
+    "sync-env": "sync-dotenv"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
@@ -17,6 +18,7 @@
     "cross-env": "^7.0.3",
     "nodemon": "^2.0.20",
     "rimraf": "^3.0.2",
+    "sync-dotenv": "^2.7.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4"

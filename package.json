@@ -6,6 +6,7 @@
   "author": "Jorge Andres Padilla",
   "license": "MIT",
   "scripts": {
+    "prepare": "husky install",
     "start": "concurrently --kill-others npm:start:*",
     "start:client": "cd ./client && npm start",
     "start:server": "cd ./server && npm start"
@@ -16,5 +17,8 @@
   ],
   "dependencies": {
     "concurrently": "^7.4.0"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1"
   }
 }
