@@ -3,8 +3,6 @@ import { ServerError } from "@/common/errors";
 import { pick } from "@/utils/objectHelpers";
 
 const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-    console.error(error);
-
     const clientError = error instanceof ServerError ? error : new ServerError('Something went wrong.');
     const errorResponse = pick(clientError, ['message', 'code', 'status', 'data']);
 

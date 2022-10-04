@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 
-export function catchErrors(requestHandler: RequestHandler): RequestHandler {
-  return async (req, res, next): Promise<any> => {
+export const catchErrors = (requestHandler: RequestHandler): RequestHandler => {
+  return async (req, res, next) => {
     try {
-      return requestHandler(req, res, next);
+      return await requestHandler(req, res, next);
     } catch (error) {
       next(error);
     }
