@@ -13,7 +13,7 @@ Variables de entorno de `server`:
 Variable	      | Descripción
 ---          	  | ---
 `SERVER_PORT`     | Número de puerto para escuchar las peticiones HTTP
-`SERVER_BASE_URL` | Ruta base donde se encuentra el servidor
+`SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, `/`)
 
 ## Correr el proyecto
 
