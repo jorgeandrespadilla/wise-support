@@ -14,6 +14,19 @@ Variable	      | Descripción
 ---          	  | ---
 `SERVER_PORT`     | Número de puerto para escuchar las peticiones HTTP
 `SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, `/`)
+`DATABASE_URL`    | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
+
+3. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto.
+
+## Adminstrar la Base de Datos
+
+Para restaurar la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`). Este comando también ejecuta el comando `npx prisma generate` para actualizar los archivos del cliente de Prisma.
+
+Para generar una nueva migración, se debe ejecutar el comando `npx prisma migrate dev --name <nombre>` (usar el formato `migration_name`).
+
+Para reiniciar la base de datos, se debe ejecutar el comando `npx prisma migrate reset`. Este comando eliminará todos los datos existentes de la base de datos y recreará la base de datos.
+
+> Al modificar el esquema de la base de datos, se debe ejecutar el comando `npx prisma generate` para que se actualicen los archivos del cliente de Prisma. Cabe destacar que, al instalar las dependencias de Node.js, el comando `npx prisma generate` se ejecuta automáticamente.
 
 ## Correr el proyecto
 
