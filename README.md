@@ -18,13 +18,15 @@ Variable	      | Descripción
 
 3. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto.
 
-## Adminstrar la Base de Datos
+## Adminstrar la Base de Datos (Servidor)
 
 Para restaurar la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`). Este comando también ejecuta el comando `npx prisma generate` para actualizar los archivos del cliente de Prisma.
 
 Para generar una nueva migración, se debe ejecutar el comando `npx prisma migrate dev --name <nombre>` (usar el formato `migration_name`).
 
 Para reiniciar la base de datos, se debe ejecutar el comando `npx prisma migrate reset`. Este comando eliminará todos los datos existentes de la base de datos y recreará la base de datos.
+
+Para añadir datos de prueba a la base de datos, se debe ejecutar el comando `npx prisma db seed`.
 
 > Al modificar el esquema de la base de datos, se debe ejecutar el comando `npx prisma generate` para que se actualicen los archivos del cliente de Prisma. Cabe destacar que, al instalar las dependencias de Node.js, el comando `npx prisma generate` se ejecuta automáticamente.
 

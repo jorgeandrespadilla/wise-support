@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import errorHandler from '@/middlewares/errorHandler';
 import { RouteNotFoundError } from '@/common/errors';
+import { configureRoutes } from '@/routes';
 
 function configureBaseMiddlewares(app: Application) {
     // CORS configuration
@@ -19,6 +20,8 @@ function configureBaseMiddlewares(app: Application) {
 const app = express();
 
 configureBaseMiddlewares(app);
+
+configureRoutes(app);
 
 app.use((req, _res, next) => next(new RouteNotFoundError(req.originalUrl)));
 app.use(errorHandler);

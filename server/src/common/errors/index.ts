@@ -15,12 +15,18 @@ export class ServerError extends Error {
 
 export class RouteNotFoundError extends ServerError {
     constructor(originalUrl: string) {
-        super(`Route '${originalUrl}' does not exist.`, 'ROUTE_NOT_FOUND', StatusCode.NOT_FOUND);
+        super(`La ruta '${originalUrl}' no existe.`, 'ROUTE_NOT_FOUND', StatusCode.NOT_FOUND);
     }
 }
 
 export class EntityNotFoundError extends ServerError {
-    constructor(entityName: string) {
-        super(`${entityName} not found.`, 'ENTITY_NOT_FOUND', StatusCode.NOT_FOUND);
+    constructor(entityName: string, data: ErrorData = {}) {
+        super(`${entityName} no encontrado.`, 'ENTITY_NOT_FOUND', StatusCode.NOT_FOUND, data);
+    }
+}
+
+export class ValidationError extends ServerError {
+    constructor(message: string, data: ErrorData = {}) {
+        super(message, 'VALIDATION_ERROR', StatusCode.BAD_REQUEST, data);
     }
 }

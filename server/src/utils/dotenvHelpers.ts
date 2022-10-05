@@ -52,7 +52,7 @@ export function loadEnv<T = any>(name: string, {
     if (value === undefined) {
         const required = defaults === undefined;
         if (required) {
-            throw new Error(`Environment variable ${name} is required.`);
+            throw new Error(`La variable de entorno '${name}' es requerida.`);
         }
         return defaults;
     }

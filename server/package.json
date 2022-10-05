@@ -2,6 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "private": true,
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "start": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "start:production": "cross-env NODE_ENV=production node -r tsconfig-paths/register build/index.js",
