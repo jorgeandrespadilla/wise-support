@@ -1,6 +1,6 @@
 # Proyecto Final de Ingeniería Web
 
-**Autor**: Jorge Andrés Padilla
+**Autor**: *Jorge Andrés Padilla*
 
 El proyecto final de ingeniería web fue desarrollado con **Node.js** (versión 16) y está compuesto por dos componentes:
 - El proyecto de backend creado con **Express.js**, que se encuentra en la carpeta `server`.
@@ -24,7 +24,7 @@ Variable	      | Descripción
 
 3. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto.
 
-## Adminstrar la Base de Datos (Servidor)
+## Administrar la Base de Datos (Backend)
 
 Para restaurar la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`). Este comando también ejecuta el comando `npx prisma generate` para actualizar los archivos del cliente de Prisma.
 
@@ -38,4 +38,4 @@ Para añadir datos de prueba a la base de datos, se debe ejecutar el comando `np
 
 ## Correr el proyecto
 
-En la raíz del proyecto, abrir una terminal y ejecutar el comando `npm start`. Esto iniciará el servidor y la aplicación cliente del proyecto.
+En la raíz del proyecto, abrir una terminal y ejecutar el comando `npm start`. Esto iniciará tanto el servidor como la aplicación cliente del proyecto.
