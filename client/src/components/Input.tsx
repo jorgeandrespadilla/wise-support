@@ -5,6 +5,7 @@ type InputProps = {
     value: string;
     placeholder?: string;
     type?: "text" | "password" | "date";
+    width?: "full" | "half";
     prefixIcon?: ReactNode;
     onChange?: (value: string) => void;
 };
@@ -12,6 +13,7 @@ type InputProps = {
 function Input({
     label,
     value,
+    width = "full",
     placeholder = "",
     type = "text",
     prefixIcon,
@@ -25,7 +27,7 @@ function Input({
     }
 
     return (
-        <div className="w-80">
+        <div className={ width === "full" ? "w-full" : "w-half" }>
             {
                 label && (
                     <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700">
