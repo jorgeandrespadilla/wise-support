@@ -3,9 +3,8 @@ import Card from "components/Card";
 import DatePicker from "components/DatePicker";
 import Input from "components/Input";
 import MainLayout from "components/MainLayout";
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { UserInput } from "types";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "utils/api";
 import toast from "utils/toast";
 
