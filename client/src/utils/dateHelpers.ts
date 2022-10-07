@@ -1,15 +1,16 @@
-const zeroPad = (num: number, places: number) => String(num).padStart(places, '0');
+import { format, parse } from 'date-fns';
+
+const datePickerFormat = 'yyyy-MM-dd';
+const dateStrFormat = 'dd/MM/yyyy';
+
+export function datePickerToDate(date: string) {
+    return parse(date, datePickerFormat, new Date());
+}
 
 export function dateToDatePicker(date: Date) {
-    const year = date.getFullYear();
-    const month = zeroPad(date.getMonth() + 1, 2);
-    const day = zeroPad(date.getDate(), 2);
-    return `${year}-${month}-${day}`;
+    return format(date, datePickerFormat);
 }
 
 export function dateToDateStr(date: Date) {
-    const day = zeroPad(date.getDate(), 2);
-    const month = zeroPad(date.getMonth() + 1, 2);
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return format(date, dateStrFormat);
 }

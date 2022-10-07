@@ -1,5 +1,5 @@
 import Input from "./Input";
-import { dateToDatePicker } from "utils/dateHelpers";
+import { datePickerToDate, dateToDatePicker } from "utils/dateHelpers";
 
 type DatePickerProps = {
     label?: string;
@@ -14,7 +14,7 @@ function DatePicker({
 }: DatePickerProps) {
 
     const handleChange = (value: string) => {
-        const date = new Date(value);
+        const date = datePickerToDate(value);
         onChange(date);
     }
 
