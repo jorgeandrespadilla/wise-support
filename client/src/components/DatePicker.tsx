@@ -1,10 +1,10 @@
 import Input from "./Input";
-import { datePickerToDate, dateToDatePicker } from "utils/dateHelpers";
+import { DateTime, datePickerToDate, dateToDatePicker } from "utils/dateHelpers";
 
 type DatePickerProps = {
     label?: string;
-    value: Date;
-    onChange?: (date: Date) => void;
+    value: DateTime;
+    onChange?: (date: DateTime) => void;
 }     
 
 function DatePicker({

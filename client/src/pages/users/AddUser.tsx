@@ -6,6 +6,7 @@ import MainLayout from "components/MainLayout";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "utils/api";
+import { today } from "utils/dateHelpers";
 import toast from "utils/toast";
 
 function AddUser() {
@@ -15,7 +16,7 @@ function AddUser() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState(new Date());
+    const [birthDate, setBirthDate] = useState(today());
 
     const addUser = () => {
         api.post("/users", {

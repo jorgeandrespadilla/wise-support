@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserInput } from "types";
 import api from "utils/api";
+import { parseISODate, today } from "utils/dateHelpers";
 import toast from "utils/toast";
 
 function EditUser() {
@@ -17,14 +18,14 @@ function EditUser() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState(new Date());
+    const [birthDate, setBirthDate] = useState(today());
 
     useEffect(() => {
         api.get<UserInput>(`/users/${id}`).then((res) => {
             setFirstName(res.firstName);
             setLastName(res.lastName);
             setEmail(res.email);
-            setBirthDate(new Date(res.birthDate));
+            setBirthDate(parseISODate(res.birthDate));
         }).catch((err) => {
             console.error(err);
             toast.error(err.message);
