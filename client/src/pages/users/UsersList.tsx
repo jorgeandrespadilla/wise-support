@@ -1,16 +1,40 @@
 import Input from "components/Input";
 import MainLayout from "components/MainLayout";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Card from "components/Card";
 import Button from "components/Button";
 import { UserData } from "types";
-import { dateToDateStr } from "utils/dateHelpers";
+import { formatDate, parseISODate } from "utils/dateHelpers";
 import api from "utils/api";
 import toast from "utils/toast";
 import IconButton from "components/IconButton";
 import { Link } from "react-router-dom";
 import ConfirmDialog from "components/ConfirmDialog";
+
+type ColumnProps = {
+    children: ReactNode;
+}
+
+function HeaderColumn({
+    children,
+}: ColumnProps) {
+    return (
+        <th className="font-bold font-poppins text-gray-800 p-4 border-0">
+            {children}
+        </th>
+    );
+}
+
+function BodyColumn({
+    children,
+}: ColumnProps) {
+    return (
+        <td className="font-poppins text-gray-800 p-4 py-2 border-0">
+            {children}
+        </td>
+    );
+}
 
 function UsersList() {
     const [currentUserId, setCurrentUserId] = useState(0);
@@ -57,34 +81,41 @@ function UsersList() {
                         <Button>Agregar</Button>
                     </Link>
                 </div>
-                <table className="w-full table-auto border-collapse border border-gray-200">
-                    <thead className="border-b bg-blue-100">
-                        <tr className="text-left">
-                            <th className="font-bold font-poppins text-gray-800 p-4">Nombre</th>
-                            <th className="font-bold font-poppins text-gray-800 p-4">Correo</th>
-                            <th className="font-bold font-poppins text-gray-800 p-4">Fecha de nacimiento</th>
-                            <th className="font-bold font-poppins text-gray-800 p-4">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredUsers.map((user) => (
-                            <tr key={user.id} className="border-b">
-                                <td className="font-poppins text-gray-800 px-4 py-2">{user.fullName}</td>
-                                <td className="font-poppins text-gray-800 px-4 py-2">{user.email}</td>
-                                <td className="font-poppins text-gray-800 px-4 py-2">{dateToDateStr(new Date(user.birthDate))}</td>
-                                <td className="font-poppins text-gray-800 p-4 py-2 space-x-2 flex">
-                                    <Link to={`/users/${user.id}`}>
-                                        <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                    </Link>
-                                    <IconButton icon={<TrashIcon className="h-5 w-5 text-red-500" />} onClick={() => {
-                                        setCurrentUserId(user.id);
-                                        setIsConfirmDialogOpen(true);
-                                    }} />
-                                </td>
+                <div className="overflow-x-auto rounded-md border border-gray-200">
+                    <table className="w-full table-auto border-collapse border-spacing-0 p-0 m-0" cellPadding={0} cellSpacing={0}>
+                        <thead>
+                            <tr className="border-0 border-b-2 text-left">
+                                <HeaderColumn>Nombre</HeaderColumn>
+                                <HeaderColumn>Correo</HeaderColumn>
+                                <HeaderColumn>Fecha de nacimiento</HeaderColumn>
+                                <HeaderColumn>Acciones</HeaderColumn>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredUsers.map((user, index) => {
+                                const isLast = index === filteredUsers.length - 1;
+                                return (
+                                    <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
+                                        <BodyColumn>{user.fullName}</BodyColumn>
+                                        <BodyColumn>{user.email}</BodyColumn>
+                                        <BodyColumn>{formatDate(parseISODate(user.birthDate))}</BodyColumn>
+                                        <BodyColumn>
+                                            <div className="flex space-x-2">
+                                                <Link to={`/users/${user.id}`}>
+                                                    <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                </Link>
+                                                <IconButton icon={<TrashIcon className="h-5 w-5 text-red-500" />} onClick={() => {
+                                                    setCurrentUserId(user.id);
+                                                    setIsConfirmDialogOpen(true);
+                                                }} />
+                                            </div>
+                                        </BodyColumn>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </Card>
             <ConfirmDialog
                 title="Eliminar usuario"
