@@ -1,8 +1,10 @@
-import { Prisma, User } from "@prisma/client";
+import { omit } from "lodash";
+import { User } from "@prisma/client";
 import { db } from "@/database/client";
 import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { omit } from "lodash";
+import { UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
+import { validateAndParse } from "@/utils/validation";
 
 export const getUsers = catchErrors(async (_req, res) => {
     const users = await db.user.findMany();
@@ -23,17 +25,8 @@ export const getUserById = catchErrors(async (req, res) => {
 });
 
 export const createUser = catchErrors(async (req, res) => {
-    const { firstName, lastName, birthDate, email, password } = req.body;
-
-    await validateExistingEmail(email);
-
-    let data = {
-        email,
-        firstName,
-        lastName,
-        birthDate: new Date(birthDate),
-        password,
-    };
+    const data = validateAndParse(UserCreateRequestSchema, req.body);
+    await validateExistingEmail(data.email);
 
     const user = await db.user.create({
         data,
@@ -43,20 +36,9 @@ export const createUser = catchErrors(async (req, res) => {
 
 export const updateUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
-    const { firstName, lastName, birthDate, email, password } = req.body;
-
+    const data = validateAndParse(UserUpdateRequestSchema, req.body);
     await validateUser(userId);
-    await validateExistingEmail(email, userId);
-
-    let data: Prisma.UserUpdateInput = {
-        firstName,
-        lastName,
-        birthDate: new Date(birthDate),
-        email,
-    };
-    if (password) {
-        data = { ...data, password };
-    }
+    await validateExistingEmail(data.email, userId);
 
     const user = await db.user.update({
         where: { id: userId },
@@ -76,7 +58,6 @@ export const deleteUser = catchErrors(async (req, res) => {
 
     res.send({ message: "Usuario eliminado." });
 });
-
 
 function mapToUserResponse(user: User) {
     return {
