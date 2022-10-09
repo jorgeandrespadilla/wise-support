@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import errorHandler from '@/middlewares/errorHandler';
 import { RouteNotFoundError } from '@/common/errors';
 import { configureRoutes } from '@/routes';
+import httpLogger from '@/middlewares/httpLogger';
 
 function configureBaseMiddlewares(app: Application) {
     // CORS configuration
@@ -15,6 +16,8 @@ function configureBaseMiddlewares(app: Application) {
     // GZIP compression
     app.use(compression());
     app.use(helmet());
+    // HTTP logger
+    app.use(httpLogger);
 }
 
 const app = express();

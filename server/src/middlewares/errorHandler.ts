@@ -1,10 +1,17 @@
 import { ErrorRequestHandler } from "express";
 import { pick } from 'lodash';
 import { ServerError } from "@/common/errors";
+import logger from "@/utils/logger";
 
 const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-    console.log(error);
-    const clientError = error instanceof ServerError 
+    const isServerError = error instanceof ServerError;
+    if (isServerError) {
+        logger.warn(`(${error.constructor.name}) ${error.message}`);
+    } else {
+        logger.error(`(${error?.constructor?.name ?? "Error"}) ${error?.message ?? "Desconocido"}${error?.stack ? `\n${error.stack}` : ''}`);
+    }
+
+    const clientError = isServerError 
         ? error 
         : new ServerError('Algo salió mal.'); // Something went wrong
     const errorResponse = pick(clientError, ['message', 'code', 'status', 'data']);
