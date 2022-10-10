@@ -12,7 +12,15 @@ import toast from "utils/toast";
 import { UserData } from "types";
 
 type ColumnProps = {
+    colSpan?: number;
+    align?: "start" | "center" | "end";
     children: ReactNode;
+}
+
+const contentPosition = {
+    start: "justify-start",
+    center: "justify-center",
+    end: "justify-end",
 }
 
 function HeaderColumn({
@@ -26,11 +34,15 @@ function HeaderColumn({
 }
 
 function BodyColumn({
+    colSpan = 1,
+    align = "start",
     children,
 }: ColumnProps) {
     return (
-        <td className="font-poppins text-gray-800 p-4 py-2 border-0">
-            {children}
+        <td colSpan={colSpan} className={`font-poppins text-gray-800 p-4 py-2 border-0`}>
+            <div className={`flex ${contentPosition[align]} items-center`}>
+                {children}
+            </div>
         </td>
     );
 }
@@ -73,8 +85,10 @@ function UsersList() {
             <Card>
                 <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Usuarios</h1>
                 <div className="flex flex-row justify-between items-center pb-4">
-                    <Input value={query} onChange={setQuery} placeholder="Buscar" width="half" prefixIcon={
-                        <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                    <Input value={query} onChange={setQuery} placeholder="Buscar" width="half" prefixContent={
+                        <div className="pl-3">
+                            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                        </div>
                     } />
                     <Link to="/users/new">
                         <Button>Agregar</Button>
@@ -91,27 +105,41 @@ function UsersList() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredUsers.map((user, index) => {
-                                const isLast = index === filteredUsers.length - 1;
-                                return (
-                                    <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
-                                        <BodyColumn>{user.fullName}</BodyColumn>
-                                        <BodyColumn>{user.email}</BodyColumn>
-                                        <BodyColumn>{formatDate(parseISODate(user.birthDate))}</BodyColumn>
-                                        <BodyColumn>
-                                            <div className="flex space-x-2">
-                                                <Link to={`/users/${user.id}`}>
-                                                    <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                </Link>
-                                                <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
-                                                    setCurrentUserId(user.id);
-                                                    setIsConfirmDialogOpen(true);
-                                                }} />
-                                            </div>
-                                        </BodyColumn>
-                                    </tr>
-                                );
-                            })}
+                            {
+                                filteredUsers.length > 0
+                                    ? (
+                                        filteredUsers.map((user, index) => {
+                                            const isLast = index === filteredUsers.length - 1;
+                                            return (
+                                                <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
+                                                    <BodyColumn>{user.fullName}</BodyColumn>
+                                                    <BodyColumn>{user.email}</BodyColumn>
+                                                    <BodyColumn>{formatDate(parseISODate(user.birthDate))}</BodyColumn>
+                                                    <BodyColumn>
+                                                        <div className="flex space-x-2">
+                                                            <Link to={`/users/${user.id}`}>
+                                                                <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                            </Link>
+                                                            <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                                setCurrentUserId(user.id);
+                                                                setIsConfirmDialogOpen(true);
+                                                            }} />
+                                                        </div>
+                                                    </BodyColumn>
+                                                </tr>
+                                            );
+                                        })
+                                    )
+                                    : (
+                                        <tr>
+                                            <BodyColumn colSpan={4} align="center">
+                                                <div className="text-sm text-neutral py-3">
+                                                    No se encontraron resultados
+                                                </div>
+                                            </BodyColumn>
+                                        </tr>
+                                    )
+                            }
                         </tbody>
                     </table>
                 </div>

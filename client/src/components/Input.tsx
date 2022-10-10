@@ -1,13 +1,13 @@
 import { ReactNode, useId } from "react";
+import { BaseInputProps } from "types/ui";
 
-type InputProps = {
-    label?: string;
-    value: string;
-    placeholder?: string;
-    type?: "text" | "password" | "date";
-    width?: "full" | "half";
-    prefixIcon?: ReactNode;
-    onChange?: (value: string) => void;
+type InputProps = BaseInputProps & {
+    type?: "text" | "password" | "date" | "email";
+    inputClass?: string;
+    prefixContent?: ReactNode;
+    clickablePrefix?: boolean;
+    suffixContent?: ReactNode;
+    clickableSuffix?: boolean;
 };
 
 function Input({
@@ -15,8 +15,14 @@ function Input({
     value,
     width = "full",
     placeholder = "",
+    feedback = "",
     type = "text",
-    prefixIcon,
+    invalid = false,
+    disabled = false,
+    prefixContent,
+    clickablePrefix = false,
+    suffixContent,
+    clickableSuffix = false,
     onChange = () => { },
 }: InputProps) {
     const field = useId();
@@ -27,7 +33,7 @@ function Input({
     }
 
     return (
-        <div className={ width === "full" ? "w-full" : "w-half" }>
+        <div className={width === "full" ? "w-full" : "w-72"}>
             {
                 label && (
                     <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700">
@@ -37,16 +43,40 @@ function Input({
             }
             <div className="relative">
                 {
-                    prefixIcon && (
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    prefixContent && (
+                        <div className={`${!clickablePrefix ? "pointer-events-none" : ""} absolute inset-y-0 left-0 flex items-center`}>
                             <span className="text-gray-500 sm:text-sm">
-                                {prefixIcon}
+                                {prefixContent}
                             </span>
                         </div>
                     )
                 }
-                <input id={field} type={type} value={value} onChange={handleChange} placeholder={placeholder} className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${prefixIcon ? 'pl-10' : ''}`} />
+                <input
+                    id={field}
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    onChange={handleChange}
+                    className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${prefixContent ? 'pl-10' : ''} ${suffixContent ? 'pr-10' : ''} ${invalid ? 'border-danger' : ''}`}
+                />
+                {
+                    suffixContent && (
+                        <div className={`${!clickableSuffix ? "pointer-events-none" : ""} absolute inset-y-0 right-0 flex items-center`}>
+                            <span className="text-gray-500 sm:text-sm">
+                                {suffixContent}
+                            </span>
+                        </div>
+                    )
+                }
             </div>
+            {
+                feedback && (
+                    <label className={`block text-xs mt-0.5 ml-1 font-medium ${invalid ? 'text-danger' : 'text-gray-500'}`}>
+                        {feedback}
+                    </label>
+                )
+            }
         </div>
     );
 }

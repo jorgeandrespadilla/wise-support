@@ -12,8 +12,8 @@ const Router = () => (
             <Route path="/users" element={<UsersList />} />
             <Route path="/users/new" element={<AddUser />} />
             <Route path="/users/:id" element={<EditUser />} />
-            <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
     </Routes>
 );
 

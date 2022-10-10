@@ -4,9 +4,10 @@ import Button from "components/Button";
 import Card from "components/Card";
 import DatePicker from "components/DatePicker";
 import Input from "components/Input";
+import PasswordInput from "components/PasswordInput";
 import api from "utils/api";
-import { today } from "utils/dateHelpers";
 import toast from "utils/toast";
+import { today } from "utils/dateHelpers";
 
 function AddUser() {
     const navigate = useNavigate();
@@ -39,8 +40,8 @@ function AddUser() {
             <div className="flex flex-col pb-8 space-y-4">
                 <Input label="Nombre" value={firstName} onChange={setFirstName} />
                 <Input label="Apellido" value={lastName} onChange={setLastName} />
-                <Input label="Correo" value={email} onChange={setEmail} />
-                <Input label="Clave" value={password} onChange={setPassword} type="password" />
+                <Input type="email" label="Correo" value={email} onChange={setEmail} />
+                <PasswordInput label="Clave" value={password} onChange={setPassword} />
                 <DatePicker label="Fecha de nacimiento" value={birthDate} onChange={setBirthDate} />
             </div>
             <div className="flex items-center space-x-2">

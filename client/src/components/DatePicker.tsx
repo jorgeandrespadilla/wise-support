@@ -1,16 +1,13 @@
 import Input from "./Input";
 import { DateTime, datePickerToDate, dateToDatePicker } from "utils/dateHelpers";
+import { BaseInputProps } from "types/ui";
 
-type DatePickerProps = {
-    label?: string;
-    value: DateTime;
-    onChange?: (date: DateTime) => void;
-}     
+type DatePickerProps = BaseInputProps<DateTime>;
 
 function DatePicker({
-    label,
     value,
-    onChange = () => {},
+    onChange = () => { },
+    ...props
 }: DatePickerProps) {
 
     const handleChange = (value: string) => {
@@ -19,7 +16,7 @@ function DatePicker({
     }
 
     return (
-        <Input type="date" value={dateToDatePicker(value)} onChange={handleChange} label={label} />
+        <Input type="date" value={dateToDatePicker(value)} onChange={handleChange} {...props} />
     );
 }
 
