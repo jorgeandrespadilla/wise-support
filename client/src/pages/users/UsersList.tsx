@@ -1,16 +1,15 @@
-import Input from "components/Input";
-import MainLayout from "components/MainLayout";
 import { ReactNode, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
-import Card from "components/Card";
 import Button from "components/Button";
-import { UserData } from "types";
+import Card from "components/Card";
+import ConfirmDialog from "components/ConfirmDialog";
+import IconButton from "components/IconButton";
+import Input from "components/Input";
 import { formatDate, parseISODate } from "utils/dateHelpers";
 import api from "utils/api";
 import toast from "utils/toast";
-import IconButton from "components/IconButton";
-import { Link } from "react-router-dom";
-import ConfirmDialog from "components/ConfirmDialog";
+import { UserData } from "types";
 
 type ColumnProps = {
     children: ReactNode;
@@ -70,7 +69,7 @@ function UsersList() {
     });
 
     return (
-        <MainLayout>
+        <>
             <Card>
                 <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Usuarios</h1>
                 <div className="flex flex-row justify-between items-center pb-4">
@@ -104,7 +103,7 @@ function UsersList() {
                                                 <Link to={`/users/${user.id}`}>
                                                     <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                 </Link>
-                                                <IconButton icon={<TrashIcon className="h-5 w-5 text-red-500" />} onClick={() => {
+                                                <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                     setCurrentUserId(user.id);
                                                     setIsConfirmDialogOpen(true);
                                                 }} />
@@ -133,7 +132,7 @@ function UsersList() {
                     handleDelete(currentUserId);
                 }}
             />
-        </MainLayout>
+        </>
     );
 }
 

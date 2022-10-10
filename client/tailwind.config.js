@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         primary: colors.blue[500],
         neutral: colors.gray[500],
+        danger: colors.red[500],
       },
     },
   },

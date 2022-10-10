@@ -1,10 +1,9 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import Card from "components/Card";
 import DatePicker from "components/DatePicker";
 import Input from "components/Input";
-import MainLayout from "components/MainLayout";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import api from "utils/api";
 import { today } from "utils/dateHelpers";
 import toast from "utils/toast";
@@ -35,24 +34,22 @@ function AddUser() {
     };
 
     return (
-        <MainLayout>
-            <Card>
-                <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Nuevo Usuario</h1>
-                <div className="flex flex-col pb-8 space-y-4">
-                    <Input label="Nombre" value={firstName} onChange={setFirstName} />
-                    <Input label="Apellido" value={lastName} onChange={setLastName} />
-                    <Input label="Correo" value={email} onChange={setEmail} />
-                    <Input label="Clave" value={password} onChange={setPassword} type="password" />
-                    <DatePicker label="Fecha de nacimiento" value={birthDate} onChange={setBirthDate} />
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Button onClick={() => addUser()}>Guardar</Button>
-                    <Link to="/users">
-                        <Button type="secondary">Cancelar</Button>
-                    </Link>
-                </div>
-            </Card>
-        </MainLayout>
+        <Card>
+            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Nuevo Usuario</h1>
+            <div className="flex flex-col pb-8 space-y-4">
+                <Input label="Nombre" value={firstName} onChange={setFirstName} />
+                <Input label="Apellido" value={lastName} onChange={setLastName} />
+                <Input label="Correo" value={email} onChange={setEmail} />
+                <Input label="Clave" value={password} onChange={setPassword} type="password" />
+                <DatePicker label="Fecha de nacimiento" value={birthDate} onChange={setBirthDate} />
+            </div>
+            <div className="flex items-center space-x-2">
+                <Button onClick={() => addUser()}>Guardar</Button>
+                <Link to="/users">
+                    <Button type="secondary">Cancelar</Button>
+                </Link>
+            </div>
+        </Card>
     );
 }
 
