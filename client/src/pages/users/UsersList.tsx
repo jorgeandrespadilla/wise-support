@@ -10,6 +10,7 @@ import { formatDate, parseISODate } from "utils/dateHelpers";
 import api from "utils/api";
 import toast from "utils/toast";
 import { UserData } from "types";
+import { handleAPIError } from "utils/validation";
 
 type ColumnProps = {
     colSpan?: number;
@@ -61,8 +62,7 @@ function UsersList() {
         api.get<UserData[]>("/users").then((res) => {
             setUsers(res.sort((a, b) => a.fullName.localeCompare(b.fullName)));
         }).catch((err) => {
-            console.error(err);
-            toast.error(err.message);
+            handleAPIError(err);
         });
     };
 
@@ -71,8 +71,7 @@ function UsersList() {
             toast.success("Usuario eliminado");
             fetchUsers();
         }).catch((err) => {
-            console.error(err);
-            toast.error(err.message);
+            handleAPIError(err);
         });
     };
 

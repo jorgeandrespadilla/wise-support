@@ -8,6 +8,7 @@ import TextField from "components/Form/TextField";
 import api from "utils/api";
 import toast from "utils/toast";
 import { today } from "utils/dateHelpers";
+import { handleAPIError } from "utils/validation";
 
 type AddUserForm = {
     firstName: string;
@@ -18,7 +19,7 @@ type AddUserForm = {
 };
 
 function AddUser() {
-    const { control, handleSubmit } = useForm<AddUserForm>({
+    const { control, setError, handleSubmit } = useForm<AddUserForm>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -34,8 +35,7 @@ function AddUser() {
             toast.success("Usuario agregado");
             navigate("/users");
         }).catch((err) => {
-            console.error(err);
-            toast.error(err.message);
+            handleAPIError(err, setError);
         });
     };
 

@@ -3,14 +3,15 @@ type ButtonProps = {
     size?: "sm" | "md" | "lg";
     rounded?: "none" | "md" | "lg" | "full";
     onClick?: () => void;
+    disabled?: boolean;
     children: React.ReactNode;
 };
 
 export const buttonType = {
-    primary: "bg-primary hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50",
-    secondary: "bg-white hover:bg-gray-200 text-primary border border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50",
-    text: "bg-transparent hover:bg-gray-100 text-primary underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50",
-    danger: "bg-danger hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:ring-opacity-50",
+    primary: "bg-primary hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
+    secondary: "bg-white hover:bg-gray-200 text-primary border border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-white",
+    text: "bg-transparent hover:bg-gray-100 text-primary underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent",
+    danger: "bg-danger hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
 };
 
 export const buttonSize = {
@@ -30,11 +31,12 @@ function Button({
     type = "primary",
     size = "md",
     rounded = "md",
+    disabled = false,
     children,
     onClick = () => { }
 }: ButtonProps) {
     return (
-        <button onClick={onClick} className={`${buttonType[type]} ${buttonSize[size]} text-center font-bold rounded ${borderRadius[rounded]}`}>
+        <button disabled={disabled} onClick={onClick} className={`${buttonType[type]} ${buttonSize[size]} text-center font-bold rounded ${borderRadius[rounded]}`}>
             {children}
         </button>
     )
