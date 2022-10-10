@@ -4,8 +4,8 @@ import {
     parseJSDate,
     parseISODate,
     formatDate,
-    datePickerToDate,
-    dateToDatePicker,
+    datePickerToISODate,
+    isoDateToDatePicker,
 } from './dateHelpers';
 
 describe("dateHelpers", () => {
@@ -45,17 +45,15 @@ describe("dateHelpers", () => {
             expect(dateStr).toBe("10/09/2019");
         });
     });
-    describe("datePickerToDate", () => {
-        it("should convert a date picker format to a correct date", () => {
-            const date = datePickerToDate("2019-09-10");
-            expect(date.get("day")).toBe(10);
-            expect(date.get("month")).toBe(9);
-        });
+    describe("datePickerToISODate", () => {
+        it("should convert a date picker format to a correct ISO date", () => {
+            const isoDate = datePickerToISODate("2019-09-10");
+            expect(isoDate).toBe("2019-09-10T00:00:00.000Z");
+       });
     });
-    describe("dateToDatePicker", () => {
-        it("should convert a date to a correct date picker format", () => {
-            const date = new Date(2019, 8, 10);
-            const datePickerDate = dateToDatePicker(parseJSDate(date));
+    describe("isoDateToDatePicker", () => {
+        it("should convert a ISO date to a correct date picker format", () => {
+            const datePickerDate = isoDateToDatePicker("2019-09-10T00:00:00.000Z");
             expect(datePickerDate).toBe("2019-09-10");
         });
     });

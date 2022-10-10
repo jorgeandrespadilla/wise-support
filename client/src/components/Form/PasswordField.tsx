@@ -1,20 +1,21 @@
 import { useState } from "react";
+import { FieldValues } from "react-hook-form";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import Input from "./Input";
-import { BaseInputProps } from "types/ui";
-import IconButton from "./IconButton";
+import IconButton from "components/IconButton";
+import FormField from "./FormField";
+import { FormInputProps } from "types/ui";
 
-type PasswordInputProps = BaseInputProps & {
+type PasswordFieldProps<TFields extends FieldValues> = FormInputProps<TFields> & {
     togglePassword?: boolean;
 };
 
-function PasswordInput({
+function PasswordField<TFields extends FieldValues>({
     togglePassword = false,
     ...props
-}: PasswordInputProps) {
+}: PasswordFieldProps<TFields>) {
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <Input
+        <FormField
             type={showPassword ? 'text' : 'password'}
             suffixContent={
                 togglePassword && (
@@ -31,4 +32,4 @@ function PasswordInput({
     );
 }
 
-export default PasswordInput;
+export default PasswordField;

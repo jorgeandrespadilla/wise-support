@@ -1,8 +1,21 @@
-export type BaseInputProps<T = string> = {
+import { ReactNode } from 'react';
+import { Path, FieldValues, RegisterOptions, Control } from 'react-hook-form';
+
+export interface LinkConfig {
+    /** The URL of the link */
+    to: string;
+    /** The text to show in the link */
+    label: string;
+};
+
+
+//#region Inputs
+
+export type BaseInputType = "text" | "password" | "date" | "email" | "url";
+
+export type BaseInputProps = {
     /** The label to show above the input */
     label?: string;
-    /** The value of the input */
-    value: T;
     /** The placeholder of the input */
     placeholder?: string;
     /** The feedback message to show below the input */
@@ -13,12 +26,21 @@ export type BaseInputProps<T = string> = {
     disabled?: boolean;
     /** The width of the input */
     width?: "full" | "half";
-    onChange?: (value: T) => void;
 };
 
-export interface LinkConfig {
-    /** The URL of the link */
-    to: string;
-    /** The text to show in the link */
-    label: string;
+export type InputDecorationProps = {
+    prefixContent?: ReactNode;
+    clickablePrefix?: boolean;
+    suffixContent?: ReactNode;
+    clickableSuffix?: boolean;
 };
+
+export type BaseFormInputProps<TFormValues extends FieldValues = FieldValues> = {
+    name: Path<TFormValues>;
+    control?: Control<TFormValues>;
+    rules?: RegisterOptions;
+};
+
+export type FormInputProps<TFields extends FieldValues> = BaseInputProps & BaseFormInputProps<TFields>;
+
+//#endregion

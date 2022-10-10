@@ -1,13 +1,13 @@
 import { Switch } from '@headlessui/react';
 
 type ToggleProps = {
-    label: string;
+    label?: string;
     checked: boolean;
     onChange?: (value: boolean) => void;
 };
 
 function Toggle({
-    label,
+    label = "",
     checked,
     onChange = () => {},
 }: ToggleProps) {

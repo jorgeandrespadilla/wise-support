@@ -1,15 +1,15 @@
-import { ReactNode, useId } from "react";
-import { BaseInputProps } from "types/ui";
+import { useId } from "react";
+import { BaseInputProps, BaseInputType, InputDecorationProps } from "types/ui";
 
-type InputProps = BaseInputProps & {
-    type?: "text" | "password" | "date" | "email";
-    inputClass?: string;
-    prefixContent?: ReactNode;
-    clickablePrefix?: boolean;
-    suffixContent?: ReactNode;
-    clickableSuffix?: boolean;
+type InputProps = BaseInputProps & InputDecorationProps & {
+    type?: BaseInputType;
+    value: string;
+    onChange: (value: string) => void;
 };
 
+/**
+ * A fully customizable base input component that can be used to create other inputs.
+ */
 function Input({
     label,
     value,

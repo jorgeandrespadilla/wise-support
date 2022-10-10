@@ -1,46 +1,47 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import Button from "components/Button";
 import Card from "components/Card";
-import DatePicker from "components/DatePicker";
-import Input from "components/Input";
-import PasswordInput from "components/PasswordInput";
+import DatePicker from "components/Form/DatePicker";
+import PasswordField from "components/Form/PasswordField";
 import api from "utils/api";
 import toast from "utils/toast";
-import { parseISODate, today } from "utils/dateHelpers";
+import { today } from "utils/dateHelpers";
 import { UserInput } from "types";
+import TextField from "components/Form/TextField";
+
+type EditUserForm = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    birthDate: string;
+};
 
 function EditUser() {
     const { id } = useParams<{ id: string }>();
+    const { control, reset, handleSubmit } = useForm<EditUserForm>({
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            birthDate: today().toISO(),
+        },
+    });
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState(today());
-
     useEffect(() => {
-        api.get<UserInput>(`/users/${id}`).then((res) => {
-            setFirstName(res.firstName);
-            setLastName(res.lastName);
-            setEmail(res.email);
-            setBirthDate(parseISODate(res.birthDate));
-        }).catch((err) => {
+        api.get<UserInput>(`/users/${id}`).then(reset).catch((err) => {
             console.error(err);
             toast.error(err.message);
             navigate("/users");
         });
-    }, [id, navigate]);
+    }, [id, reset, navigate]);
 
-    function updateUser() {
-        api.put(`/users/${id}`, {
-            firstName,
-            lastName,
-            email,
-            password,
-            birthDate,
-        }).then(() => {
+    function updateUser(user: EditUserForm) {
+        api.put(`/users/${id}`, user).then(() => {
             toast.success("Usuario actualizado");
             navigate("/users");
         }).catch((err) => {
@@ -53,14 +54,14 @@ function EditUser() {
         <Card>
             <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Nuevo Usuario</h1>
             <div className="flex flex-col pb-8 space-y-4">
-                <Input label="Nombre" value={firstName} onChange={setFirstName} />
-                <Input label="Apellido" value={lastName} onChange={setLastName} />
-                <Input type="email" label="Correo" value={email} onChange={setEmail} />
-                <PasswordInput label="Clave" value={password} onChange={setPassword} />
-                <DatePicker label="Fecha de nacimiento" value={birthDate} onChange={setBirthDate} />
+                <TextField name="firstName" label="Nombre" control={control} />
+                <TextField name="lastName" label="Apellido" control={control} />
+                <TextField type="email" name="email" label="Correo" control={control} />
+                <PasswordField name="password" label="Clave" control={control} />
+                <DatePicker name="birthDate" label="Fecha de nacimiento" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={() => updateUser()}>Guardar</Button>
+                <Button onClick={handleSubmit(updateUser)}>Guardar</Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

@@ -1,31 +1,36 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import Button from "components/Button";
 import Card from "components/Card";
-import DatePicker from "components/DatePicker";
-import Input from "components/Input";
-import PasswordInput from "components/PasswordInput";
+import DatePicker from "components/Form/DatePicker";
+import PasswordField from "components/Form/PasswordField";
+import TextField from "components/Form/TextField";
 import api from "utils/api";
 import toast from "utils/toast";
 import { today } from "utils/dateHelpers";
 
+type AddUserForm = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    birthDate: string;
+};
+
 function AddUser() {
+    const { control, handleSubmit } = useForm<AddUserForm>({
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            birthDate: today().toISO(),
+        },
+    });
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState(today());
-
-    const addUser = () => {
-        api.post("/users", {
-            firstName,
-            lastName,
-            email,
-            password,
-            birthDate,
-        }).then(() => {
+    const addUser = (user: AddUserForm) => {
+        api.post("/users", user).then(() => {
             toast.success("Usuario agregado");
             navigate("/users");
         }).catch((err) => {
@@ -38,14 +43,14 @@ function AddUser() {
         <Card>
             <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Nuevo Usuario</h1>
             <div className="flex flex-col pb-8 space-y-4">
-                <Input label="Nombre" value={firstName} onChange={setFirstName} />
-                <Input label="Apellido" value={lastName} onChange={setLastName} />
-                <Input type="email" label="Correo" value={email} onChange={setEmail} />
-                <PasswordInput label="Clave" value={password} onChange={setPassword} />
-                <DatePicker label="Fecha de nacimiento" value={birthDate} onChange={setBirthDate} />
+                <TextField name="firstName" label="Nombre" control={control} />
+                <TextField name="lastName" label="Apellido" control={control} />
+                <TextField type="email" name="email" label="Correo" control={control} />
+                <PasswordField name="password" label="Clave" control={control} />
+                <DatePicker name="birthDate" label="Fecha de nacimiento" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={() => addUser()}>Guardar</Button>
+                <Button onClick={handleSubmit(addUser)}>Guardar</Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

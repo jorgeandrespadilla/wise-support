@@ -4,7 +4,7 @@ type ButtonProps = {
     rounded?: "none" | "md" | "lg" | "full";
     onClick?: () => void;
     children: React.ReactNode;
-}
+};
 
 export const buttonType = {
     primary: "bg-primary hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50",

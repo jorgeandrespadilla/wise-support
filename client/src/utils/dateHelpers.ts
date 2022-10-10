@@ -49,21 +49,21 @@ export function formatDate(date: DateTime): string {
 }
 
 /**
- * Converts a date picker string (yyyy-MM-dd) to a DateTime object
- * @param dateStr Date picker string
- * @returns DateTime object
+ * Converts a date picker string (yyyy-MM-dd) to a ISO date string
+ * @param date Date picker string
+ * @returns ISO date string
  */
-export function datePickerToDate(dateStr: string): DateTime {
-    return normalizeDate(DateTime.fromFormat(dateStr, datePickerFormat));
+export function datePickerToISODate(date: string): string {
+    return normalizeDate(DateTime.fromFormat(date, datePickerFormat)).toISO();
 }
 
 /**
- * Converts a DateTime object to a date picker string (yyyy-MM-dd)
- * @param date DateTime object
+ * Converts a ISO date string to a date picker string (yyyy-MM-dd)
+ * @param date ISO date string
  * @returns Date picker string
  */
-export function dateToDatePicker(date: DateTime): string {
-    return normalizeDate(date).toFormat(datePickerFormat);
+export function isoDateToDatePicker(date: string): string {
+    return parseISODate(date).toFormat(datePickerFormat);
 }
 
 export function today(): DateTime {
