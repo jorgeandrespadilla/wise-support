@@ -8,3 +8,7 @@ export const tryParseDate = (date: any) => {
     if (typeof date === "string" || date instanceof Date) return new Date(date);
     return date;
 }
+
+export const today = () => {
+    return DateTime.now().toJSDate();
+}

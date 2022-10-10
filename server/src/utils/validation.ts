@@ -25,6 +25,7 @@ const createMessage = (message: string): ValidationMessage => ({ message });
 export const message = {
     required: createTypeMessage(),
     email: createMessage('Correo electrónico inválido'),
+    nonEmpty: createMessage('Campo obligatorio'),
     minLength: (minLength: number) => createMessage(`Debe tener al menos ${minLength} caracter${minLength === 1 ? "" : "es"}`),
     maxLength: (maxLength: number) => createMessage(`Debe tener como máximo ${maxLength} caracter${maxLength === 1 ? "" : "es"}`),
     exactLength: (length: number) => createMessage(`Debe tener ${length} caracter${length === 1 ? "" : "es"}`),
