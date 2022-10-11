@@ -18,16 +18,19 @@ const UserRequestSchema = v.object({
             .max(today(), message.maxDate(today()))
     ),
     email: v.string(message.required)
+        .min(1, message.nonEmpty)
         .email(message.email)
         .transform(sanitizeEmail),
 });
 
 export const UserCreateRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
+        .min(1, message.nonEmpty)
         .refine(isValidPassword, message.password),
 });
 export const UserUpdateRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
+        .min(1, message.nonEmpty)
         .refine(value => {
             if (value === '') return true;
             return isValidPassword(value);
