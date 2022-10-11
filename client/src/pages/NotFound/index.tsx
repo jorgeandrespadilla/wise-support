@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import brokenImage from '../../assets/images/broken.png';
-import Button from '../../components/Button';
+import brokenImage from 'assets/images/broken.png';
+import Button from 'components/Button';
+
 function NotFound() {
     return (
         <div className="lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 min-h-screen items-center flex justify-center ">

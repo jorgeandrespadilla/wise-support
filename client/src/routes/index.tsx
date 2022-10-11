@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import Login from 'pages/Login';
 import NotFound from 'pages/NotFound';
 import AddUser from 'pages/users/AddUser';
 import EditUser from 'pages/users/EditUser';
@@ -7,6 +8,7 @@ import MainLayout from 'components/MainLayout';
 
 const Router = () => (
     <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<MainLayout />}>
             <Route index element={<Navigate replace to="/users" />} />
             <Route path="/users" element={<UsersList />} />
