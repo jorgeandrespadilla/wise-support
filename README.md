@@ -20,9 +20,10 @@ Variable	      | Descripción
 ---          	  | ---
 `SERVER_PORT`     | Número de puerto para escuchar las peticiones HTTP
 `SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, `/`)
+`JWT_SECRET`      | Clave secreta usada para generar y verificar los tokens JWT (variable requerida)
 `DATABASE_URL`    | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
 
-3. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto.
+1. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto.
 
 ## Administrar la Base de Datos (Backend)
 
