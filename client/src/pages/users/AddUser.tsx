@@ -2,13 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "components/Button";
 import Card from "components/Card";
-import DatePicker from "components/Form/DatePicker";
-import PasswordField from "components/Form/PasswordField";
-import TextField from "components/Form/TextField";
 import api from "utils/api";
 import toast from "utils/toast";
 import { today } from "utils/dateHelpers";
 import { handleAPIError } from "utils/validation";
+import { DatePicker, PasswordField, TextField } from "components/Form";
 
 type AddUserForm = {
     firstName: string;
