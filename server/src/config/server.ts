@@ -4,9 +4,11 @@ import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import errorHandler from '@/middlewares/errorHandler';
-import { RouteNotFoundError } from '@/common/errors';
-import { configureRoutes } from '@/routes';
 import httpLogger from '@/middlewares/httpLogger';
+import { authenticateUser } from '@/middlewares/authentication';
+import { RouteNotFoundError } from '@/common/errors';
+import { BASE_URL } from '@/constants/settings';
+import { configureProtectedRoutes, configurePublicRoutes } from '@/routes';
 
 function configureBaseMiddlewares(app: Application) {
     // CORS configuration
@@ -24,7 +26,10 @@ const app = express();
 
 configureBaseMiddlewares(app);
 
-configureRoutes(app);
+configurePublicRoutes(app);
+
+app.use(BASE_URL, authenticateUser);
+configureProtectedRoutes(app);
 
 app.use((req, _res, next) => next(new RouteNotFoundError(req.originalUrl)));
 app.use(errorHandler);

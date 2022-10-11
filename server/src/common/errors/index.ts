@@ -30,3 +30,11 @@ export class ValidationError extends ServerError {
         super(message, 'VALIDATION_ERROR', StatusCode.BAD_REQUEST, data);
     }
 }
+
+export class UnauthorizedError extends ServerError {
+    constructor(reasonMessage: string) {
+        super(`Usuario no autorizado.`, 'UNAUTHORIZED', StatusCode.UNAUTHORIZED, {
+            reason: reasonMessage,
+        });
+    }
+}
