@@ -6,6 +6,13 @@ const prisma = new PrismaClient();
 const seedUsers = async () => {
     const userData: Prisma.UserCreateInput[] = [
         {
+            firstName: "Guest",
+            lastName: "User",
+            email: "guest@test.com",
+            password: generateHashSync("guest123"),
+            birthDate: new Date("2001-06-12T00:00:00.000"),
+        },
+        {
             firstName: "John",
             lastName: "Doe",
             email: "john.doe@test.com",
