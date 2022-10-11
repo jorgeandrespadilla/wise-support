@@ -59,6 +59,10 @@ export const deleteUser = catchErrors(async (req, res) => {
     res.send({ message: "Usuario eliminado." });
 });
 
+export const getCurrentUser = catchErrors(async (req, res) => {
+    res.send(mapToUserResponse(req.currentUser));
+});
+
 function mapToUserResponse(user: User) {
     return {
         ...omit(user, ["password"]),

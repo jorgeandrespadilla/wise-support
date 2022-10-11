@@ -5,7 +5,10 @@ import { verifyToken } from "@/utils/authToken"
 import { catchErrors } from "@/utils/catchErrors"
 import { TokenData } from "@/types"
 
-export const authenticateUser = catchErrors(async (req, _res, next) => {
+/**
+ * Middleware to validate the user's authentication token.
+ */
+export const authorize = catchErrors(async (req, _res, next) => {
     const token = getAuthTokenFromHeaders(req.headers);
     if (!token) throw new UnauthorizedError("No se ha proporcionado un token de autenticación.");
 

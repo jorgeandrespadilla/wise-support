@@ -4,7 +4,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import { JWT_CONFIG } from '@/constants/settings';
 import { UnauthorizedError } from '@/common/errors';
 
-export const generateToken = (payload: object, options?: SignOptions): string => {
+export const generateToken = <T extends object>(payload: T, options?: SignOptions): string => {
     return jwt.sign(payload, JWT_CONFIG.secret, {
         expiresIn: JWT_CONFIG.expiresIn,
         ...options
