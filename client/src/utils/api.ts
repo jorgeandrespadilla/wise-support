@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:4000';
+
 const defaultConfig = {
-    baseURL: process.env.API_URL || 'http://localhost:4000',
+    baseURL: `${apiBaseUrl}/api`,
     headers: () => ({
         'Content-Type': 'application/json',
     }),

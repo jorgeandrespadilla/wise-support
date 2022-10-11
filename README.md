@@ -19,7 +19,7 @@ Variables de entorno del proyecto `server`:
 Variable	      | Descripción
 ---          	  | ---
 `SERVER_PORT`     | Número de puerto para escuchar las peticiones HTTP
-`SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, `/`)
+`SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)
 `JWT_SECRET`      | Clave secreta usada para generar y verificar los tokens JWT (variable requerida)
 `DATABASE_URL`    | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
 
