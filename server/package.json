@@ -2,12 +2,13 @@
   "name": "server",
   "version": "1.2.0",
   "private": true,
+  "main": "./build/index.js",
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
     "start": "nodemon --exec ts-node -r tsconfig-paths/register --files ./src/index.ts",
-    "start:production": "cross-env NODE_ENV=production node -r tsconfig-paths/register ./build/index.js",
+    "start:production": "cross-env NODE_ENV=production TS_NODE_BASEURL=build node -r tsconfig-paths/register build/index.js",
     "build": "rimraf build && tsc",
     "sync-env": "sync-dotenv",
     "db:restore": "prisma migrate dev"
