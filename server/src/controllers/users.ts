@@ -51,6 +51,9 @@ export const deleteUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
 
     await validateUser(userId);
+    if (userId === req.currentUser.id) {
+        throw new ValidationError("La cuenta actual no puede ser eliminada.");
+    }
 
     await db.user.delete({
         where: { id: userId },
