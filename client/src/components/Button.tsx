@@ -4,6 +4,7 @@ type ButtonProps = {
     rounded?: "none" | "md" | "lg" | "full";
     onClick?: () => void;
     disabled?: boolean;
+    submitForm?: boolean;
     children: React.ReactNode;
 };
 
@@ -32,11 +33,12 @@ function Button({
     size = "md",
     rounded = "md",
     disabled = false,
+    submitForm = false,
     children,
     onClick = () => { }
 }: ButtonProps) {
     return (
-        <button disabled={disabled} onClick={onClick} className={`${buttonType[type]} ${buttonSize[size]} text-center font-bold rounded ${borderRadius[rounded]}`}>
+        <button type={submitForm ? "submit" : "button"} disabled={disabled} onClick={onClick} className={`${buttonType[type]} ${buttonSize[size]} text-center font-bold rounded ${borderRadius[rounded]}`}>
             {children}
         </button>
     )

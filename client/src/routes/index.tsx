@@ -5,11 +5,12 @@ import AddUser from 'pages/users/AddUser';
 import EditUser from 'pages/users/EditUser';
 import UsersList from 'pages/users/UsersList';
 import MainLayout from 'components/MainLayout';
+import ProtectedRoute from './ProtectedRoute';
 
 const Router = () => (
     <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
             <Route index element={<Navigate replace to="/users" />} />
             <Route path="/users" element={<UsersList />} />
             <Route path="/users/new" element={<AddUser />} />

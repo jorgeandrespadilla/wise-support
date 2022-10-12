@@ -4,8 +4,10 @@ import Card from 'components/Card';
 import { PasswordField, TextField } from 'components/Form';
 import api from "utils/api";
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { handleAPIError } from 'utils/validation';
+import { useAuth } from 'hooks/useAuth';
+import { LoginResponse } from 'types';
 
 interface LoginForm {
     email: string;
@@ -19,15 +21,23 @@ function Login() {
             password: "",
         },
     });
+    const { isAuthenticated, login } = useAuth();
     const navigate = useNavigate();
-
+    const location = useLocation();
+    
     const authenticateUser = (user: LoginForm) => {
-        api.post("/login", user).then(() => {
-            navigate("/");
+        const targetPath = location.state ? location.state.pathname : "/";
+        api.post<LoginResponse>("/login", user).then(data => {
+            login(data.authToken);
+            navigate(targetPath);
         }).catch((err) => {
             handleAPIError(err, setError);
         });
     };
+
+    if (isAuthenticated) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -38,13 +48,15 @@ function Login() {
                             <LockClosedIcon className="inline-block w-10 h-10 mr-3 text-primary align-middle" />
                             <h1 className="inline-block align-middle font-poppins pr-4">Inicio de Sesión</h1>
                         </div>
-                        <Card>
-                            <div className="flex flex-col pb-10 space-y-4">
-                                <TextField name="email" label="Correo" control={control} />
-                                <PasswordField name="password" label="Clave" control={control} togglePassword={true} />
-                            </div>
-                            <Button rounded='full' size='lg' onClick={handleSubmit(authenticateUser)}>Iniciar sesión</Button>
-                        </Card>
+                        <form onSubmit={handleSubmit(authenticateUser)}>
+                            <Card>
+                                <div className="flex flex-col pb-10 space-y-4">
+                                    <TextField name="email" label="Correo" control={control} />
+                                    <PasswordField name="password" label="Clave" control={control} togglePassword={true} />
+                                </div>
+                                <Button rounded='full' size='lg' submitForm>Iniciar Sesión</Button>
+                            </Card>
+                        </form>
                     </div>
                 </div>
             </div>

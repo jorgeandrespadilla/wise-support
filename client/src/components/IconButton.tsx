@@ -6,8 +6,8 @@ type IconButtonProps = {
 }
 
 const buttonType = {
-    normal: "bg-gray-100 hover:bg-gray-200 rounded-full",
-    minimal: "bg-transparent hover:opacity-80",
+    normal: "bg-gray-100 hover:bg-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary focus:ring-opacity-50",
+    minimal: "bg-transparent hover:opacity-80 rounded-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50",
 }
 
 const buttonSize = {
@@ -24,6 +24,7 @@ function IconButton({
 }: IconButtonProps) {
     return (
         <button
+            type="button"
             className={`flex justify-center items-center ${buttonType[type]} ${buttonSize[size]}`}
             onClick={onClick}
         >

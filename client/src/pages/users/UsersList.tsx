@@ -83,7 +83,7 @@ function UsersList() {
         <>
             <Card>
                 <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Usuarios</h1>
-                <div className="flex flex-row justify-between items-center pb-4">
+                <div className="flex flex-row justify-between items-center pb-4 space-x-2">
                     <Input value={query} onChange={setQuery} placeholder="Buscar" width="half" prefixContent={
                         <div className="pl-3">
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />

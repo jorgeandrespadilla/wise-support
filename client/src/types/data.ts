@@ -11,3 +11,7 @@ export interface UserInput {
     email: string;
     birthDate: string;
 }
+
+export interface LoginResponse {
+    authToken: string;
+}
