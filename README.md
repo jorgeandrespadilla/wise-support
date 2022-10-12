@@ -2,6 +2,8 @@
 
 **Autor**: *Jorge Andrés Padilla*
 
+![image](https://user-images.githubusercontent.com/58148764/195403646-da3b7199-3ab5-4f0a-b384-c7fc4554c0a3.png)
+
 ## Descripción
 
 Este repositorio contiene el código fuente de la aplicación web desarrollada para el proyecto final de Ingeniería Web.
