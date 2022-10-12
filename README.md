@@ -2,19 +2,40 @@
 
 **Autor**: *Jorge Andrés Padilla*
 
-El proyecto final de ingeniería web fue desarrollado con **Node.js** (versión 16) y está compuesto por dos componentes:
-- El proyecto de backend creado con **Express.js**, que se encuentra en la carpeta `server`.
-- El proyecto de frontend creado con **React.js**, que se encuentra en la carpeta `client`.
+## Descripción
 
-Ambos proyectos están desarrollados en **TypeScript**, y se usa una base de datos **PostgreSQL** para el almacenamiento de los datos.
+Este repositorio contiene el código fuente de la aplicación web desarrollada para el proyecto final de Ingeniería Web.
 
-## Antes de Empezar
+## Estructura
 
-1. Instalar las dependencias de Node.js ejecutando el comando `npm install` en la raíz del proyecto.
+El repositorio está compuesto por dos componentes:
+- Backend que contiene la API del proyecto (código fuente ubicado en el directorio `server`).
+- Frontend que contiene la aplicación SPA del proyecto (código fuente ubicado en el directorio `client`).
 
-2. Configurar las variables de entorno dentro del proyecto `server`. Para ello, se debe crear un archivo `.env` en el directorio raíz del proyecto y configurar todas las variables descritas en el archivo `.env.example` (ver [Configuración de Variables de Entorno](#configuración-de-variables-de-entorno)).
+## Características
 
-3. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto (ver [Administración de la Base de Datos](#administración-de-la-base-de-datos)).
+- Manejo de usuarios (CRUD).
+- Autenticación y control de acceso.
+
+## Tecnologías y Herramientas
+
+- Los proyectos fueron desarrollados en TypeScript** usando la versión 16 de Node.js, y son gestionados usando NPM Workspaces.
+- El **Backend** utiliza Express.js y Prisma (ORM).
+- El **Frontend** utiliza React.js y Tailwind CSS para el diseño de la aplicación.
+- El proyecto utiliza PostgreSQL para el almacenamiento de los datos.
+- El sistema de autenticación se implementa usando JWT (JSON Web Tokens).
+
+## Instalaciones y Configuraciones Previas
+
+1. Instalar PostgreSQL y crear una base de datos llamada `ingweb`.
+   
+2. Clonar el repositorio.
+
+3. Instalar las dependencias de Node.js ejecutando el comando `npm install` en la raíz del proyecto.
+
+4. Configurar las variables de entorno dentro del proyecto `server`. Para ello, se debe crear un archivo `.env` en el directorio raíz del proyecto y configurar todas las variables descritas en el archivo `.env.example` (ver [Configuración de Variables de Entorno](#configuración-de-variables-de-entorno)).
+
+5. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto (ver [Administración de la Base de Datos](#administración-de-la-base-de-datos)).
 
 ### Configuración de Variables de Entorno
 
@@ -35,18 +56,30 @@ Ambos proyectos están desarrollados en **TypeScript**, y se usa una base de dat
 
 ### Administración de la Base de Datos
 
-*La administración de la base de datos se realiza dentro del proyecto `server`.*
+*La administración de la base de datos se realiza dentro del directorio `server`.*
 
-Para restaurar la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`). Este comando también ejecuta el comando `npx prisma generate` para actualizar los archivos del cliente de Prisma.
+Para ejecutar las migraciones de la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`).
 
 Para generar una nueva migración, se debe ejecutar el comando `npx prisma migrate dev --name <nombre>` (usar el formato `migration_name`).
 
-Para restaurar la base de datos, se debe ejecutar el comando `npx prisma migrate reset`. Este comando eliminará todos los datos existentes de la base de datos y recreará la base de datos junto con los datos de prueba.
+Para restaurar/reiniciar la base de datos, se debe ejecutar el comando `npx prisma migrate reset`. Este comando eliminará todos los datos existentes de la base de datos y recreará la base de datos junto con los datos de prueba.
 
-Para añadir datos de prueba a la base de datos, se debe ejecutar el comando `npx prisma db seed`. Este comando se ejecuta automáticamente cuando se restaura la base de datos o se genera una nueva migración.
+Para añadir datos de prueba a la base de datos, se debe ejecutar el comando `npx prisma db seed`. Este comando se ejecuta automáticamente cuando se restaura o se genera una nueva migración de la base de datos.
 
-> Al modificar el esquema de la base de datos, se debe ejecutar el comando `npx prisma generate` para que se actualicen los archivos del cliente de Prisma. Cabe destacar que, al instalar las dependencias de Node.js, el comando `npx prisma generate` se ejecuta automáticamente.
+> Al modificar el esquema de la base de datos, se debe ejecutar el comando `npx prisma generate` para poder actualizar los archivos del ORM Prisma. Cabe destacar que, al instalar las dependencias de Node.js o restaurar la base de datos, el comando `npx prisma generate` se ejecuta automáticamente.
 
 ## Correr el proyecto
 
-En la raíz del proyecto, abrir una terminal y ejecutar el comando `npm start`. Esto iniciará tanto el servidor como la aplicación cliente del proyecto.
+Ejecutar el comando `npm start` en la raíz del proyecto. Esto iniciará tanto el servidor como la aplicación web del proyecto.
+
+Para usar la aplicación, se dispone de una cuenta de usuario invitado con las siguientes credenciales:
+- **Correo electrónico**: `guest@test.com`
+- **Contraseña**: `guest123`
+
+## Contribuciones
+
+Las contribuciones al proyecto y el reporte de errores no son aceptados en este momento.
+
+## Licencia
+
+Este proyecto está bajo la licencia [MIT](https://opensource.org/licenses/MIT).
