@@ -6,6 +6,8 @@ export interface LinkConfig {
     to: string;
     /** The text to show in the link */
     label: string;
+    /** The icon to display next to the link */
+    icon?: ReactNode;
 };
 
 
