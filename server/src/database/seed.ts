@@ -1,9 +1,29 @@
 import { generateHashSync } from '@/utils/crypto';
-import { PrismaClient, Prisma, User } from '@prisma/client';
+import { PrismaClient, Prisma, User, Role } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const seedUsers = async () => {
+const seedRoles = async () => {
+    const roleData: Prisma.RoleCreateInput[] = [
+        {
+            code: "ADMIN",
+            name: "Administrador",
+            description: "Administrador del sistema",
+        }
+    ];
+    const roles: Role[] = [];
+    for (const role of roleData) {
+        const newRole = await prisma.role.create({
+            data: role,
+        });
+        roles.push(newRole);
+    }
+    return roles;
+}
+
+
+const seedUsers = async (roles: Role[]) => {
+    const roleId = (code: string) => roles.find((role) => role.code === code)?.id;
     const userData: Prisma.UserCreateInput[] = [
         {
             firstName: "Guest",
@@ -11,6 +31,11 @@ const seedUsers = async () => {
             email: "guest@test.com",
             password: generateHashSync("guest123"),
             birthDate: new Date("2001-06-12T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("ADMIN")
+                }
+            }
         },
         {
             firstName: "John",
@@ -18,6 +43,11 @@ const seedUsers = async () => {
             email: "john.doe@test.com",
             password: generateHashSync("123456"),
             birthDate: new Date("2001-02-01T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("ADMIN")
+                }
+            }
         },
         {
             firstName: "Alice",
@@ -25,6 +55,11 @@ const seedUsers = async () => {
             email: "alice.smith@test.com",
             password: generateHashSync("123456"),
             birthDate: new Date("2001-04-10T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("ADMIN")
+                }
+            }
         }
     ];
     const users: User[] = [];
@@ -39,7 +74,8 @@ const seedUsers = async () => {
 
 async function main() {
     console.log(`Start seeding...`)
-    await seedUsers();
+    const roles = await seedRoles();
+    await seedUsers(roles);
     console.log(`Seeding process finished.`)
 }
 
