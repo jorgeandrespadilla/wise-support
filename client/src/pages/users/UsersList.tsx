@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
@@ -9,8 +9,9 @@ import Input from "components/Input";
 import { formatDate, parseISODate } from "utils/dateHelpers";
 import api from "utils/api";
 import toast from "utils/toast";
-import { UserData } from "types";
 import { handleAPIError } from "utils/validation";
+import { getUsers } from "services/users";
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 type ColumnProps = {
     colSpan?: number;
@@ -49,34 +50,40 @@ function BodyColumn({
 }
 
 function UsersList() {
+
     const [currentUserId, setCurrentUserId] = useState(0);
-    const [query, setQuery] = useState("");
-    const [users, setUsers] = useState<UserData[]>([]);
+    const [search, setSearch] = useState("");
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    const users = useQuery(['users'],
+        async () => {
+            const users = await getUsers();
+            return users.sort((a, b) => a.fullName.localeCompare(b.fullName));
+        },
+        {
+            onError: (e) => {
+                handleAPIError(e);
+            }
+        }
+    );
 
-    const fetchUsers = () => {
-        api.get<UserData[]>("/users").then((res) => {
-            setUsers(res.sort((a, b) => a.fullName.localeCompare(b.fullName)));
-        }).catch((err) => {
-            handleAPIError(err);
-        });
-    };
+    const { mutate: deleteUser } = useMutation(
+        async (id: number) => {
+            await api.delete(`/users/${id}`);
+        },
+        {
+            onSuccess: () => {
+                toast.success("Usuario eliminado");
+                users.refetch();
+            },
+            onError: (e) => {
+                handleAPIError(e);
+            }
+        }
+    )
 
-    const handleDelete = (id: number) => {
-        api.delete(`/users/${id}`).then(() => {
-            toast.success("Usuario eliminado");
-            fetchUsers();
-        }).catch((err) => {
-            handleAPIError(err);
-        });
-    };
-
-    const filteredUsers = users.filter((user) => {
-        return user.fullName.toLowerCase().includes(query.toLowerCase());
+    const filteredUsers = users.data?.filter((user) => {
+        return user.fullName.toLowerCase().includes(search.toLowerCase());
     });
 
     return (
@@ -84,7 +91,7 @@ function UsersList() {
             <Card>
                 <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Usuarios</h1>
                 <div className="flex flex-row justify-between items-center pb-4 space-x-2">
-                    <Input value={query} onChange={setQuery} placeholder="Buscar" width="half" prefixContent={
+                    <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={
                         <div className="pl-3">
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                         </div>
@@ -105,7 +112,7 @@ function UsersList() {
                         </thead>
                         <tbody>
                             {
-                                filteredUsers.length > 0
+                                filteredUsers && filteredUsers.length > 0
                                     ? (
                                         filteredUsers.map((user, index) => {
                                             const isLast = index === filteredUsers.length - 1;
@@ -156,7 +163,7 @@ function UsersList() {
                 }}
                 onConfirm={() => {
                     setIsConfirmDialogOpen(false);
-                    handleDelete(currentUserId);
+                    deleteUser(currentUserId);
                 }}
             />
         </>
