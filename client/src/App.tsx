@@ -8,6 +8,10 @@ function App() {
       <Router />
       <Toaster position="top-center" toastOptions={{
         className: "font-sans text-sm",
+        style: {
+          background: '#363636',
+          color: '#fff',
+        },
         duration: 3000,
       }} />
     </>

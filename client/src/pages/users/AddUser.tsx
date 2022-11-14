@@ -33,7 +33,7 @@ function AddUser() {
             toast.success("Usuario agregado");
             navigate("/users");
         }).catch((err) => {
-            handleAPIError(err, setError);
+            handleAPIError(err, { setFormError: setError });
         });
     };
 

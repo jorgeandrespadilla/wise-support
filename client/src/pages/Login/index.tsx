@@ -31,7 +31,7 @@ function Login() {
             login(data.authToken);
             navigate(targetPath);
         }).catch((err) => {
-            handleAPIError(err, setError);
+            handleAPIError(err, { setFormError: setError });
         });
     };
 

@@ -8,11 +8,12 @@ import IconButton from "components/IconButton";
 import Input from "components/Input";
 import { formatDate, parseISODate } from "utils/dateHelpers";
 import api from "utils/api";
-import toast from "utils/toast";
 import { handleAPIError } from "utils/validation";
 import { getUsers } from "services/users";
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useModal } from "hooks/useModal";
+import { useLoadingToast } from "hooks/useLoadingToast";
+import Loader from "components/Loader";
 
 type ColumnProps = {
     colSpan?: number;
@@ -50,6 +51,16 @@ function BodyColumn({
     );
 }
 
+function TableLoader() {
+    return (
+        <td colSpan={100} className="font-poppins text-gray-800 p-4 py-5 border-0">
+            <tr className="flex justify-center items-center">
+                <Loader />
+            </tr>
+        </td>
+    );
+}
+
 function UsersList() {
 
     const [selectedUserId, setSelectedUserId] = useState(0);
@@ -64,21 +75,26 @@ function UsersList() {
         {
             onError: (e) => {
                 handleAPIError(e);
-            }
+            },
         }
     );
 
+    const deleteUserToast = useLoadingToast("users", {
+        loading: "Eliminando usuario...",
+        success: "Usuario eliminado",
+    });
     const { mutate: deleteUser } = useMutation(
         async (id: number) => {
+            deleteUserToast.loading();
             await api.delete(`/users/${id}`);
         },
         {
             onSuccess: () => {
-                toast.success("Usuario eliminado");
                 users.refetch();
             },
             onError: (e) => {
-                handleAPIError(e);
+                deleteUserToast.error();
+                handleAPIError(e, { toastId: deleteUserToast.toastId });
             }
         }
     )
@@ -113,38 +129,43 @@ function UsersList() {
                         </thead>
                         <tbody>
                             {
-                                filteredUsers && filteredUsers.length > 0
+                                users.isLoading
                                     ? (
-                                        filteredUsers.map((user, index) => {
-                                            const isLast = index === filteredUsers.length - 1;
-                                            return (
-                                                <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
-                                                    <BodyColumn>{user.fullName}</BodyColumn>
-                                                    <BodyColumn>{user.email}</BodyColumn>
-                                                    <BodyColumn>{formatDate(parseISODate(user.birthDate))}</BodyColumn>
-                                                    <BodyColumn>
-                                                        <div className="flex space-x-2">
-                                                            <Link to={`/users/${user.id}`}>
-                                                                <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                            </Link>
-                                                            <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
-                                                                setSelectedUserId(user.id);
-                                                                confirmDialog.open();
-                                                            }} />
-                                                        </div>
-                                                    </BodyColumn>
-                                                </tr>
-                                            );
-                                        })
+                                        <TableLoader />
                                     )
-                                    : (
-                                        <tr>
-                                            <BodyColumn colSpan={4} align="center">
-                                                <div className="text-sm text-neutral py-3">
-                                                    No se encontraron resultados
-                                                </div>
-                                            </BodyColumn>
-                                        </tr>
+                                    : (filteredUsers && filteredUsers!.length > 0
+                                        ? (
+                                            filteredUsers!.map((user, index) => {
+                                                const isLast = index === filteredUsers!.length - 1;
+                                                return (
+                                                    <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
+                                                        <BodyColumn>{user.fullName}</BodyColumn>
+                                                        <BodyColumn>{user.email}</BodyColumn>
+                                                        <BodyColumn>{formatDate(parseISODate(user.birthDate))}</BodyColumn>
+                                                        <BodyColumn>
+                                                            <div className="flex space-x-2">
+                                                                <Link to={`/users/${user.id}`}>
+                                                                    <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                                </Link>
+                                                                <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                                    setSelectedUserId(user.id);
+                                                                    confirmDialog.open();
+                                                                }} />
+                                                            </div>
+                                                        </BodyColumn>
+                                                    </tr>
+                                                );
+                                            })
+                                        )
+                                        : (
+                                            <tr>
+                                                <BodyColumn colSpan={4} align="center">
+                                                    <div className="text-sm text-neutral py-3">
+                                                        No se encontraron resultados
+                                                    </div>
+                                                </BodyColumn>
+                                            </tr>
+                                        )
                                     )
                             }
                         </tbody>

@@ -43,7 +43,7 @@ function EditUser() {
             toast.success("Usuario actualizado");
             navigate("/users");
         }).catch((err) => {
-            handleAPIError(err, setError);
+            handleAPIError(err, { setFormError: setError });
         });
     }
 
