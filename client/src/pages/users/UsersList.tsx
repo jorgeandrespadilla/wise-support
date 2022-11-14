@@ -12,6 +12,7 @@ import toast from "utils/toast";
 import { handleAPIError } from "utils/validation";
 import { getUsers } from "services/users";
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { useModal } from "hooks/useModal";
 
 type ColumnProps = {
     colSpan?: number;
@@ -51,9 +52,9 @@ function BodyColumn({
 
 function UsersList() {
 
-    const [currentUserId, setCurrentUserId] = useState(0);
+    const [selectedUserId, setSelectedUserId] = useState(0);
     const [search, setSearch] = useState("");
-    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+    const confirmDialog = useModal();
 
     const users = useQuery(['users'],
         async () => {
@@ -127,8 +128,8 @@ function UsersList() {
                                                                 <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                             </Link>
                                                             <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
-                                                                setCurrentUserId(user.id);
-                                                                setIsConfirmDialogOpen(true);
+                                                                setSelectedUserId(user.id);
+                                                                confirmDialog.open();
                                                             }} />
                                                         </div>
                                                     </BodyColumn>
@@ -155,15 +156,15 @@ function UsersList() {
                 description="¿Estás seguro de que quieres eliminar este usuario?"
                 confirmText="Eliminar"
                 cancelText="Cancelar"
-                isOpen={isConfirmDialogOpen}
-                setIsOpen={setIsConfirmDialogOpen}
+                visible={confirmDialog.visible}
+                setVisible={confirmDialog.setVisible}
                 onCancel={() => {
-                    setIsConfirmDialogOpen(false);
-                    setCurrentUserId(0);
+                    confirmDialog.close();
+                    setSelectedUserId(0);
                 }}
                 onConfirm={() => {
-                    setIsConfirmDialogOpen(false);
-                    deleteUser(currentUserId);
+                    confirmDialog.close();
+                    deleteUser(selectedUserId);
                 }}
             />
         </>

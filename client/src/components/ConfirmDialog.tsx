@@ -9,8 +9,8 @@ type ConfirmDialogProps = {
   cancelText?: string;
   onConfirm: () => void;
   onCancel: () => void;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  visible: boolean;
+  setVisible: (isVisible: boolean) => void;
 };
 
 function ConfirmDialog({
@@ -20,12 +20,12 @@ function ConfirmDialog({
   cancelText = 'No',
   onConfirm = () => { },
   onCancel = () => { },
-  isOpen,
-  setIsOpen,
+  visible,
+  setVisible,
 }: ConfirmDialogProps) {
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={visible} as={Fragment}>
       <Dialog onClose={() => onCancel()}>
         <Transition.Child
           as={Fragment}
