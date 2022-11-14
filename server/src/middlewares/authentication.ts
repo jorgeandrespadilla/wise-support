@@ -17,6 +17,7 @@ export const authorize = catchErrors(async (req, _res, next) => {
 
     const user = await db.user.findUnique({
         where: { id: userId },
+        include: { role: true },
     });
 
     if (!user) throw new UnauthorizedError('Usuario no encontrado.');

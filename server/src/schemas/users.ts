@@ -21,6 +21,7 @@ const UserRequestSchema = v.object({
         .min(1, message.nonEmpty)
         .email(message.email)
         .transform(sanitizeEmail),
+    roleId: v.number(message.required)
 });
 
 export const UserCreateRequestSchema = UserRequestSchema.extend({
@@ -28,6 +29,7 @@ export const UserCreateRequestSchema = UserRequestSchema.extend({
         .min(1, message.nonEmpty)
         .refine(isValidPassword, message.password),
 });
+
 export const UserUpdateRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
         .min(1, message.nonEmpty)
