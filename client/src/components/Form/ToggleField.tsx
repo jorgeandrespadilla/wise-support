@@ -2,16 +2,16 @@ import Toggle from 'components/Toggle';
 import { Controller, FieldValues } from 'react-hook-form';
 import { BaseFormInputProps } from 'types';
 
-type FormToggleProps<TFields extends FieldValues> = BaseFormInputProps<TFields> & {
+type ToggleFieldProps<TFields extends FieldValues> = BaseFormInputProps<TFields> & {
     label?: string;
 };
 
-function FormToggle<TFields extends FieldValues>({
+function ToggleField<TFields extends FieldValues>({
     label,
     name,
     control,
     rules,
-}: FormToggleProps<TFields>) {
+}: ToggleFieldProps<TFields>) {
   return (
     <Controller
         name={name}
@@ -26,4 +26,4 @@ function FormToggle<TFields extends FieldValues>({
   );
 }
 
-export default FormToggle;
+export default ToggleField;
