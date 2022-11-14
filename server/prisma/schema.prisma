@@ -11,16 +11,18 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique @db.VarChar(200)
-  firstName String   @db.VarChar(50)
-  lastName  String   @db.VarChar(50)
-  password  String   @db.VarChar(200)
-  birthDate DateTime @db.Date
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  roleId    Int
-  role      Role     @relation(fields: [roleId], references: [id])
+  id                Int      @id @default(autoincrement())
+  email             String   @unique @db.VarChar(200)
+  firstName         String   @db.VarChar(50)
+  lastName          String   @db.VarChar(50)
+  password          String   @db.VarChar(200)
+  birthDate         DateTime @db.Date
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  roleId            Int
+  role              Role     @relation(fields: [roleId], references: [id])
+  assignedTickets   Ticket[] @relation("AssignedTickets")
+  supervisedTickets Ticket[] @relation("SupervisedTickets")
 
   @@map("users")
 }
@@ -29,10 +31,74 @@ model Role {
   id          Int      @id @default(autoincrement())
   code        String   @unique @db.VarChar(20)
   name        String   @unique @db.VarChar(50)
-  description String   @db.VarChar(200)
+  description String?  @db.VarChar(200)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   users       User[]
 
   @@map("roles")
+}
+
+model Ticket {
+  id            Int            @id @default(autoincrement())
+  code          String         @unique @db.VarChar(40)
+  title         String         @db.VarChar(100)
+  description   String?
+  status        TicketStatus   @default(OPEN)
+  priority      TicketPriority @default(LOW)
+  timeEstimated Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  endedAt       DateTime?
+  assigneeId    Int
+  assignee      User           @relation(name: "AssignedTickets", fields: [assigneeId], references: [id])
+  supervisorId  Int
+  supervisor    User           @relation(name: "SupervisedTickets", fields: [supervisorId], references: [id])
+  categoryId    Int
+  category      Category       @relation(fields: [categoryId], references: [id])
+  tasks         Task[]
+
+  @@map("tickets")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(50)
+  code        String   @unique @db.VarChar(50)
+  description String?  @db.VarChar(200)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  ticket      Ticket[]
+
+  @@map("categories")
+}
+
+model Task {
+  id          BigInt   @id @default(autoincrement())
+  description String   @db.VarChar(400)
+  timeSpent   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  ticketId    Int
+  ticket      Ticket   @relation(fields: [ticketId], references: [id])
+
+  @@map("tasks")
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CANCELED
+  CLOSED
+
+  @@map("ticket_status")
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+
+  @@map("ticket_priority")
 }
