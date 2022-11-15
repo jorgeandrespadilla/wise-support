@@ -15,6 +15,8 @@ export interface LinkConfig {
 
 export type BaseInputType = "text" | "password" | "date" | "email" | "url";
 
+export type InputMode = "text" | "numeric" | "decimal";
+
 export type BaseInputProps = {
     /** The label to show above the input */
     label?: string;
