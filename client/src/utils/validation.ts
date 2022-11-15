@@ -1,4 +1,4 @@
-import { FieldValues, UseFormSetError, Path, FormState } from "react-hook-form";
+import { FieldValues, UseFormSetError, Path, UseFormGetValues } from "react-hook-form";
 import toast from "react-hot-toast";
 
 type FieldError = {
@@ -25,9 +25,9 @@ interface FormOptions<TFields extends FieldValues = FieldValues> {
      */
     setError: UseFormSetError<TFields>;
     /**
-     * The form state (use react-hook-form's formState).
+     * The form values (use react-hook-form's getValues).
      */
-    formState: FormState<any>;
+    getValues: UseFormGetValues<TFields>;
 }
 
 /**
@@ -48,8 +48,15 @@ export const handleAPIError = <TFields extends FieldValues = FieldValues>(error:
 }
 
 const handleFormError = <TFields extends FieldValues = FieldValues>(fieldErrors: FieldError[], form: FormOptions<TFields>) => {
+    const formFields = Object.keys(form.getValues());
+
     fieldErrors.forEach(fieldError => {
         const path = fieldError.path.join(".") as Path<TFields>;
-        form.setError(path, { message: fieldError.message });
+        if (formFields.includes(path)) {
+            form.setError(path, { message: fieldError.message });
+        }
+        else {
+            console.error(`Field ${path}: ${fieldError.message}`);
+        }
     });
 }

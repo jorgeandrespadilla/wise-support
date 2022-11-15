@@ -12,7 +12,7 @@ import { addUser } from "services/users";
 type FormData = AddUserRequest;
 
 function AddUser() {
-    const { control, handleSubmit, formState, setError } = useForm<FormData>({
+    const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -28,7 +28,7 @@ function AddUser() {
             toast.success("Usuario agregado");
             navigate("/users");
         }).catch((err) => {
-            handleAPIError(err, { form: { setError, formState } });
+            handleAPIError(err, { form });
         });
     };
 

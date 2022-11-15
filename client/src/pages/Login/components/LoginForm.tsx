@@ -11,7 +11,7 @@ import { handleAPIError } from "utils/validation";
 type FormData = LoginRequest;
 
 function LoginForm() {
-    const { control, handleSubmit, formState, setError } = useForm<FormData>({
+    const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             email: "",
             password: "",
@@ -27,7 +27,7 @@ function LoginForm() {
             login(data.authToken);
             navigate(targetPath);
         }).catch((err) => {
-            handleAPIError(err, { form: { setError, formState } });
+            handleAPIError(err, { form });
         });
     };
 

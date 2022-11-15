@@ -14,7 +14,7 @@ type FormData = UpdateUserRequest;
 
 function EditUser() {
     const { id } = useParams<{ id: string }>();
-    const { control, reset, handleSubmit, formState, setError } = useForm<FormData>({
+    const { control, reset, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -45,7 +45,7 @@ function EditUser() {
             toast.success("Usuario actualizado");
             navigate("/users");
         }).catch((err) => {
-            handleAPIError(err, { form: { setError, formState } });
+            handleAPIError(err, { form });
         });
     }
 
