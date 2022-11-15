@@ -21,10 +21,10 @@ function TopBar({
 
   return (
     <header className="flex flex-row justify-between items-center border-b-2 border-gray-200 px-6 py-4">
-      <NavLink to="/">
-        <h1 className="font-bold text-xl text-blue-500">{title}</h1>
-      </NavLink>
-      <nav className="flex flex-row justify-between items-center space-x-6">
+      <div className="flex flex-row items-center space-x-10">
+        <NavLink to="/">
+          <h1 className="font-bold text-xl text-blue-500">{title}</h1>
+        </NavLink>
         <ul className="flex flex-row space-x-2">
           {
             links.map((link, index) => (
@@ -32,9 +32,8 @@ function TopBar({
             ))
           }
         </ul>
-        <div className="border-r-2 border-gray-200 h-6" />
-        <Button onClick={logout}>Cerrar sesión</Button>
-      </nav>
+      </div>
+      <Button onClick={logout}>Cerrar sesión</Button>
     </header>
   );
 }
