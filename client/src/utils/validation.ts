@@ -1,4 +1,4 @@
-import { FieldValues, UseFormSetError, Path } from "react-hook-form";
+import { FieldValues, UseFormSetError, Path, FormState } from "react-hook-form";
 import toast from "react-hot-toast";
 
 type FieldError = {
@@ -6,33 +6,50 @@ type FieldError = {
     message: string;
 }
 
+interface ErrorHandlerOptions<TFields extends FieldValues = FieldValues> {
+    /**
+     * The toast ID to use when displaying the error,
+     * If not provided, a new toast will be created.
+     */
+    toastId?: string;
+    /**
+     * Form options
+     * If not provided and a validation error occurs, a general error will be displayed in a toast.
+     */
+    form?: FormOptions<TFields>;
+}
+
+interface FormOptions<TFields extends FieldValues = FieldValues> {
+    /** 
+     * The function to set the errors in the form (use react-hook-form's setError).
+     */
+    setError: UseFormSetError<TFields>;
+    /**
+     * The form state (use react-hook-form's formState).
+     */
+    formState: FormState<any>;
+}
+
 /**
  * Handle errors from API calls
  * @param error The error returned from the server
  * @param options The options to handle the error
  */
-export const handleAPIError = <TFields extends FieldValues = FieldValues>(error: any, options?: {
-    /**
-     * The function to set the errors in the form (use react-hook-form's setError).
-     * If not provided, a general error will be displayed as toast.
-     */
-    setFormError?: UseFormSetError<TFields>,
-    /**
-     * The toast ID to use when displaying the error,
-     * If not provided, a new toast will be created.
-     */
-    toastId?: string,
-}) => {
-    const { setFormError, toastId = undefined } = options || {};
-    
-    if (error?.code === "VALIDATION_ERROR" && error?.data?.fields && setFormError) {
+export const handleAPIError = <TFields extends FieldValues = FieldValues>(error: any, options?: ErrorHandlerOptions<TFields>) => {
+    const { form, toastId = undefined } = options || {};
+
+    if (error?.code === "VALIDATION_ERROR" && error?.data?.fields && form) {
         const fieldErrors = error.data.fields as FieldError[];
-        fieldErrors.forEach(fieldError => {
-            const path = fieldError.path.join(".") as Path<TFields>;
-            setFormError(path, { message: fieldError.message });
-        });
+        handleFormError(fieldErrors, form);
     } else {
         console.error(error);
         toast.error(error?.message ?? 'Algo salió mal.', { id: toastId });
     }
+}
+
+const handleFormError = <TFields extends FieldValues = FieldValues>(fieldErrors: FieldError[], form: FormOptions<TFields>) => {
+    fieldErrors.forEach(fieldError => {
+        const path = fieldError.path.join(".") as Path<TFields>;
+        form.setError(path, { message: fieldError.message });
+    });
 }

@@ -1,19 +1,20 @@
 import { ReactNode, useState } from "react";
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
 import Card from "components/Card";
 import ConfirmDialog from "components/ConfirmDialog";
 import IconButton from "components/IconButton";
+import Loader from "components/Loader";
+import CardHeader from "components/CardHeader";
 import Input from "components/Input";
 import { formatDate, parseISODate } from "utils/dateHelpers";
-import api from "utils/api";
 import { handleAPIError } from "utils/validation";
-import { getUsers } from "services/users";
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { deleteUser, getUsers } from "services/users";
 import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
-import Loader from "components/Loader";
+import Separator from "components/Separator";
 
 type ColumnProps = {
     colSpan?: number;
@@ -53,11 +54,13 @@ function BodyColumn({
 
 function TableLoader() {
     return (
-        <td colSpan={100} className="font-poppins text-gray-800 p-4 py-5 border-0">
-            <tr className="flex justify-center items-center">
-                <Loader />
-            </tr>
-        </td>
+        <tr>
+            <td colSpan={100} className="p-4 py-5 border-0">
+                <div className="flex justify-center items-center">
+                    <Loader />
+                </div>
+            </td>
+        </tr>
     );
 }
 
@@ -83,10 +86,10 @@ function UsersList() {
         loading: "Eliminando usuario...",
         success: "Usuario eliminado",
     });
-    const { mutate: deleteUser } = useMutation(
+    const { mutate: handleDelete } = useMutation(
         async (id: number) => {
             deleteUserToast.loading();
-            await api.delete(`/users/${id}`);
+            await deleteUser(id.toString());
         },
         {
             onSuccess: () => {
@@ -106,7 +109,10 @@ function UsersList() {
     return (
         <>
             <Card>
-                <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Usuarios</h1>
+                <div className="flex flex-row justify-between items-center">
+                    <CardHeader title="Usuarios" />
+                </div>
+                <Separator />
                 <div className="flex flex-row justify-between items-center pb-4 space-x-2">
                     <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={
                         <div className="pl-3">
@@ -185,7 +191,7 @@ function UsersList() {
                 }}
                 onConfirm={() => {
                     confirmDialog.close();
-                    deleteUser(selectedUserId);
+                    handleDelete(selectedUserId);
                 }}
             />
         </>

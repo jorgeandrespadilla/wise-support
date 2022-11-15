@@ -9,7 +9,7 @@ type NavigationProps = {
   links: LinkConfig[];
 };
 
-function Navigation({
+function TopBar({
   title = "",
   links = []
 }: NavigationProps) {
@@ -39,4 +39,4 @@ function Navigation({
   );
 }
 
-export default Navigation;
+export default TopBar;

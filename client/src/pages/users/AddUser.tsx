@@ -2,22 +2,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "components/Button";
 import Card from "components/Card";
-import api from "utils/api";
 import toast from "utils/toast";
 import { today } from "utils/dateHelpers";
 import { handleAPIError } from "utils/validation";
 import { DatePicker, PasswordField, TextField } from "components/Form";
+import { AddUserRequest } from "types";
+import { addUser } from "services/users";
 
-type AddUserForm = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    birthDate: string;
-};
+type FormData = AddUserRequest;
 
 function AddUser() {
-    const { control, setError, handleSubmit } = useForm<AddUserForm>({
+    const { control, handleSubmit, formState, setError } = useForm<FormData>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -28,12 +23,12 @@ function AddUser() {
     });
     const navigate = useNavigate();
 
-    const addUser = (user: AddUserForm) => {
-        api.post("/users", user).then(() => {
+    const handleAdd = (user: FormData) => {
+        addUser(user).then(() => {
             toast.success("Usuario agregado");
             navigate("/users");
         }).catch((err) => {
-            handleAPIError(err, { setFormError: setError });
+            handleAPIError(err, { form: { setError, formState } });
         });
     };
 
@@ -48,7 +43,7 @@ function AddUser() {
                 <DatePicker name="birthDate" label="Fecha de nacimiento" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(addUser)}>Guardar</Button>
+                <Button onClick={handleSubmit(handleAdd)}>Guardar</Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

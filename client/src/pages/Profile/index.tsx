@@ -4,16 +4,16 @@ import Card from "components/Card";
 import InfoLabel from "components/InfoLabel";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "types";
-import api from "utils/api";
+import { getProfile } from "services/users";
+import { GetUserResponse } from "types";
 import { formatDate, parseISODate } from "utils/dateHelpers";
 
 function Profile() {
-    const [user, setUser] = useState<UserData>();
+    const [user, setUser] = useState<GetUserResponse>();
     const navigate = useNavigate();
 
     useEffect(() => {
-        api.get<UserData>("/users/me").then((data) => {
+        getProfile().then((data) => {
             setUser(data);
         });
     }, []);

@@ -4,23 +4,17 @@ import { useForm } from "react-hook-form";
 import Button from "components/Button";
 import Card from "components/Card";
 import { DatePicker, PasswordField, TextField } from "components/Form";
-import api from "utils/api";
 import toast from "utils/toast";
 import { today } from "utils/dateHelpers";
 import { handleAPIError } from "utils/validation";
-import { UserInput } from "types";
+import { getUser, updateUser } from "services/users";
+import { UpdateUserRequest } from "types";
 
-type EditUserForm = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    birthDate: string;
-};
+type FormData = UpdateUserRequest;
 
 function EditUser() {
     const { id } = useParams<{ id: string }>();
-    const { control, reset, setError, handleSubmit } = useForm<EditUserForm>({
+    const { control, reset, handleSubmit, formState, setError } = useForm<FormData>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -32,18 +26,26 @@ function EditUser() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        api.get<UserInput>(`/users/${id}`).then(reset).catch((err) => {
+        getUser(id!).then((res) => {
+            reset({
+                firstName: res.firstName,
+                lastName: res.lastName,
+                email: res.email,
+                password: "",
+                birthDate: res.birthDate
+            });
+        }).catch((err) => {
             handleAPIError(err);
             navigate("/users");
         });
     }, [id, reset, navigate]);
 
-    function updateUser(user: EditUserForm) {
-        api.put(`/users/${id}`, user).then(() => {
+    function handleUpdate(user: FormData) {
+        updateUser(id!, user).then(() => {
             toast.success("Usuario actualizado");
             navigate("/users");
         }).catch((err) => {
-            handleAPIError(err, { setFormError: setError });
+            handleAPIError(err, { form: { setError, formState } });
         });
     }
 
@@ -58,7 +60,7 @@ function EditUser() {
                 <DatePicker name="birthDate" label="Fecha de nacimiento" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(updateUser)}>Guardar</Button>
+                <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>
