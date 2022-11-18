@@ -30,6 +30,7 @@ export const getUserById = catchErrors(async (req, res) => {
 
 export const createUser = catchErrors(async (req, res) => {
     const { roleId, ...data } = validateAndParse(UserCreateRequestSchema, req.body);
+
     await validateExistingEmail(data.email);
 
     const user = await db.user.create({
@@ -47,6 +48,7 @@ export const createUser = catchErrors(async (req, res) => {
 export const updateUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
     const { roleId, ...data } = validateAndParse(UserUpdateRequestSchema, req.body);
+    
     await validateUser(userId);
     await validateExistingEmail(data.email, userId);
 
@@ -70,19 +72,7 @@ export const deleteUser = catchErrors(async (req, res) => {
         throw new ValidationError("La cuenta actual no puede ser eliminada.");
     }
     await validateUser(userId);
-
-    // Check if user has any associated tickets
-    const tickets = await db.ticket.findMany({
-        where: { 
-            OR: [
-                { assigneeId: userId },
-                { supervisorId: userId },
-            ]
-         },
-    });
-    if (!tickets.isEmpty()) {
-        throw new ValidationError("El usuario tiene tickets asociados.");
-    }
+    await validateUserToDelete(userId);
 
     await db.user.delete({
         where: { id: userId },
@@ -103,6 +93,7 @@ function mapToUserResponse(user: UserWithRole) {
             id: user.role.id,
             name: user.role.name,
             code: user.role.code,
+            description: user.role.description,
         },
     };
 }
@@ -128,6 +119,21 @@ async function validateExistingEmail(email: string, userId?: number) {
     if (userId && user.id === userId) return;
 
     throw new ValidationError("El correo electrónico ya está en uso.", { email });
+}
+
+async function validateUserToDelete(userId: number) {
+    // Check if user has any associated tickets
+    const tickets = await db.ticket.findMany({
+        where: { 
+            OR: [
+                { assigneeId: userId },
+                { supervisorId: userId },
+            ]
+         },
+    });
+    if (!tickets.isEmpty()) {
+        throw new ValidationError("El usuario tiene tickets asociados.");
+    }
 }
 
 //#endregion
