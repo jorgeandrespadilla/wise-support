@@ -44,7 +44,7 @@ export interface Category extends Subset<DbCategory, {
 }> {}
 
 export interface Task extends Subset<DbTask, {
-    id: bigint;
+    id: number;
     description: string;
     timeSpent: number;
     createdAt: Date;
@@ -65,7 +65,7 @@ export interface TicketCategory extends Subset<DbCategory, {
 }> {}
 
 export interface TicketTask extends Subset<DbTask, {
-    id: bigint;
+    id: number;
     timeSpent: number;
 }> {}
 

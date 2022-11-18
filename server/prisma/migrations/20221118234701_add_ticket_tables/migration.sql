@@ -40,7 +40,7 @@ CREATE TABLE "categories" (
 
 -- CreateTable
 CREATE TABLE "tasks" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "description" VARCHAR(400) NOT NULL,
     "timeSpent" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

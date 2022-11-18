@@ -74,7 +74,7 @@ model Category {
 }
 
 model Task {
-  id          BigInt   @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   description String   @db.VarChar(400)
   timeSpent   Int
   createdAt   DateTime @default(now())
