@@ -68,7 +68,7 @@ model Category {
   description String?  @db.VarChar(200)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  ticket      Ticket[]
+  tickets     Ticket[]
 
   @@map("categories")
 }

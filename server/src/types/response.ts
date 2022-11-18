@@ -17,3 +17,10 @@ export interface UserResponse {
     birthDate: Date;
     roleId: number;
 }
+
+export interface CategoryResponse {
+    id: number;
+    name: string;
+    code: string;
+    description: string | null;
+}
