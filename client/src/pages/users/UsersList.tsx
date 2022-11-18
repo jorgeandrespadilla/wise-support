@@ -15,6 +15,7 @@ import { handleAPIError } from "utils/validation";
 import { deleteUser, getUsers } from "services/users";
 import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
+import { isDefined, sortAsc } from "utils/dataHelpers";
 
 function UsersList() {
 
@@ -25,7 +26,7 @@ function UsersList() {
     const users = useQuery(['users'],
         async () => {
             const users = await getUsers();
-            return users.sort((a, b) => a.fullName.localeCompare(b.fullName));
+            return sortAsc(users, (user) => user.fullName);
         },
         {
             onError: (e) => {
@@ -45,6 +46,7 @@ function UsersList() {
         },
         {
             onSuccess: () => {
+                deleteUserToast.success();
                 users.refetch();
             },
             onError: (e) => {
@@ -52,7 +54,7 @@ function UsersList() {
                 handleAPIError(e, { toastId: deleteUserToast.toastId });
             }
         }
-    )
+    );
 
     const filteredUsers = users.data?.filter((user) => {
         return user.fullName.toLowerCase().includes(search.toLowerCase());
@@ -80,6 +82,7 @@ function UsersList() {
                         <tr className="border-0 border-b-2 text-left">
                             <HeaderCell>Nombre</HeaderCell>
                             <HeaderCell>Correo</HeaderCell>
+                            <HeaderCell>Rol</HeaderCell>
                             <HeaderCell>Fecha de nacimiento</HeaderCell>
                             <HeaderCell>Acciones</HeaderCell>
                         </tr>
@@ -89,7 +92,7 @@ function UsersList() {
                             ? (
                                 <TableLoader />
                             )
-                            : (filteredUsers && filteredUsers!.length > 0
+                            : (isDefined(filteredUsers) && !filteredUsers.isEmpty()
                                 ? (
                                     filteredUsers!.map((user, index) => {
                                         const isLast = index === filteredUsers!.length - 1;
@@ -97,6 +100,7 @@ function UsersList() {
                                             <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
                                                 <Cell>{user.fullName}</Cell>
                                                 <Cell>{user.email}</Cell>
+                                                <Cell>{user.role.name}</Cell>
                                                 <Cell>{formatDate(parseISODate(user.birthDate))}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">

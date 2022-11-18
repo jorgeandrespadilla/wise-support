@@ -2,35 +2,70 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "components/Button";
 import Card from "components/Card";
-import toast from "utils/toast";
 import { today } from "utils/dateHelpers";
 import { handleAPIError } from "utils/validation";
-import { DatePicker, PasswordField, TextField } from "components/Form";
-import { AddUserRequest } from "types";
+import { DatePicker, DropdownField, PasswordField, TextField } from "components/Form";
 import { addUser } from "services/users";
+import { useRoles } from "hooks/useRoles";
+import { AddUserRequest } from "types";
+import { useLoadingToast } from "hooks/useLoadingToast";
+import { useMutation } from "@tanstack/react-query";
 
-type FormData = AddUserRequest;
+type FormData = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    birthDate: string;
+    roleId: string;
+}
 
 function AddUser() {
+
+    const navigate = useNavigate();
+    
     const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             firstName: "",
             lastName: "",
             email: "",
+            roleId: "",
             password: "",
             birthDate: today().toISO(),
         },
     });
-    const navigate = useNavigate();
 
-    const handleAdd = (user: FormData) => {
-        addUser(user).then(() => {
-            toast.success("Usuario agregado");
-            navigate("/users");
-        }).catch((err) => {
-            handleAPIError(err, { form });
-        });
-    };
+    const roles = useRoles();
+
+    const addUserToast = useLoadingToast("addUser", {
+        loading: "Agregando usuario...",
+        success: "Usuario agregado",
+    });
+    const { mutate: handleAdd } = useMutation(
+        async (user: FormData) => {
+            addUserToast.loading();
+            const request: AddUserRequest = {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                roleId: Number(user.roleId),
+                password: user.password,
+                birthDate: user.birthDate,
+            };
+            await addUser(request);
+        },
+        {
+            onSuccess: () => {
+                addUserToast.success();
+                navigate("/users");
+            },
+            onError: (e) => {
+                addUserToast.error();
+                handleAPIError(e, { form, toastId: addUserToast.toastId });
+            },
+
+        },
+    );
 
     return (
         <Card>
@@ -41,6 +76,11 @@ function AddUser() {
                 <TextField type="email" name="email" label="Correo" control={control} />
                 <PasswordField name="password" label="Clave" control={control} />
                 <DatePicker name="birthDate" label="Fecha de nacimiento" control={control} />
+                <DropdownField name="roleId" label="Rol" placeholder="Seleccione un rol" control={control}>
+                    {roles.data?.map((role) => (
+                        <option key={role.id} value={role.id}>{role.name}</option>
+                    ))}
+                </DropdownField>
             </div>
             <div className="flex items-center space-x-2">
                 <Button onClick={handleSubmit(handleAdd)}>Guardar</Button>

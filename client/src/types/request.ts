@@ -9,6 +9,7 @@ export interface AddUserRequest {
     email: string;
     password: string;
     birthDate: string;
+    roleId: number;
 }
 
 export interface UpdateUserRequest extends AddUserRequest {}

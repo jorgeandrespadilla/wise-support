@@ -2,6 +2,13 @@ export interface LoginResponse {
     authToken: string;
 }
 
+export interface RoleResponse {
+    id: number;
+    code: string;
+    name: string;
+    description: string | null;
+}
+
 export interface GetUserResponse {
     id: number;
     email: string;
@@ -9,4 +16,5 @@ export interface GetUserResponse {
     lastName: string;
     fullName: string;
     birthDate: string;
+    role: RoleResponse;
 }
