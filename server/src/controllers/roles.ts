@@ -1,8 +1,9 @@
 import { db } from "@/database/client";
+import { RoleResponse } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
 
 export const getRoles = catchErrors(async (_req, res) => {
-    const roles = await db.role.findMany({
+    const roles: RoleResponse[] = await db.role.findMany({
         select: {
             id: true,
             code: true,

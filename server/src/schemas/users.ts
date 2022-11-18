@@ -32,7 +32,6 @@ export const UserCreateRequestSchema = UserRequestSchema.extend({
 
 export const UserUpdateRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
-        .min(1, message.nonEmpty)
         .refine(value => {
             if (value === '') return true;
             return isValidPassword(value);

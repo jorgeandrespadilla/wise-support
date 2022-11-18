@@ -4,7 +4,7 @@ import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
-import { UserWithRole } from "@/types";
+import { RoleResponse, UserWithRole } from "@/types";
 
 
 export const getUsers = catchErrors(async (_req, res) => {
@@ -99,6 +99,11 @@ function mapToUserResponse(user: UserWithRole) {
     return {
         ...omit(user, ["password"]),
         fullName: `${user.firstName} ${user.lastName}`,
+        role: <RoleResponse>{
+            id: user.role.id,
+            name: user.role.name,
+            code: user.role.code,
+        },
     };
 }
 
