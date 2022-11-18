@@ -1,14 +1,14 @@
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { db } from "@/database/client";
 import { CategoryRequestSchema } from "@/schemas/categories";
-import { CategoryResponse } from "@/types";
+import { Category, CategoryResponse, SelectFields } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
 import { validateAndParse } from "@/utils/validation";
 
-const fieldsToSelect = {
+const fieldsToSelect: SelectFields<Category> = {
     id: true,
-    name: true,
     code: true,
+    name: true,
     description: true,
 };
 

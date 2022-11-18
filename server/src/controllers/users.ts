@@ -12,7 +12,7 @@ export const getUsers = catchErrors(async (_req, res) => {
         include: { role: true },
     });
 
-    const data = users.map((user) => mapToUserResponse(user));
+    const data = users.map(mapToUserResponse);
     res.send(data);
 });
 
