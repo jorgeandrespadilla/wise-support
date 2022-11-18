@@ -43,6 +43,13 @@ export interface Category extends Subset<DbCategory, {
     description: string | null;
 }> {}
 
+export interface Task extends Subset<DbTask, {
+    id: bigint;
+    description: string;
+    timeSpent: number;
+    createdAt: Date;
+}> {}
+
 export interface TicketUser extends Subset<DbUser, {
     id: number;
     firstName: string;
