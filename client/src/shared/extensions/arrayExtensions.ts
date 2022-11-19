@@ -5,3 +5,7 @@ export function isEmpty<T>(this: Array<T>): boolean {
 }
 Array.prototype.isEmpty = isEmpty;
 
+export function isLast<T>(this: Array<T>, index: number): boolean {
+    return index === this.length - 1;
+}
+Array.prototype.isLast = isLast;

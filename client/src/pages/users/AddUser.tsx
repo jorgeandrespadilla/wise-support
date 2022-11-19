@@ -6,7 +6,7 @@ import { today } from "utils/dateHelpers";
 import { handleAPIError } from "utils/validation";
 import { DatePicker, DropdownField, PasswordField, TextField } from "components/Form";
 import { addUser } from "services/users";
-import { useRoles } from "hooks/useRoles";
+import { useRolesData } from "hooks/useRolesData";
 import { AddUserRequest } from "types";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { useMutation } from "@tanstack/react-query";
@@ -35,7 +35,7 @@ function AddUser() {
         },
     });
 
-    const roles = useRoles();
+    const roles = useRolesData();
 
     const addUserToast = useLoadingToast("addUser", {
         loading: "Agregando usuario...",

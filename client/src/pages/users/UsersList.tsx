@@ -25,8 +25,8 @@ function UsersList() {
 
     const users = useQuery(['users'],
         async () => {
-            const users = await getUsers();
-            return sortAsc(users, (user) => user.fullName);
+            const data = await getUsers();
+            return sortAsc(data, (user) => user.fullName);
         },
         {
             onError: (e) => {
@@ -35,7 +35,7 @@ function UsersList() {
         }
     );
 
-    const deleteUserToast = useLoadingToast("users", {
+    const deleteUserToast = useLoadingToast("deleteUser", {
         loading: "Eliminando usuario...",
         success: "Usuario eliminado",
     });
@@ -95,9 +95,8 @@ function UsersList() {
                             : (isDefined(filteredUsers) && !filteredUsers.isEmpty()
                                 ? (
                                     filteredUsers!.map((user, index) => {
-                                        const isLast = index === filteredUsers!.length - 1;
                                         return (
-                                            <tr key={user.id} className={`table-row ${!isLast ? "border-b" : ""}`}>
+                                            <tr key={user.id} className={`table-row ${!filteredUsers.isLast(index) ? "border-b" : ""}`}>
                                                 <Cell>{user.fullName}</Cell>
                                                 <Cell>{user.email}</Cell>
                                                 <Cell>{user.role.name}</Cell>

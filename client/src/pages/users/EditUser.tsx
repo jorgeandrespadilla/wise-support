@@ -8,7 +8,7 @@ import { handleAPIError } from "utils/validation";
 import { getUser, updateUser } from "services/users";
 import { UpdateUserRequest } from "types";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRoles } from "hooks/useRoles";
+import { useRolesData } from "hooks/useRolesData";
 import { useLoadingToast } from "hooks/useLoadingToast";
 
 type FormData = {
@@ -36,7 +36,7 @@ function EditUser() {
         },
     });
 
-    const roles = useRoles();
+    const roles = useRolesData();
 
     useQuery(['user', id],
         async () => {
