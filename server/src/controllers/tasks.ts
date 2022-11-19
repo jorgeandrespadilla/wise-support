@@ -26,6 +26,18 @@ export const getTasksByTicketId = catchErrors(async (_req, res) => {
     res.send(tasks);
 });
 
+export const getTaskById = catchErrors(async (_req, res) => {
+    const taskId = Number(_req.params.taskId);
+
+    await validateTask(taskId);
+
+    const task = await db.task.findUnique({
+        where: { id: taskId },
+        select: fieldsToSelect
+    });
+    res.send(task);
+});
+
 export const createTask = catchErrors(async (req, res) => {
     const { ticketId, ...data } = validateAndParse(TaskRequestSchema, req.body);
 

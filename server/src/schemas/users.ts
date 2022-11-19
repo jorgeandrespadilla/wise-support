@@ -24,6 +24,10 @@ const UserRequestSchema = v.object({
     roleId: v.number(message.required)
 });
 
+export const GetUserRequestSchema = v.object({
+    role: v.string(message.required),
+}).partial({ role: true });
+
 export const UserCreateRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
         .min(1, message.nonEmpty)

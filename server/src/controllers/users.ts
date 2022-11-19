@@ -2,18 +2,37 @@ import { omit } from "lodash";
 import { db } from "@/database/client";
 import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
+import { GetUserRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
 import { RoleResponse, UserWithRole } from "@/types";
 
 
-export const getUsers = catchErrors(async (_req, res) => {
-    const users = await db.user.findMany({
-        include: { role: true },
-    });
+export const getUsers = catchErrors(async (req, res) => {
+    const { role: roleCode } = validateAndParse(GetUserRequestSchema, req.query);
 
-    const data = users.map(mapToUserResponse);
-    res.send(data);
+    if (roleCode) {
+        const role = await db.role.findUnique({
+            where: { code: roleCode },
+        });
+    
+        if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
+    
+        const users = await db.user.findMany({
+            where: { roleId: role.id },
+            include: { role: true },
+        });
+
+        const data = users.map(mapToUserResponse);
+        res.send(data);
+    }
+    else {
+        const users = await db.user.findMany({
+            include: { role: true },
+        });
+        
+        const data = users.map(mapToUserResponse);
+        res.send(data);
+    }
 });
 
 export const getUserById = catchErrors(async (req, res) => {
