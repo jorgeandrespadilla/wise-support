@@ -10,6 +10,13 @@ export interface LinkConfig {
     icon?: ReactNode;
 };
 
+export interface DropdownOption {
+    /** The value of the option */
+    value: string;
+    /** The text to show in the dropdown */
+    label: string;
+}
+
 
 //#region Inputs
 

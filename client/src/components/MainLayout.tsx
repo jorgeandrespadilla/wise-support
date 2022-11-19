@@ -1,10 +1,11 @@
-import { UserCircleIcon, UserGroupIcon } from "@heroicons/react/24/solid";
+import { InboxArrowDownIcon, TagIcon, UserCircleIcon, UserGroupIcon } from "@heroicons/react/24/solid";
 import { Outlet } from "react-router-dom";
 import { LinkConfig } from "types/ui";
 import TopBar from "./Navigation/TopBar";
 
 const links: LinkConfig[] = [
   { to: "/users", label: "Usuarios", icon: <UserGroupIcon className="h-5 w-5 mr-2" /> },
+  { to: "/tickets", label: "Tickets", icon: <InboxArrowDownIcon className="h-5 w-5 mr-2" /> },
   { to: "/profile", label: "Perfil", icon: <UserCircleIcon className="h-5 w-5 mr-2" /> },
 ];
 
