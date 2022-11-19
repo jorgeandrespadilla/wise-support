@@ -101,7 +101,7 @@ function TicketsList() {
                                                 <Cell>{ticketPriority[ticket.priority]}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <Link to={`/tickets/${ticket.id}`}>
+                                                        <Link to={`/tickets/${ticket.id}/detail`}>
                                                             <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         </Link>
                                                         <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {

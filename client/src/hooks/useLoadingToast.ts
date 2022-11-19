@@ -38,7 +38,6 @@ export const useLoadingToast = (toastId: string, {
     }
 
     const markAsSuccess = () => {
-        console.log('markAsSuccess');
         setStatus('success');
         if (success) {
             toast.success(success, { id: toastId });

@@ -11,7 +11,7 @@ export const getTasksByTicketId = async (ticketId: string) => {
     });
 }
 
-export const addTasks = async (request: AddTaskRequest) => {
+export const addTask = async (request: AddTaskRequest) => {
     return await api.post("/tasks", request);
 }
 
