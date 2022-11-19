@@ -2,7 +2,7 @@
 
 **Autor**: *Jorge Andrés Padilla*
 
-![image](https://user-images.githubusercontent.com/58148764/195403646-da3b7199-3ab5-4f0a-b384-c7fc4554c0a3.png)
+![image](https://user-images.githubusercontent.com/58148764/202833990-26870275-9114-46b4-9276-2c0b1fe78755.png)
 
 ## Descripción
 
