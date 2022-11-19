@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuthToken } from "./authToken";
 
-const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:4000';
+const apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
 const defaultConfig = {
     baseURL: `${apiBaseUrl}/api`,
@@ -17,7 +17,7 @@ const defaultConfig = {
     },
 };
 
-const api = <T>(method: string, url: string, variables?: any) =>
+const httpClient = <T>(method: string, url: string, variables?: any) =>
     new Promise<T>((resolve, reject) => {
         axios({
             url: `${defaultConfig.baseURL}${url}`,
@@ -39,11 +39,11 @@ const api = <T>(method: string, url: string, variables?: any) =>
         );
     });
 
-const apiMethods = {
-    get: <T>(url: string, variables?: any) => api<T>('get', url, variables),
-    post: <T>(url: string, variables?: any) => api<T>('post', url, variables),
-    put: <T>(url: string, variables?: any) => api<T>('put', url, variables),
-    delete: <T>(url: string, variables?: any) => api<T>('delete', url, variables),
+const api = {
+    get: <T>(url: string, variables?: any) => httpClient<T>('get', url, variables),
+    post: <T>(url: string, variables?: any) => httpClient<T>('post', url, variables),
+    put: <T>(url: string, variables?: any) => httpClient<T>('put', url, variables),
+    delete: <T>(url: string, variables?: any) => httpClient<T>('delete', url, variables),
 };
 
-export default apiMethods;
+export default api;

@@ -1,9 +1,10 @@
 import { Controller, FieldValues } from "react-hook-form";
 import Input from "components/Input";
-import { BaseInputType, FormInputProps, InputDecorationProps } from "types";
+import { BaseInputType, FormInputProps, InputDecorationProps, InputMode } from "types";
 
 type FormFieldProps<TFields extends FieldValues, TValue> = FormInputProps<TFields> & InputDecorationProps & {
     type?: BaseInputType;
+    inputMode?: InputMode;
     /**
      * Callback to transform the value before it is passed to the input
      */

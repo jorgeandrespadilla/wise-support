@@ -1,8 +1,9 @@
 import { useId } from "react";
-import { BaseInputProps, BaseInputType, InputDecorationProps } from "types/ui";
+import { BaseInputProps, BaseInputType, InputDecorationProps, InputMode } from "types/ui";
 
 type InputProps = BaseInputProps & InputDecorationProps & {
     type?: BaseInputType;
+    inputMode?: InputMode;
     value: string;
     onChange: (value: string) => void;
 };
@@ -17,6 +18,7 @@ function Input({
     placeholder = "",
     feedback = "",
     type = "text",
+    inputMode = "text",
     invalid = false,
     disabled = false,
     prefixContent,
@@ -54,6 +56,7 @@ function Input({
                 <input
                     id={field}
                     type={type}
+                    inputMode={inputMode}
                     value={value}
                     placeholder={placeholder}
                     disabled={disabled}

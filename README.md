@@ -62,7 +62,7 @@ El repositorio está compuesto por dos componentes:
 
 Para ejecutar las migraciones de la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`).
 
-Para generar una nueva migración, se debe ejecutar el comando `npx prisma migrate dev --name <nombre>` (usar el formato `migration_name`).
+Para generar una nueva migración, se debe ejecutar el comando `npx prisma migrate dev --name <nombre>` (usar el formato `migration_name`). Para no incorporar datos de prueba, se debe añadir la opción `--skip-seed` al comando (esta opción es recomendada cuando se realiza un cambio en el modelo de datos que pueda afectar los datos de prueba generados con el comando `seed`).
 
 Para restaurar/reiniciar la base de datos, se debe ejecutar el comando `npx prisma migrate reset`. Este comando eliminará todos los datos existentes de la base de datos y recreará la base de datos junto con los datos de prueba.
 

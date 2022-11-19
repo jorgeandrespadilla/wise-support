@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { getAuthToken, removeAuthToken, setAuthToken } from "utils/authToken";
 
 interface AuthContextData {
@@ -11,7 +11,7 @@ type AuthProviderProps = {
     children: React.ReactNode;
 };
 
-const AuthContext = createContext<AuthContextData>({
+export const AuthContext = createContext<AuthContextData>({
     isAuthenticated: false,
     login: () => { },
     logout: () => { },
@@ -38,9 +38,4 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             {children}
         </AuthContext.Provider>
     );
-}
-
-export const useAuth = () => {
-    const auth = useContext(AuthContext);
-    return auth;
 }

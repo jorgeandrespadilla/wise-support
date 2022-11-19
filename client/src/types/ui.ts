@@ -10,10 +10,19 @@ export interface LinkConfig {
     icon?: ReactNode;
 };
 
+export interface DropdownOption {
+    /** The value of the option */
+    value: string;
+    /** The text to show in the dropdown */
+    label: string;
+}
+
 
 //#region Inputs
 
 export type BaseInputType = "text" | "password" | "date" | "email" | "url";
+
+export type InputMode = "text" | "numeric" | "decimal";
 
 export type BaseInputProps = {
     /** The label to show above the input */
