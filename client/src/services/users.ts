@@ -13,6 +13,10 @@ export const getUsers = async () => {
     return await api.get<GetUserResponse[]>("/users");
 }
 
+export const getUsersByRole = async (roleCode: string) => {
+    return await api.get<GetUserResponse[]>("/users", { role: roleCode });
+}
+
 export const addUser = async (request: AddUserRequest) => {
     return await api.post("/users", request);
 }
