@@ -63,7 +63,7 @@ const ticketFieldsToSelect: SelectFields<TicketDetail> = {
 
 export const getTickets = catchErrors(async (_req, res) => {
     const tickets = await db.ticket.findMany({
-        select: ticketFieldsToSelect,
+        select: ticketFieldsToSelect
     });
 
     const data = tickets.map(mapToTicketResponse);
@@ -77,12 +77,7 @@ export const getTicketById = catchErrors(async (req, res) => {
 
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId },
-        include: {
-            assignee: true,
-            supervisor: true,
-            category: true,
-            tasks: true,
-        },
+        select: ticketFieldsToSelect
     });
     res.send(mapToTicketResponse(ticket!));
 });
@@ -106,12 +101,7 @@ export const createTicket = catchErrors(async (req, res) => {
                 connect: { id: categoryId }
             },
         },
-        include: {
-            assignee: true,
-            supervisor: true,
-            category: true,
-            tasks: true,
-        },
+        select: ticketFieldsToSelect
     });
     res.send(mapToTicketResponse(ticket));
 });
@@ -121,7 +111,7 @@ export const updateTicket = catchErrors(async (req, res) => {
     const { assigneeId, supervisorId, categoryId, ...data } = validateAndParse(TicketUpdateRequestSchema, req.body);
 
     await validateTicket(ticketId);
-    await validateCurrentTicketStatus(categoryId);
+    await validateCurrentTicketStatus(ticketId);
 
     const ticket = await db.ticket.update({
         where: { id: ticketId },
@@ -140,12 +130,7 @@ export const updateTicket = catchErrors(async (req, res) => {
                 connect: { id: categoryId }
             },
         },
-        include: {
-            assignee: true,
-            supervisor: true,
-            category: true,
-            tasks: true,
-        }, 
+        select: ticketFieldsToSelect
     });
     res.send(mapToTicketResponse(ticket));
 });
@@ -159,7 +144,7 @@ export const deleteTicket = catchErrors(async (req, res) => {
     await validateTicketToDelete(ticketId);
 
     await db.ticket.delete({
-        where: { id: ticketId },
+        where: { id: ticketId }
     });
 
     res.send({ message: "Ticket eliminado." });
@@ -190,7 +175,7 @@ export function hasEnded(ticketStatus: string) {
 
 async function validateTicket(ticketId: number) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId },
+        where: { id: ticketId }
     });
     if (!ticket) throw new EntityNotFoundError("Ticket", { id: ticketId });
 }
@@ -198,7 +183,7 @@ async function validateTicket(ticketId: number) {
 async function validateCurrentTicketStatus(ticketId: number) {
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId },
-        select: { status: true },
+        select: { status: true }
     });
    
     if (hasEnded(ticket!.status)) {
@@ -208,7 +193,7 @@ async function validateCurrentTicketStatus(ticketId: number) {
 
 async function validateTicketToDelete(ticketId: number) {
     const tasks = await db.task.findMany({
-        where: { ticketId },
+        where: { ticketId }
     });
 
     if (!tasks.isEmpty()) {

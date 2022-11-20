@@ -1,81 +1,74 @@
-import { 
+import {
     Role as DbRole,
     Ticket as DbTicket,
     Task as DbTask,
     User as DbUser,
     Category as DbCategory,
+    TicketStatus,
+    TicketPriority,
 } from "@prisma/client";
+import { SubsetOf } from "./utilities";
 
-/**
- * Returns a subset (U) of a data type if U is a subset of T.
- * If U is not a subset of T, returns never.
- * T: Set (eg. { a: number, b: string })
- * U: Subset (eg. { a: number })
- */
-export type Subset<T, U> = T extends U ? U : never;
 
-/**
- * Maps a data type to a boolean data type that represents the shape of an interface but with boolean values only.
- * 
- * Data type that represents the shape of an interface
- * but with boolean values only and adds "select" fields
- * if it is an object.
- * If the data type is an array, it will only consider the array data type.
- */ 
-export type SelectFields<T> = {
-    [P in keyof T]: T[P] extends Date | boolean | number | string 
-        ? true 
-        : T[P] extends Array<infer U>
-            ? { select: SelectFields<U> }
-            : T[P] extends object 
-                ? { select: SelectFields<T[P]> } 
-                : true;
+export interface Role extends SubsetOf<DbRole, {
+    id: number;
+    code: string,
+    name: string,
+    description: string | null,
+}> { }
+
+export interface User extends SubsetOf<DbUser, {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    birthDate: Date;
+    createdAt: Date;
+    roleId: number;
+}> {
+    role: Role;
 }
 
-export type UserWithRole = DbUser & {
-    role: DbRole;
-}
-
-export interface Category extends Subset<DbCategory, {
+export interface Category extends SubsetOf<DbCategory, {
     id: number;
     code: string;
     name: string;
     description: string | null;
-}> {}
+}> { }
 
-export interface Task extends Subset<DbTask, {
+export interface Task extends SubsetOf<DbTask, {
     id: number;
     description: string;
     timeSpent: number;
     createdAt: Date;
-}> {}
+}> { }
 
-export interface TicketUser extends Subset<DbUser, {
+export interface TicketUser extends SubsetOf<DbUser, {
     id: number;
     firstName: string;
     lastName: string;
     email: string;
-}> {}
+}> { }
 
-export interface TicketCategory extends Subset<DbCategory, {
+export interface TicketCategory extends SubsetOf<DbCategory, {
     id: number;
     name: string;
     code: string;
     description: string | null;
-}> {}
+}> { }
 
-export interface TicketTask extends Subset<DbTask, {
+export interface TicketTask extends SubsetOf<DbTask, {
     id: number;
     timeSpent: number;
-}> {}
+}> { }
 
-export interface TicketDetail extends Subset<DbTicket, {
+export interface TicketDetail extends SubsetOf<DbTicket, {
     id: number;
     code: string;
     title: string;
     description: string | null;
-    status: string;
-    priority: string;
+    status: TicketStatus;
+    priority: TicketPriority;
     timeEstimated: number;
     createdAt: Date;
     endedAt: Date | null;
