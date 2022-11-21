@@ -7,16 +7,21 @@ const TicketRequestSchema = v.object({
         .transform(sanitizeText),
     description: v.string(message.required)
         .transform(sanitizeText),
-    priority: v.string(message.required),
+    priority: v.string(message.required)
+        .min(1, message.nonEmpty),
     timeEstimated: v.number(message.required)
         .min(1, message.min(1)),
-    assigneeId: v.number(message.required),
-    supervisorId: v.number(message.required),
-    categoryId: v.number(message.required),
+    assigneeId: v.number(message.required)
+        .min(1, message.nonEmpty),
+    supervisorId: v.number(message.required)
+        .min(1, message.nonEmpty),
+    categoryId: v.number(message.required)
+        .min(1, message.nonEmpty),
 }).partial({ description: true });
 
 export const TicketCreateRequestSchema = TicketRequestSchema;
 
 export const TicketUpdateRequestSchema = TicketRequestSchema.extend({
-    status: v.string(message.required),
+    status: v.string(message.required)
+        .min(1, message.nonEmpty),
 });

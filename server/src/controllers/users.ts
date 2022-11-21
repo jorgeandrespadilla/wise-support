@@ -29,6 +29,7 @@ const userFieldsToSelect: SelectFields<User> = {
 export const getUsers = catchErrors(async (req, res) => {
     const { role: roleCode } = validateAndParse(GetUserRequestSchema, req.query);
 
+    let filter = {};
     if (roleCode) {
         const role = await db.role.findUnique({
             where: { code: roleCode }
@@ -36,22 +37,16 @@ export const getUsers = catchErrors(async (req, res) => {
 
         if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
 
-        const users = await db.user.findMany({
-            where: { roleId: role.id },
-            select: userFieldsToSelect
-        });
-
-        const data = users.map(mapToUserResponse);
-        res.send(data);
+        filter = { roleId: role.id };
     }
-    else {
-        const users = await db.user.findMany({
-            select: userFieldsToSelect
-        });
 
-        const data = users.map(mapToUserResponse);
-        res.send(data);
-    }
+    const users = await db.user.findMany({
+        where: filter,
+        select: userFieldsToSelect
+    });
+    
+    const data = users.map(mapToUserResponse);
+    res.send(data);
 });
 
 export const getUserById = catchErrors(async (req, res) => {

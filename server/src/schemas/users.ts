@@ -22,10 +22,11 @@ const UserRequestSchema = v.object({
         .email(message.email)
         .transform(sanitizeEmail),
     roleId: v.number(message.required)
+        .min(1, message.nonEmpty),
 });
 
 export const GetUserRequestSchema = v.object({
-    role: v.string(message.required),
+    role: v.string(message.required)
 }).partial({ role: true });
 
 export const UserCreateRequestSchema = UserRequestSchema.extend({
