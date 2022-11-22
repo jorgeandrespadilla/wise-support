@@ -76,6 +76,12 @@ Para usar la aplicación, se dispone de una cuenta de usuario invitado con las s
 - **Correo electrónico**: `guest@test.com`
 - **Contraseña**: `guest123`
 
+## Desplegar el proyecto
+
+Para desplegar el cliente en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `client`. Esto generará una carpeta `build`, la cual contiene los archivos estáticos de la aplicación web.
+
+Para desplegar el servidor en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `server`. Esto generará una carpeta `build`, la cual contiene los archivos compilados del servidor. Previo a la ejecución del servidor, debemos configurar la instancia de la base de datos PostgreSQL y las variables de entorno en el servidor de producción, así como el comando `npm run db:restore` para restaurar la base de datos. Para iniciar el servidor en producción, se debe ejecutar el comando `npm start:production` en la raíz del directorio `server`.
+
 ## Contribuciones
 
 Las contribuciones al proyecto y el reporte de errores no son aceptados en este momento.
