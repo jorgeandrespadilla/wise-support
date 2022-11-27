@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "preview": "http-server build -p 3000"
+    "preview": "http-server build -p 3000 -P http://localhost:3000?"
   },
   "eslintConfig": {
     "extends": [
