@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import ms from "ms";
 import { envParser, loadEnv } from "@/utils/dotenvHelpers";
 
 export const IS_DEV = loadEnv<boolean>("NODE_ENV", {
@@ -13,8 +14,14 @@ export const BASE_URL = loadEnv<string>("SERVER_BASE_URL", { defaults: "" }); //
 export const BASE_API_URL = `${BASE_URL}/api`;
 
 export const JWT_CONFIG = {
-    secret: loadEnv<string>("JWT_SECRET"),
-    expiresIn: "1h"
+    accessToken: {
+        secret: loadEnv<string>("JWT_ACCESS_TOKEN_SECRET"),
+        expiresIn: ms("1h")
+    },
+    refreshToken: {
+        secret: loadEnv<string>("JWT_REFRESH_TOKEN_SECRET"),
+        expiresIn: ms("1d")
+    }
 };
 
 export const LOG_CONFIG = {

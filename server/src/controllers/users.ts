@@ -3,7 +3,7 @@ import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { GetUserRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
-import { Role, SelectFields, User } from "@/types";
+import { Role, SelectFields, User, UserProfile } from "@/types";
 
 const roleFieldsToSelect: SelectFields<Role> = {
     id: true,
@@ -115,10 +115,17 @@ export const deleteUser = catchErrors(async (req, res) => {
 });
 
 export const getCurrentUser = catchErrors(async (req, res) => {
-    res.send(mapToUserResponse(req.currentUser));
+    res.send(mapToUserProfileResponse(req.currentUser));
 });
 
 function mapToUserResponse(user: User) {
+    return {
+        ...user,
+        fullName: `${user.firstName} ${user.lastName}`,
+    };
+}
+
+function mapToUserProfileResponse(user: UserProfile) {
     return {
         ...user,
         fullName: `${user.firstName} ${user.lastName}`,

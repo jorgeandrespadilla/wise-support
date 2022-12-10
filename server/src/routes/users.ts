@@ -4,7 +4,7 @@ import { authorize } from '@/middlewares/authentication';
 
 const router = express.Router();
 
-router.get("/users/me", authorize, users.getCurrentUser);
+router.get("/profile", authorize, users.getCurrentUser);
 
 router.get("/users", authorize, users.getUsers);
 router.get("/users/:userId", authorize, users.getUserById);

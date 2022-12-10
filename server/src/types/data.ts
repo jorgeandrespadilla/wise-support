@@ -29,6 +29,8 @@ export interface User extends SubsetOf<DbUser, {
     role: Role;
 }
 
+export interface UserProfile extends User {}
+
 export interface Category extends SubsetOf<DbCategory, {
     id: number;
     code: string;
