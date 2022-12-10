@@ -16,11 +16,9 @@
     "server"
   ],
   "dependencies": {
-    "concurrently": "^7.4.0",
-    "luxon": "^3.0.4"
+    "concurrently": "^7.4.0"
   },
   "devDependencies": {
-    "@types/luxon": "^3.0.1",
     "husky": "^8.0.1"
   }
 }
