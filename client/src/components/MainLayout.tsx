@@ -1,4 +1,4 @@
-import { InboxArrowDownIcon, TagIcon, UserCircleIcon, UserGroupIcon } from "@heroicons/react/24/solid";
+import { InboxArrowDownIcon, UserCircleIcon, UserGroupIcon } from "@heroicons/react/24/solid";
 import { Outlet } from "react-router-dom";
 import { LinkConfig } from "types/ui";
 import TopBar from "./Navigation/TopBar";
