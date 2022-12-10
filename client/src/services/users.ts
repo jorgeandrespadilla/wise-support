@@ -1,8 +1,8 @@
-import { AddUserRequest, GetUserResponse, UpdateUserRequest } from "types";
+import { AddUserRequest, GetUserProfileResponse, GetUserResponse, UpdateUserRequest } from "types";
 import api from "utils/api";
 
 export const getProfile = async () => {
-    return await api.get<GetUserResponse>("/users/me");
+    return await api.get<GetUserProfileResponse>("/profile");
 }
 
 export const getUser = async (id: string) => {

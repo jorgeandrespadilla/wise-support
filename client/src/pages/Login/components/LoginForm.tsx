@@ -5,7 +5,7 @@ import { PasswordField, TextField } from "components/Form";
 import { useAuth, useLoadingToast } from "hooks";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { authenticateUser } from "services/authentication";
+import { authenticate } from "services/authentication";
 import { LoginRequest } from "types";
 import { handleAPIError } from "utils/validation";
 
@@ -38,13 +38,13 @@ function LoginForm() {
                 email: credentials.email,
                 password: credentials.password,
             };
-            return await authenticateUser(request);
+            return await authenticate(request);
         },
         {
             onSuccess: (data) => {
                 loginToast.success();
                 const targetPath = location.state ? location.state.pathname : "/";
-                login(data.authToken);
+                login(data.accessToken.token);
                 navigate(targetPath);
             },
             onError: (e) => {
