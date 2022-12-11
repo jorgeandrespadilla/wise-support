@@ -1,6 +1,7 @@
 import { randomBytes } from 'crypto';
 import { isPlainObject } from 'lodash';
 import jwt, { SignOptions } from 'jsonwebtoken';
+import ms from 'ms';
 import { JWT_CONFIG } from '@/constants/settings';
 import { InvalidTokenError } from '@/common/errors';
 import { TokenData } from '@/types';
@@ -10,7 +11,7 @@ export const generateAccessToken = (payload: TokenData) => {
     const token = generateToken(payload, JWT_CONFIG.accessToken.secret, { expiresIn });
     return {
         token,
-        expiresIn
+        expiresIn: ms(expiresIn)
     }
 };
 
@@ -19,7 +20,7 @@ export const generateRefreshToken = (payload: TokenData) => {
     const token = generateToken(payload, JWT_CONFIG.refreshToken.secret, { expiresIn });
     return {
         token,
-        expiresIn
+        expiresIn: ms(expiresIn)
     }
 };
 
