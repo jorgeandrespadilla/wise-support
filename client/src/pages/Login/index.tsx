@@ -1,16 +1,31 @@
 import { LockClosedIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'hooks/useAuth';
 import LoginForm from './components/LoginForm';
 import LoginLayout from './components/LoginLayout';
+import { useCallback, useEffect } from 'react';
 
 
 function Login() {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
+    const navigateHome = useCallback(() => {
+        const targetPath = location.state ? location.state.pathname : "/";
+        navigate(targetPath, { replace: true });
+    }, [location.state, navigate])
+
+    // Redirect to home if the user is already authenticated    
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigateHome();
+        }
+    }, [isAuthenticated, navigateHome]);
+
+    // Avoid rendering the login page if the user is already authenticated (minimize flickering)
     if (isAuthenticated) {
-        navigate("/");
+        return null;
     }
 
     return (

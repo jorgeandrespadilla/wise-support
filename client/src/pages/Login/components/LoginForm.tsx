@@ -4,7 +4,6 @@ import Card from "components/Card";
 import { PasswordField, TextField } from "components/Form";
 import { useAuth, useLoadingToast } from "hooks";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
 import { authenticate } from "services/authentication";
 import { LoginRequest } from "types";
 import { handleAPIError } from "utils/validation";
@@ -15,9 +14,7 @@ type FormData = {
 }
 
 function LoginForm() {
-
-    const navigate = useNavigate();
-    const location = useLocation();
+    const { login } = useAuth();
 
     const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
@@ -25,8 +22,6 @@ function LoginForm() {
             password: "",
         },
     });
-
-    const { isAuthenticated, login } = useAuth();
 
     const loginToast = useLoadingToast("login", {
         loading: "Validando credenciales...",
@@ -43,9 +38,7 @@ function LoginForm() {
         {
             onSuccess: (data) => {
                 loginToast.success();
-                const targetPath = location.state ? location.state.pathname : "/";
                 login(data.accessToken.token);
-                navigate(targetPath);
             },
             onError: (e) => {
                 loginToast.error();
@@ -54,10 +47,6 @@ function LoginForm() {
 
         },
     );
-
-    if (isAuthenticated) {
-        navigate("/");
-    }
 
     return (
         <form onSubmit={handleSubmit(handleLogin)}>

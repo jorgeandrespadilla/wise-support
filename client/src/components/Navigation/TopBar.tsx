@@ -13,11 +13,12 @@ function TopBar({
   title = "",
   links = []
 }: NavigationProps) {
-  const auth = useAuth();
+  const { logout, syncLogout } = useAuth();
 
-  const logout = () => {
-    auth.logout();
-  };
+  function handleLogout() {
+    logout();
+    syncLogout();
+  }
 
   return (
     <header className="flex flex-row justify-between items-center border-b-2 border-gray-200 px-6 py-4">
@@ -33,7 +34,7 @@ function TopBar({
           }
         </ul>
       </div>
-      <Button onClick={logout}>Cerrar sesión</Button>
+      <Button onClick={handleLogout}>Cerrar sesión</Button>
     </header>
   );
 }
