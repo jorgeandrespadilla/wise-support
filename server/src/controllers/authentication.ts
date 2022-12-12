@@ -1,4 +1,4 @@
-import { InvalidTokenError, UnauthorizedError } from "@/common/errors";
+import { InvalidTokenError, UnauthorizedError, ValidationError } from "@/common/errors";
 import { db } from "@/database/client";
 import { LoginRequestSchema, RefreshRequestSchema } from "@/schemas/authentication";
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "@/utils/authToken";
@@ -16,7 +16,7 @@ export const authenticate = catchErrors(async (req, res) => {
     if (!user) throw new UnauthorizedError("El usuario no existe.");
 
     const isValidPassword = await verifyHash(data.password, user.password);
-    if (!isValidPassword) throw new UnauthorizedError("Credenciales inválidas.");
+    if (!isValidPassword) throw new ValidationError("Credenciales inválidas.");
 
     res.send({ 
         message: "Inicio de sesión exitoso.",

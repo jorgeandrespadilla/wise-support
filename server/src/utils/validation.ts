@@ -1,4 +1,4 @@
-import zod from 'zod';
+import zod, { z, ZodType } from 'zod';
 import { ValidationError } from '@/common/errors';
 import { formatDate } from './dateHelpers';
 
@@ -22,6 +22,9 @@ const createTypeMessage = (invalidTypeMessage?: string): TypeValidationMessage =
 });
 const createMessage = (message: string): ValidationMessage => ({ message });
 
+/**
+ * Validation messages.
+ */
 export const message = {
     required: createTypeMessage(),
     email: createMessage('Correo electrónico inválido'),
@@ -42,6 +45,11 @@ export const message = {
     password: createMessage('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'),
 }
 
+/**
+ * Check if a string is a valid password.
+ * @param password The password to check.
+ * @returns Whether the password is valid or not.
+ */
 export const isValidPassword = (password: string) => {
     const hasNumber = /\d/;
     const hasUpperLetter = /[A-Z]/;
@@ -53,6 +61,13 @@ export const isValidPassword = (password: string) => {
     return true;
 };
 
+/**
+ * Validates and parses data using a Zod schema.
+ * @param schema The Zod schema to use.
+ * @param data The data to validate and parse.
+ * @returns The parsed data.
+ * @throws ValidationError if the data is invalid.
+ */
 export const validateAndParse = <T extends zod.ZodTypeAny>(schema: T, data: any): zod.infer<T> => {
     const result = schema.safeParse(data);
     if (!result.success) {
@@ -76,7 +91,14 @@ const errorMap: zod.ZodErrorMap = (issue) => {
     }
     return { message: "Campo inválido" };
 };
+zod.setErrorMap(errorMap); // Set the error map for all Zod schemas
 
-zod.setErrorMap(errorMap);
-
+/**
+ * Zod validation.
+ */
 export const v = zod;
+
+/**
+ * Infer the type of a Zod schema.
+ */
+export type InferSchemaType<T extends ZodType<any, any, any>> = z.infer<T>;
