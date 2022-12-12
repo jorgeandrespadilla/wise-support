@@ -1,12 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import { useSessionRefresh } from "hooks/useRefreshSession";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getProfile } from "services/users";
-import { GetUserProfileResponse } from "types";
 import { accessToken, refreshToken } from "utils/auth";
-import { addStorageListener, removeStorageListener, triggerStorageEvent } from "utils/storageHelpers";
-import { handleAPIError } from "utils/validation";
+import { addStorageListener, getStorageUpdate, listenForStorageUpdates, removeStorageListener, triggerStorageEvent } from "utils/storageHelpers";
 
 // see https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
@@ -18,13 +14,8 @@ interface LoginData {
 
 interface AuthContextData {
     isAuthenticated: boolean;
-    userProfile: {
-        data?: GetUserProfileResponse,
-        isLoading: boolean,
-    }
     syncLogin: (data: LoginData) => void;
     syncLogout: () => void;
-    validateSession: () => void;
     refreshSession: () => void;
 }
 
@@ -38,13 +29,8 @@ const authEvent = {
 
 export const AuthContext = createContext<AuthContextData>({
     isAuthenticated: false,
-    userProfile: {
-        data: undefined,
-        isLoading: false,
-    },
     syncLogin: () => { },
     syncLogout: () => { },
-    validateSession: () => { },
     refreshSession: () => { },
 });
 
@@ -54,18 +40,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
 
     const [sessionTimeout, setSessionTimeout] = useState<NodeJS.Timeout | null>(null);
-
-    const userProfile = useQuery(['userProfile', isAuthenticated],
-        async () => {
-            return await getProfile();
-        },
-        {
-            onError: (e) => {
-                handleAPIError(e);
-            },
-            enabled: isAuthenticated,
-        },
-    );
 
     const { handleRefresh } = useSessionRefresh({
         onSuccess: (data) => {
@@ -138,12 +112,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }, [handleRefresh]);
 
-    /**
-     * Validate the session
-     */
-    const validateSession = () => {
-        setIsAuthenticated(accessToken.get() !== null && refreshToken.get() !== null);
-    }
+
+    //#region Effects
+
+    // Synchronize and validate session
+    useEffect(() => {
+        console.log("Synchronizing session");
+        const onUpdateCompleted = () => {
+            // Validate token
+            setIsAuthenticated(accessToken.get() !== null && refreshToken.get() !== null);
+        };
+        const removeListener = listenForStorageUpdates(onUpdateCompleted);
+        getStorageUpdate();
+        return () => {
+            removeListener();
+        };
+    }, []);
 
     // Listen for logout events
     useEffect(() => {
@@ -159,16 +143,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         };
     }, [logout]);
 
+    // #endregion Effects
+
+
     return (
         <AuthContext.Provider value={{
-            userProfile: {
-                data: userProfile.data,
-                isLoading: userProfile.isLoading,
-            },
             isAuthenticated,
             syncLogin,
             syncLogout,
-            validateSession,
             refreshSession,
         }}>
             {children}

@@ -3,17 +3,14 @@ import Button from "components/Button";
 import Card from "components/Card";
 import InfoLabel from "components/InfoLabel";
 import Loader from "components/Loader";
-import { useAuth } from "hooks";
+import { useCurrentUser } from "hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 import { isDefined } from "utils/dataHelpers";
 import { formatDate, parseISODate } from "utils/dateHelpers";
 
 function Profile() {
-
-    const { userProfile } = useAuth();
+    const { user, isLoading } = useCurrentUser();
     const navigate = useNavigate();
-
-    const user = userProfile.data;
 
     return (
         <Card>
@@ -22,7 +19,7 @@ function Profile() {
                 <h1 className="inline-block align-middle font-poppins pr-4">Perfil de Usuario</h1>
             </div>
             {
-                userProfile.isLoading
+                isLoading
                     ? (
                         <div className="flex justify-center p-4 py-3">
                             <Loader />
