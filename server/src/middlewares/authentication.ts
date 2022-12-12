@@ -1,26 +1,46 @@
 import { IncomingHttpHeaders } from "http"
 import { db } from "@/database/client"
-import { UnauthorizedError } from "@/common/errors"
-import { verifyToken } from "@/utils/authToken"
+import { InvalidTokenError, UnauthorizedError } from "@/common/errors"
 import { catchErrors } from "@/utils/catchErrors"
-import { TokenData } from "@/types"
+import { SelectFields, UserProfile } from "@/types"
+import { verifyAccessToken } from "@/utils/authToken"
+
+const userFieldsToSelect: SelectFields<UserProfile> = {
+    id: true,
+    birthDate: true,
+    createdAt: true,
+    email: true,
+    firstName: true,
+    lastName: true,
+    roleId: true,
+    role: {
+        select: {
+            id: true,
+            code: true,
+            name: true,
+            description: true,
+        },
+    },
+};
 
 /**
  * Middleware to validate the user's authentication token.
  */
-export const authorize = catchErrors(async (req, _res, next) => {
+export const authorize = (roles: string[]) => catchErrors(async (req, _res, next) => {
     const token = getAuthTokenFromHeaders(req.headers);
-    if (!token) throw new UnauthorizedError("No se ha proporcionado un token de autenticación.");
+    if (!token) throw new InvalidTokenError("No se ha proporcionado un token de autenticación.");
 
-    const userId = verifyToken<TokenData>(token).userId;
-    if (!userId) throw new UnauthorizedError('Token de autenticación inválido.');
+    const userId = verifyAccessToken(token).userId;
+    if (!userId) throw new InvalidTokenError('Token de autenticación inválido.');
 
     const user = await db.user.findUnique({
         where: { id: userId },
-        include: { role: true },
+        select: userFieldsToSelect
     });
 
-    if (!user) throw new UnauthorizedError('Usuario no encontrado.');
+    if (!user) throw new InvalidTokenError('Usuario no encontrado.');
+
+    if (!roles.includes(user.role.code)) throw new UnauthorizedError('El usuario no puede acceder a este recurso.');
 
     req.currentUser = user;
     next();

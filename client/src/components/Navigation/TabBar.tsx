@@ -1,3 +1,4 @@
+import Authorize from "components/Authorize";
 import Divider from "components/Divider";
 import { LinkConfig } from "types";
 import Tab from "./Tab";
@@ -11,7 +12,9 @@ function TabBar({ tabs }: TabBarProps) {
         <div className="my-6 mb-8 w-full">
             <div className="flex flex-row justify-start w-full">
                 {tabs.map((tab, index) => (
-                    <Tab to={tab.to} label={tab.label} key={index} />
+                    <Authorize roles={tab.roles} key={index}>
+                        <Tab to={tab.to} label={tab.label}/>
+                    </Authorize>
                 ))}
             </div>
             <Divider showRule />

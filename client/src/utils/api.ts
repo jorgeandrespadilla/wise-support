@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAuthToken } from "./authToken";
+import { accessToken } from "./auth";
 
 const apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
@@ -7,7 +7,7 @@ const defaultConfig = {
     baseURL: `${apiBaseUrl}/api`,
     headers: () => ({
         'Content-Type': 'application/json',
-        'Authorization': getAuthToken() ? `Bearer ${getAuthToken()}` : undefined
+        'Authorization': accessToken.get() ? `Bearer ${accessToken.get()}` : undefined
     }),
     error: {
         code: 'INTERNAL_ERROR',

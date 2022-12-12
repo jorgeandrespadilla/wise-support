@@ -9,7 +9,7 @@ function Tab({ to, label }: TabProps) {
     return (
         <NavLink className={
             ({ isActive }: { isActive: boolean }) => {
-                return `block hover:bg-blue-100 px-4 py-2 rounded-t-md transition-all duration-300 text-gray-500 ${isActive ? "text-blue-500 border-b-2 border-blue-500" : ""}`;
+                return `block hover:bg-blue-100 px-4 py-2 rounded-t-md transition-all duration-300 text-gray-500 border-b-2 ${isActive ? "text-blue-500 border-blue-500" : "border-transparent"}`;
             }
         } to={to}>
             {label}

@@ -4,8 +4,7 @@ import Card from "components/Card";
 import { PasswordField, TextField } from "components/Form";
 import { useAuth, useLoadingToast } from "hooks";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { authenticateUser } from "services/authentication";
+import { authenticate } from "services/authentication";
 import { LoginRequest } from "types";
 import { handleAPIError } from "utils/validation";
 
@@ -15,9 +14,7 @@ type FormData = {
 }
 
 function LoginForm() {
-
-    const navigate = useNavigate();
-    const location = useLocation();
+    const { syncLogin } = useAuth();
 
     const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
@@ -25,8 +22,6 @@ function LoginForm() {
             password: "",
         },
     });
-
-    const { isAuthenticated, login } = useAuth();
 
     const loginToast = useLoadingToast("login", {
         loading: "Validando credenciales...",
@@ -38,14 +33,16 @@ function LoginForm() {
                 email: credentials.email,
                 password: credentials.password,
             };
-            return await authenticateUser(request);
+            return await authenticate(request);
         },
         {
             onSuccess: (data) => {
                 loginToast.success();
-                const targetPath = location.state ? location.state.pathname : "/";
-                login(data.authToken);
-                navigate(targetPath);
+                syncLogin({
+                    accessToken: data.accessToken.token,
+                    refreshToken: data.refreshToken.token,
+                    expiresInMilliseconds: data.accessToken.expiresIn,
+                });
             },
             onError: (e) => {
                 loginToast.error();
@@ -54,10 +51,6 @@ function LoginForm() {
 
         },
     );
-
-    if (isAuthenticated) {
-        navigate("/");
-    }
 
     return (
         <form onSubmit={handleSubmit(handleLogin)}>

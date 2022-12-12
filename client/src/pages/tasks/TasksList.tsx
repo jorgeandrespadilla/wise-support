@@ -12,6 +12,8 @@ import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { isDefined, sortDescByDateTime } from "utils/dataHelpers";
 import { deleteTask, getTasksByTicketId } from "services/tasks";
+import Authorize from "components/Authorize";
+import { role } from "shared/constants/roles";
 
 function TasksList() {
     const { id } = useParams<{ id: string }>();
@@ -66,15 +68,20 @@ function TasksList() {
                         <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                     </div>
                 } />
-                <Link to="./new">
-                    <Button>Agregar</Button>
-                </Link>
+                <Authorize roles={[role.AGENT]}>
+                    <Link to="./new">
+                        <Button>Agregar</Button>
+                    </Link>
+                </Authorize>
             </div>
             <TableContainer>
                 <thead>
                     <tr className="border-0 border-b-2 text-left">
                         <HeaderCell>Descripción</HeaderCell>
                         <HeaderCell>Tiempo empleado (en horas)</HeaderCell>
+                        <Authorize roles={[role.AGENT]}>
+                            <HeaderCell>Acciones</HeaderCell>
+                        </Authorize>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,17 +96,19 @@ function TasksList() {
                                         <tr key={task.id} className={`table-row ${!filteredTasks.isLast(index) ? "border-b" : ""}`}>
                                             <Cell>{task.description}</Cell>
                                             <Cell>{task.timeSpent}</Cell>
-                                            <Cell>
-                                                <div className="flex space-x-2">
-                                                    <Link to={`./${task.id}`}>
-                                                        <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                    </Link>
-                                                    <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
-                                                        setSelectedTaskId(task.id);
-                                                        confirmDialog.open();
-                                                    }} />
-                                                </div>
-                                            </Cell>
+                                            <Authorize roles={[role.AGENT]}>
+                                                <Cell>
+                                                    <div className="flex space-x-2">
+                                                        <Link to={`./${task.id}`}>
+                                                            <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        </Link>
+                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                            setSelectedTaskId(task.id);
+                                                            confirmDialog.open();
+                                                        }} />
+                                                    </div>
+                                                </Cell>
+                                            </Authorize>
                                         </tr>
                                     );
                                 })

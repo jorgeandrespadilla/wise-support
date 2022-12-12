@@ -1,8 +1,22 @@
 import './App.css';
 import Router from './routes';
 import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { useAuth } from 'hooks';
+
+let firstLoad = true;
 
 function App() {
+  const { isAuthenticated, refreshSession } = useAuth();
+
+  // Refresh session on first load
+  useEffect(() => {
+    if (firstLoad) {
+      refreshSession();
+      firstLoad = false;
+    }
+  }, [isAuthenticated, refreshSession]);
+
   return (
     <>
       <Router />

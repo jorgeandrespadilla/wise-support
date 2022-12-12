@@ -45,12 +45,13 @@ El repositorio está compuesto por dos componentes:
 
 2. Variables de entorno del proyecto `server`:
 
-    Variable	      | Descripción
-    ---          	  | ---
-    `SERVER_PORT`     | Número de puerto para escuchar las peticiones HTTP
-    `SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)
-    `JWT_SECRET`      | Clave secreta usada para generar y verificar los tokens JWT (variable requerida)
-    `DATABASE_URL`    | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
+    Variable	                | Descripción
+    ---          	            | ---
+    `SERVER_PORT`               | Número de puerto para escuchar las peticiones HTTP
+    `SERVER_BASE_URL`           | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)
+    `JWT_ACCESS_TOKEN_SECRET`   | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)
+    `JWT_REFRESH_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)
+    `DATABASE_URL`              | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
 
     > En producción, es necesario configurar las variables de entorno en el servidor donde se desplegará la aplicación, dado que las variables de entorno no se leen desde el archivo `.env` en producción.
 
