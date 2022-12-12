@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from "http"
 import { db } from "@/database/client"
-import { InvalidTokenError } from "@/common/errors"
+import { InvalidTokenError, UnauthorizedError } from "@/common/errors"
 import { catchErrors } from "@/utils/catchErrors"
 import { SelectFields, UserProfile } from "@/types"
 import { verifyAccessToken } from "@/utils/authToken"
@@ -26,7 +26,7 @@ const userFieldsToSelect: SelectFields<UserProfile> = {
 /**
  * Middleware to validate the user's authentication token.
  */
-export const authorize = catchErrors(async (req, _res, next) => {
+export const authorize = (roles: string[]) => catchErrors(async (req, _res, next) => {
     const token = getAuthTokenFromHeaders(req.headers);
     if (!token) throw new InvalidTokenError("No se ha proporcionado un token de autenticación.");
 
@@ -39,6 +39,8 @@ export const authorize = catchErrors(async (req, _res, next) => {
     });
 
     if (!user) throw new InvalidTokenError('Usuario no encontrado.');
+
+    if (!roles.includes(user.role.code)) throw new UnauthorizedError('El usuario no puede acceder a este recurso.');
 
     req.currentUser = user;
     next();

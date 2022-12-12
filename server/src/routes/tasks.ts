@@ -1,13 +1,14 @@
 import express from 'express';
 import * as tasks from '@/controllers/tasks';
 import { authorize } from '@/middlewares/authentication';
+import { allRoles, role } from '@/constants/roles';
 
 const router = express.Router();
 
-router.get("/tasks", authorize, tasks.getTasksByTicketId);
-router.get("/tasks/:taskId", authorize, tasks.getTaskById);
-router.post("/tasks", authorize, tasks.createTask);
-router.put("/tasks/:taskId", authorize, tasks.updateTask);
-router.delete("/tasks/:taskId", authorize, tasks.deleteTask);
+router.get("/tasks", authorize(allRoles), tasks.getTasksByTicketId);
+router.get("/tasks/:taskId", authorize(allRoles), tasks.getTaskById);
+router.post("/tasks", authorize([role.AGENT]), tasks.createTask);
+router.put("/tasks/:taskId", authorize([role.AGENT]), tasks.updateTask);
+router.delete("/tasks/:taskId", authorize([role.AGENT]), tasks.deleteTask);
 
 export default router;
