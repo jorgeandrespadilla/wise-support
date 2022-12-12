@@ -58,7 +58,7 @@ function LoginForm() {
                     <TextField name="email" label="Correo" control={control} />
                     <PasswordField name="password" label="Clave" control={control} togglePassword={true} />
                 </div>
-                <Button rounded='full' size='lg' submitForm>Iniciar Sesión</Button>
+                <Button as="submit" rounded='full' size='lg'>Iniciar Sesión</Button>
             </Card>
         </form>
     );

@@ -28,3 +28,14 @@ select {
 select option {
   font-size: 0.9rem;
 }
+
+/* Quill Editor */
+.ql-toolbar {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+.ql-container {
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}

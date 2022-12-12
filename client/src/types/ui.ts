@@ -40,6 +40,8 @@ export interface DropdownMenuOption {
 
 export type BaseInputType = "text" | "password" | "date" | "email" | "url";
 
+export type BaseTextAreaType = "text" | "markdown";
+
 export type InputMode = "text" | "numeric" | "decimal";
 
 export type BaseInputProps = {
