@@ -1,4 +1,4 @@
-import { InboxArrowDownIcon, UserCircleIcon, UserGroupIcon } from "@heroicons/react/24/solid";
+import { RectangleStackIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { Outlet } from "react-router-dom";
 import { allRoles, role } from "shared/constants/roles";
 import { LinkConfig } from "types/ui";
@@ -8,20 +8,14 @@ const links: LinkConfig[] = [
   { 
     to: "/tickets",
     label: "Tickets",
-    icon: <InboxArrowDownIcon className="h-5 w-5 mr-2" />,
+    icon: <RectangleStackIcon className="h-5 w-5" />,
     roles: allRoles
   },
   { 
     to: "/users",
     label: "Usuarios",
-    icon: <UserGroupIcon className="h-5 w-5 mr-2" />,
+    icon: <UsersIcon className="h-5 w-5" />,
     roles: [role.ADMIN]
-  },
-  { 
-    to: "/profile",
-    label: "Perfil",
-    icon: <UserCircleIcon className="h-5 w-5 mr-2" />,
-    roles: allRoles
   },
 ];
 

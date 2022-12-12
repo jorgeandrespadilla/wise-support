@@ -19,6 +19,22 @@ export interface DropdownOption {
     label: string;
 }
 
+export interface DropdownMenuOption {
+    /** The text to show in the dropdown */
+    label: string;
+    /** The icon to display next to the option */
+    icon?: ReactNode;
+    /** 
+     * The action to perform when the option is clicked.
+     * If this is set, the option will act as a button.
+     */
+    action?: () => void;
+    /** 
+     * The URL to navigate to when the option is clicked.
+     * If this is set, the action will not be called, and the option will act as a link.
+     */
+    navigateTo?: string;
+}
 
 //#region Inputs
 

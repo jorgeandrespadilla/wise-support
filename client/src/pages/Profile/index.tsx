@@ -1,4 +1,4 @@
-import { UserCircleIcon } from "@heroicons/react/24/solid";
+import Avatar from "components/Avatar";
 import Button from "components/Button";
 import Card from "components/Card";
 import InfoLabel from "components/InfoLabel";
@@ -12,10 +12,12 @@ function Profile() {
     const { user, isLoading } = useCurrentUser();
     const navigate = useNavigate();
 
+    const goBack = () => navigate(-1);
+
     return (
         <Card>
-            <div className="text-2xl font-bold text-gray-800 pb-4">
-                <UserCircleIcon className="inline-block w-8 h-8 mr-2 align-middle" />
+            <div className="text-2xl font-bold text-gray-800 pb-4 flex flex-row items-center gap-4">
+                <Avatar userName={user?.fullName ?? ""} />
                 <h1 className="inline-block align-middle font-poppins pr-4">Perfil de Usuario</h1>
             </div>
             {
@@ -34,7 +36,7 @@ function Profile() {
                                     <InfoLabel label="Fecha de nacimiento" value={formatDate(parseISODate(user.birthDate))} />
                                 </div>
                                 <div className="flex justify-start items-center space-x-2">
-                                    <Button type="secondary" onClick={() => navigate(-1)}>Volver</Button>
+                                    <Button type="secondary" onClick={goBack}>Regresar</Button>
                                 </div>
 
                             </>
