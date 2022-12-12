@@ -117,7 +117,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Synchronize and validate session
     useEffect(() => {
-        console.log("Synchronizing session");
         const onUpdateCompleted = () => {
             // Validate token
             setIsAuthenticated(accessToken.get() !== null && refreshToken.get() !== null);

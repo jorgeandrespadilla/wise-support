@@ -1,3 +1,4 @@
+import Authorize from "components/Authorize";
 import Button from "components/Button";
 import { useAuth } from "hooks/useAuth";
 import { NavLink } from "react-router-dom";
@@ -28,7 +29,9 @@ function TopBar({
         <ul className="flex flex-row space-x-2">
           {
             links.map((link, index) => (
-              <NavItem key={index} to={link.to} icon={link.icon} label={link.label} index={index} />
+              <Authorize roles={link.roles} key={index}>
+                <NavItem to={link.to} icon={link.icon} label={link.label} index={index} />
+              </Authorize>
             ))
           }
         </ul>

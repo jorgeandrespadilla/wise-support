@@ -8,6 +8,8 @@ export interface LinkConfig {
     label: string;
     /** The icon to display next to the link */
     icon?: ReactNode;
+    /** The allowed roles to see the link */
+    roles: string[];
 };
 
 export interface DropdownOption {
