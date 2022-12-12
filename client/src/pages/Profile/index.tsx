@@ -1,29 +1,19 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { useQuery } from "@tanstack/react-query";
 import Button from "components/Button";
 import Card from "components/Card";
 import InfoLabel from "components/InfoLabel";
 import Loader from "components/Loader";
+import { useAuth } from "hooks";
 import { useNavigate } from "react-router-dom";
-import { getProfile } from "services/users";
 import { isDefined } from "utils/dataHelpers";
 import { formatDate, parseISODate } from "utils/dateHelpers";
-import { handleAPIError } from "utils/validation";
 
 function Profile() {
 
+    const { userProfile } = useAuth();
     const navigate = useNavigate();
 
-    const { data: user, isLoading } = useQuery(['user'],
-        async () => {
-            return await getProfile();
-        },
-        {
-            onError: (e) => {
-                handleAPIError(e);
-            },
-        }
-    );
+    const user = userProfile.data;
 
     return (
         <Card>
@@ -32,7 +22,7 @@ function Profile() {
                 <h1 className="inline-block align-middle font-poppins pr-4">Perfil de Usuario</h1>
             </div>
             {
-                isLoading
+                userProfile.isLoading
                     ? (
                         <div className="flex justify-center p-4 py-3">
                             <Loader />
