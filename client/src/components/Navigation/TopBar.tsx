@@ -13,10 +13,9 @@ function TopBar({
   title = "",
   links = []
 }: NavigationProps) {
-  const { logout, syncLogout } = useAuth();
+  const { syncLogout } = useAuth();
 
   function handleLogout() {
-    logout();
     syncLogout();
   }
 

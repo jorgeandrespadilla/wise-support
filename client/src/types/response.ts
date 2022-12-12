@@ -2,7 +2,7 @@
 
 interface TokenData {
     token: string;
-    expires: number; // In milliseconds
+    expiresIn: number; // In milliseconds
 }
 
 export interface LoginResponse {

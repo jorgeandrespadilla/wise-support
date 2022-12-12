@@ -5,20 +5,30 @@ import { useEffect } from 'react';
 import { useAuth } from 'hooks';
 import { getStorageUpdate, listenForStorageUpdates } from 'utils/storageHelpers';
 
+let firstLoad = true;
+
 function App() {
-  const { validateToken } = useAuth();
+  const { isAuthenticated, validateSession, refreshSession } = useAuth();
+
+  // Refresh session on first load
+  useEffect(() => {
+    if (firstLoad) {
+      refreshSession();
+      firstLoad = false;
+    }
+  }, [isAuthenticated, refreshSession]);
 
   // Synchronize and validate session
   useEffect(() => {
     const onUpdateCompleted = () => {
-      validateToken();
+      validateSession();
     };
     const removeListener = listenForStorageUpdates(onUpdateCompleted);
     getStorageUpdate();
     return () => {
       removeListener();
     };
-  }, [validateToken]);
+  }, [validateSession]);
 
   return (
     <>

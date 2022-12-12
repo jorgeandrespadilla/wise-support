@@ -14,7 +14,7 @@ type FormData = {
 }
 
 function LoginForm() {
-    const { login } = useAuth();
+    const { syncLogin } = useAuth();
 
     const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
@@ -38,7 +38,11 @@ function LoginForm() {
         {
             onSuccess: (data) => {
                 loginToast.success();
-                login(data.accessToken.token);
+                syncLogin({
+                    accessToken: data.accessToken.token,
+                    refreshToken: data.refreshToken.token,
+                    expiresInMilliseconds: data.accessToken.expiresIn,
+                });
             },
             onError: (e) => {
                 loginToast.error();

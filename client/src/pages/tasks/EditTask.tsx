@@ -25,7 +25,6 @@ function EditTask() {
             timeSpent: 0,
         },
     });
-
     
     useQuery(['task', taskId],
         async () => {
