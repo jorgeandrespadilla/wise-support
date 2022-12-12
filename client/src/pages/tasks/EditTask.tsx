@@ -7,7 +7,7 @@ import { AddTaskRequest } from "types";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { addTask, getTask, updateTask } from "services/tasks";
+import { getTask, updateTask } from "services/tasks";
 
 type FormData = {
     description: string;
@@ -25,7 +25,6 @@ function EditTask() {
             timeSpent: 0,
         },
     });
-
     
     useQuery(['task', taskId],
         async () => {

@@ -38,3 +38,11 @@ export class UnauthorizedError extends ServerError {
         });
     }
 }
+
+export class InvalidTokenError extends ServerError {
+    constructor(reasonMessage: string = 'Token inválido.') {
+        super(`Token inválido.`, 'INVALID_TOKEN', StatusCode.UNAUTHORIZED, {
+            reason: reasonMessage,
+        });
+    }
+}

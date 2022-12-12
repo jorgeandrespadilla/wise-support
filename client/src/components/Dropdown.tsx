@@ -49,7 +49,7 @@ function Dropdown({
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={handleChange}
-                    className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${emptyValue ? 'text-gray-500' : ''} ${invalid ? 'border-danger' : ''}`}
+                    className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${emptyValue ? 'text-gray-500' : ''} ${invalid ? 'border-danger' : ''} ${disabled ? 'bg-gray-100' : ''}`}
                 >
                     <>
                         <option value="" disabled hidden>{placeholder}</option>

@@ -13,8 +13,14 @@ export const BASE_URL = loadEnv<string>("SERVER_BASE_URL", { defaults: "" }); //
 export const BASE_API_URL = `${BASE_URL}/api`;
 
 export const JWT_CONFIG = {
-    secret: loadEnv<string>("JWT_SECRET"),
-    expiresIn: "1h"
+    accessToken: {
+        secret: loadEnv<string>("JWT_ACCESS_TOKEN_SECRET"),
+        expiresIn: "1h"
+    },
+    refreshToken: {
+        secret: loadEnv<string>("JWT_REFRESH_TOKEN_SECRET"),
+        expiresIn: "1d"
+    }
 };
 
 export const LOG_CONFIG = {

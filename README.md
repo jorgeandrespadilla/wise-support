@@ -47,12 +47,13 @@ El repositorio está compuesto por dos componentes:
 
 2. Variables de entorno del proyecto `server`:
 
-    Variable	      | Descripción
-    ---          	  | ---
-    `SERVER_PORT`     | Número de puerto para escuchar las peticiones HTTP
-    `SERVER_BASE_URL` | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)
-    `JWT_SECRET`      | Clave secreta usada para generar y verificar los tokens JWT (variable requerida)
-    `DATABASE_URL`    | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
+    Variable	                | Descripción
+    ---          	            | ---
+    `SERVER_PORT`               | Número de puerto para escuchar las peticiones HTTP
+    `SERVER_BASE_URL`           | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)
+    `JWT_ACCESS_TOKEN_SECRET`   | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)
+    `JWT_REFRESH_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)
+    `DATABASE_URL`              | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
 
     > En producción, es necesario configurar las variables de entorno en el servidor donde se desplegará la aplicación, dado que las variables de entorno no se leen desde el archivo `.env` en producción.
 
@@ -77,6 +78,12 @@ Ejecutar el comando `npm start` en la raíz del proyecto. Esto iniciará tanto e
 Para usar la aplicación, se dispone de una cuenta de usuario invitado con las siguientes credenciales:
 - **Correo electrónico**: `guest@test.com`
 - **Contraseña**: `guest123`
+
+## Desplegar el proyecto
+
+Para desplegar el cliente en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `client`. Esto generará una carpeta `build`, la cual contiene los archivos estáticos de la aplicación web.
+
+Para desplegar el servidor en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `server`. Esto generará una carpeta `build`, la cual contiene los archivos compilados del servidor. Previo a la ejecución del servidor, debemos configurar la instancia de la base de datos PostgreSQL y las variables de entorno en el servidor de producción, así como el comando `npm run db:restore` para restaurar la base de datos. Para iniciar el servidor en producción, se debe ejecutar el comando `npm start:production` en la raíz del directorio `server`.
 
 ## Contribuciones
 

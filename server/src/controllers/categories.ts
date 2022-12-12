@@ -1,7 +1,7 @@
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { db } from "@/database/client";
 import { CategoryRequestSchema } from "@/schemas/categories";
-import { Category, CategoryResponse, SelectFields } from "@/types";
+import { Category, SelectFields } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
 import { validateAndParse } from "@/utils/validation";
 
@@ -13,7 +13,7 @@ const fieldsToSelect: SelectFields<Category> = {
 };
 
 export const getCategories = catchErrors(async (_req, res) => {
-    const categories: CategoryResponse[] = await db.category.findMany({
+    const categories = await db.category.findMany({
         select: fieldsToSelect
     });
 
@@ -69,7 +69,7 @@ export const deleteCategory = catchErrors(async (req, res) => {
     await validateCategoryToDelete(categoryId);
 
     await db.category.delete({
-        where: { id: categoryId },
+        where: { id: categoryId }
     });
 
     res.send({ message: "Categoría eliminada." });
@@ -80,7 +80,7 @@ export const deleteCategory = catchErrors(async (req, res) => {
 
 async function validateCategory(categoryId: number) {
     const category = await db.category.findUnique({
-        where: { id: categoryId },
+        where: { id: categoryId }
     });
 
     if (!category) throw new EntityNotFoundError("Categoría", { id: categoryId });
@@ -88,7 +88,7 @@ async function validateCategory(categoryId: number) {
 
 async function validateExistingCode(code: string) {
     const category = await db.category.findUnique({
-        where: { code },
+        where: { code }
     });
 
     if (category) throw new ValidationError("El código de categoría ya existe");
@@ -96,7 +96,7 @@ async function validateExistingCode(code: string) {
 
 async function validateCategoryToDelete(categoryId: number) {
     const tickets = await db.ticket.findMany({
-        where: { categoryId },
+        where: { categoryId }
     });
 
     if (!tickets.isEmpty()) {

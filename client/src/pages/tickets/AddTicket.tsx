@@ -9,7 +9,7 @@ import { useLoadingToast } from "hooks/useLoadingToast";
 import { useMutation } from "@tanstack/react-query";
 import { useCategoriesData } from "hooks/useCategoriesData";
 import { useUsersData } from "hooks/useUsersData";
-import { userRole } from "shared/constants/roles";
+import { role } from "shared/constants/roles";
 import { addTicket } from "services/tickets";
 import { ticketPriorityOptions } from "shared/constants/options";
 
@@ -40,8 +40,8 @@ function AddTicket() {
     });
 
     const categories = useCategoriesData();
-    const assignees = useUsersData(userRole.agent);
-    const supervisors = useUsersData(userRole.supervisor);
+    const assignees = useUsersData(role.AGENT);
+    const supervisors = useUsersData(role.SUPERVISOR);
 
     const addTicketToast = useLoadingToast("addTicket", {
         loading: "Agregando ticket...",

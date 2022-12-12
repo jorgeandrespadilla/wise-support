@@ -1,39 +1,56 @@
+import { useMutation } from "@tanstack/react-query";
 import Button from "components/Button";
 import Card from "components/Card";
 import { PasswordField, TextField } from "components/Form";
-import { useAuth } from "hooks";
+import { useAuth, useLoadingToast } from "hooks";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { authenticateUser } from "services/authentication";
+import { authenticate } from "services/authentication";
 import { LoginRequest } from "types";
 import { handleAPIError } from "utils/validation";
 
-type FormData = LoginRequest;
+type FormData = {
+    email: string;
+    password: string;
+}
 
 function LoginForm() {
+    const { syncLogin } = useAuth();
+
     const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             email: "",
             password: "",
         },
     });
-    const { isAuthenticated, login } = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
 
-    const handleLogin = (user: FormData) => {
-        const targetPath = location.state ? location.state.pathname : "/";
-        authenticateUser(user).then(data => {
-            login(data.authToken);
-            navigate(targetPath);
-        }).catch((err) => {
-            handleAPIError(err, { form });
-        });
-    };
+    const loginToast = useLoadingToast("login", {
+        loading: "Validando credenciales...",
+    });
+    const { mutate: handleLogin } = useMutation(
+        async (credentials: FormData) => {
+            loginToast.loading();
+            const request: LoginRequest = {
+                email: credentials.email,
+                password: credentials.password,
+            };
+            return await authenticate(request);
+        },
+        {
+            onSuccess: (data) => {
+                loginToast.success();
+                syncLogin({
+                    accessToken: data.accessToken.token,
+                    refreshToken: data.refreshToken.token,
+                    expiresInMilliseconds: data.accessToken.expiresIn,
+                });
+            },
+            onError: (e) => {
+                loginToast.error();
+                handleAPIError(e, { form, toastId: loginToast.toastId });
+            },
 
-    if (isAuthenticated) {
-        navigate("/");
-    }
+        },
+    );
 
     return (
         <form onSubmit={handleSubmit(handleLogin)}>

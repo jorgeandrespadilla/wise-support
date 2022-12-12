@@ -1,38 +1,52 @@
-import { omit } from "lodash";
 import { db } from "@/database/client";
 import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { GetUserRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
-import { RoleResponse, UserWithRole } from "@/types";
+import { Role, SelectFields, User, UserProfile } from "@/types";
+
+const roleFieldsToSelect: SelectFields<Role> = {
+    id: true,
+    code: true,
+    name: true,
+    description: true,
+};
+
+const userFieldsToSelect: SelectFields<User> = {
+    id: true,
+    birthDate: true,
+    createdAt: true,
+    email: true,
+    firstName: true,
+    lastName: true,
+    roleId: true,
+    role: {
+        select: roleFieldsToSelect,
+    },
+};
 
 
 export const getUsers = catchErrors(async (req, res) => {
     const { role: roleCode } = validateAndParse(GetUserRequestSchema, req.query);
 
+    let filter = {};
     if (roleCode) {
         const role = await db.role.findUnique({
-            where: { code: roleCode },
-        });
-    
-        if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
-    
-        const users = await db.user.findMany({
-            where: { roleId: role.id },
-            include: { role: true },
+            where: { code: roleCode }
         });
 
-        const data = users.map(mapToUserResponse);
-        res.send(data);
+        if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
+
+        filter = { roleId: role.id };
     }
-    else {
-        const users = await db.user.findMany({
-            include: { role: true },
-        });
-        
-        const data = users.map(mapToUserResponse);
-        res.send(data);
-    }
+
+    const users = await db.user.findMany({
+        where: filter,
+        select: userFieldsToSelect
+    });
+    
+    const data = users.map(mapToUserResponse);
+    res.send(data);
 });
 
 export const getUserById = catchErrors(async (req, res) => {
@@ -42,7 +56,7 @@ export const getUserById = catchErrors(async (req, res) => {
 
     const user = await db.user.findUnique({
         where: { id: userId },
-        include: { role: true },
+        select: userFieldsToSelect
     });
     res.send(mapToUserResponse(user!));
 });
@@ -59,7 +73,7 @@ export const createUser = catchErrors(async (req, res) => {
                 connect: { id: roleId }
             },
         },
-        include: { role: true },
+        select: userFieldsToSelect
     });
     res.send(mapToUserResponse(user));
 });
@@ -67,7 +81,7 @@ export const createUser = catchErrors(async (req, res) => {
 export const updateUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
     const { roleId, ...data } = validateAndParse(UserUpdateRequestSchema, req.body);
-    
+
     await validateUser(userId);
     await validateExistingEmail(data.email, userId);
 
@@ -79,7 +93,7 @@ export const updateUser = catchErrors(async (req, res) => {
                 connect: { id: roleId },
             }
         },
-        include: { role: true },
+        select: userFieldsToSelect
     });
     res.send(mapToUserResponse(user));
 });
@@ -94,26 +108,27 @@ export const deleteUser = catchErrors(async (req, res) => {
     await validateUserToDelete(userId);
 
     await db.user.delete({
-        where: { id: userId },
+        where: { id: userId }
     });
 
     res.send({ message: "Usuario eliminado." });
 });
 
 export const getCurrentUser = catchErrors(async (req, res) => {
-    res.send(mapToUserResponse(req.currentUser));
+    res.send(mapToUserProfileResponse(req.currentUser));
 });
 
-function mapToUserResponse(user: UserWithRole) {
+function mapToUserResponse(user: User) {
     return {
-        ...omit(user, ["password"]),
+        ...user,
         fullName: `${user.firstName} ${user.lastName}`,
-        role: <RoleResponse>{
-            id: user.role.id,
-            name: user.role.name,
-            code: user.role.code,
-            description: user.role.description,
-        },
+    };
+}
+
+function mapToUserProfileResponse(user: UserProfile) {
+    return {
+        ...user,
+        fullName: `${user.firstName} ${user.lastName}`,
     };
 }
 
@@ -122,7 +137,7 @@ function mapToUserResponse(user: UserWithRole) {
 
 async function validateUser(userId: number) {
     const user = await db.user.findUnique({
-        where: { id: userId },
+        where: { id: userId }
     });
 
     if (!user) throw new EntityNotFoundError("Usuario", { id: userId });
@@ -131,7 +146,7 @@ async function validateUser(userId: number) {
 async function validateExistingEmail(email: string, userId?: number) {
     // Check if email is already in use
     const user = await db.user.findUnique({
-        where: { email },
+        where: { email }
     });
 
     if (!user) return;
@@ -143,12 +158,12 @@ async function validateExistingEmail(email: string, userId?: number) {
 async function validateUserToDelete(userId: number) {
     // Check if user has any associated tickets
     const tickets = await db.ticket.findMany({
-        where: { 
+        where: {
             OR: [
                 { assigneeId: userId },
                 { supervisorId: userId },
             ]
-         },
+        }
     });
     if (!tickets.isEmpty()) {
         throw new ValidationError("El usuario tiene tickets asociados.");

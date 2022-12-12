@@ -1,8 +1,16 @@
 /** Authentication **/
 
-export interface LoginResponse {
-    authToken: string;
+interface TokenData {
+    token: string;
+    expiresIn: number; // In milliseconds
 }
+
+export interface LoginResponse {
+    accessToken: TokenData;
+    refreshToken: TokenData;
+}
+
+export interface RefreshResponse extends LoginResponse {}
 
 
 /** Roles **/
@@ -26,6 +34,8 @@ export interface GetUserResponse {
     birthDate: string;
     role: RoleResponse;
 }
+
+export interface GetUserProfileResponse extends GetUserResponse {}
 
 
 /** Tickets **/

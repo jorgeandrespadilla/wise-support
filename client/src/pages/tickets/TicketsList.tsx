@@ -16,6 +16,8 @@ import { useLoadingToast } from "hooks/useLoadingToast";
 import { isDefined, sortDescByDateTime } from "utils/dataHelpers";
 import { deleteTicket, getTickets } from "services/tickets";
 import { ticketPriority, ticketStatus } from "shared/constants/options";
+import Authorize from "components/Authorize";
+import { role } from "shared/constants/roles";
 
 function TicketsList() {
 
@@ -73,9 +75,11 @@ function TicketsList() {
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                         </div>
                     } />
-                    <Link to="/tickets/new">
-                        <Button>Agregar</Button>
-                    </Link>
+                    <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
+                        <Link to="/tickets/new">
+                            <Button>Agregar</Button>
+                        </Link>
+                    </Authorize>
                 </div>
                 <TableContainer>
                     <thead>
@@ -104,10 +108,12 @@ function TicketsList() {
                                                         <Link to={`/tickets/${ticket.id}/detail`}>
                                                             <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         </Link>
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
-                                                            setSelectedTicketId(ticket.id);
-                                                            confirmDialog.open();
-                                                        }} />
+                                                        <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
+                                                            <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                                setSelectedTicketId(ticket.id);
+                                                                confirmDialog.open();
+                                                            }} />
+                                                        </Authorize>
                                                     </div>
                                                 </Cell>
                                             </tr>

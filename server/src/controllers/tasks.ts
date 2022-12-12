@@ -72,7 +72,7 @@ export const updateTask = catchErrors(async (req, res) => {
                 connect: { id: ticketId },
             }
         },
-        select: fieldsToSelect,
+        select: fieldsToSelect
     });
 
     res.send(task);
@@ -89,7 +89,7 @@ export const deleteTask = catchErrors(async (req, res) => {
     await validateCurrentTicketStatus(task!.ticketId);
 
     await db.task.delete({
-        where: { id: taskId },
+        where: { id: taskId }
     });
 
     res.send({ message: "Tarea eliminada." });
@@ -100,7 +100,7 @@ export const deleteTask = catchErrors(async (req, res) => {
 
 async function validateTicket(ticketId: number) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId },
+        where: { id: ticketId }
     });
 
     if (!ticket) throw new EntityNotFoundError("Ticket", { id: ticketId });
@@ -109,7 +109,7 @@ async function validateTicket(ticketId: number) {
 async function validateCurrentTicketStatus(ticketId: number) {
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId },
-        select: { status: true },
+        select: { status: true }
     });
 
     if (hasEnded(ticket!.status)) {
@@ -119,7 +119,7 @@ async function validateCurrentTicketStatus(ticketId: number) {
 
 async function validateTask(taskId: number) {
     const task = await db.task.findUnique({
-        where: { id: taskId },
+        where: { id: taskId }
     });
 
     if (!task) throw new EntityNotFoundError("Tarea", { id: taskId });
