@@ -6,12 +6,10 @@ import { useAuth, useLoadingToast } from "hooks";
 import { useForm } from "react-hook-form";
 import { authenticate } from "services/authentication";
 import { LoginRequest } from "types";
-import { handleAPIError } from "utils/validation";
+import { handleAPIError, InferSchemaType, schemaResolver } from "utils/validation";
+import { LoginFormSchema } from "schemas/authentication";
 
-type FormData = {
-    email: string;
-    password: string;
-}
+type FormData = InferSchemaType<typeof LoginFormSchema>;
 
 function LoginForm() {
     const { syncLogin } = useAuth();
@@ -21,6 +19,7 @@ function LoginForm() {
             email: "",
             password: "",
         },
+        resolver: schemaResolver(LoginFormSchema)
     });
 
     const loginToast = useLoadingToast("login", {
