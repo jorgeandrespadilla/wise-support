@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
 import Card from "components/Card";
@@ -73,9 +72,7 @@ function UsersList() {
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                         </div>
                     } />
-                    <Link to="/users/new">
-                        <Button>Agregar</Button>
-                    </Link>
+                    <Button as="link" navigateTo="/users/new">Agregar</Button>
                 </div>
                 <TableContainer>
                     <thead>
@@ -103,9 +100,7 @@ function UsersList() {
                                                 <Cell>{formatDate(parseISODate(user.birthDate))}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <Link to={`/users/${user.id}`}>
-                                                            <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        </Link>
+                                                        <IconButton as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedUserId(user.id);
                                                             confirmDialog.open();

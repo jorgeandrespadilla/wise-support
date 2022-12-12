@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
 import ConfirmDialog from "components/ConfirmDialog";
@@ -69,9 +69,7 @@ function TasksList() {
                     </div>
                 } />
                 <Authorize roles={[role.AGENT]}>
-                    <Link to="./new">
-                        <Button>Agregar</Button>
-                    </Link>
+                    <Button as="link" navigateTo="./new">Agregar</Button>
                 </Authorize>
             </div>
             <TableContainer>
@@ -99,9 +97,7 @@ function TasksList() {
                                             <Authorize roles={[role.AGENT]}>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <Link to={`./${task.id}`}>
-                                                            <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        </Link>
+                                                        <IconButton as="link" navigateTo={`./${task.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedTaskId(task.id);
                                                             confirmDialog.open();

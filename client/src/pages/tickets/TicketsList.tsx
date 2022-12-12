@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
 import Card from "components/Card";
@@ -76,9 +75,7 @@ function TicketsList() {
                         </div>
                     } />
                     <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
-                        <Link to="/tickets/new">
-                            <Button>Agregar</Button>
-                        </Link>
+                        <Button as="link" navigateTo="/tickets/new">Agregar</Button>
                     </Authorize>
                 </div>
                 <TableContainer>
@@ -105,9 +102,7 @@ function TicketsList() {
                                                 <Cell>{ticketPriority[ticket.priority]}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <Link to={`/tickets/${ticket.id}/detail`}>
-                                                            <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        </Link>
+                                                        <IconButton as="link" navigateTo={`/tickets/${ticket.id}/detail`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
                                                             <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                                 setSelectedTicketId(ticket.id);
