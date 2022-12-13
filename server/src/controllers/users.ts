@@ -4,6 +4,7 @@ import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { GetUsersRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
 import { Role, SelectFields, User, UserProfile } from "@/types";
+import { generateHash } from "@/utils/crypto";
 
 const roleFieldsToSelect: SelectFields<Role> = {
     id: true,
@@ -57,13 +58,16 @@ export const getUserById = catchErrors(async (req, res) => {
 });
 
 export const createUser = catchErrors(async (req, res) => {
-    const { roleId, ...data } = validateAndParse(UserCreateRequestSchema, req.body);
+    const { roleId, password, ...data } = validateAndParse(UserCreateRequestSchema, req.body);
 
     await validateExistingEmail(data.email);
+
+    const userPassword = await generateHash(password);
 
     const user = await db.user.create({
         data: {
             ...data,
+            password: userPassword,
             role: {
                 connect: { id: roleId }
             },
@@ -75,15 +79,18 @@ export const createUser = catchErrors(async (req, res) => {
 
 export const updateUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
-    const { roleId, ...data } = validateAndParse(UserUpdateRequestSchema, req.body);
+    const { roleId, password, ...data } = validateAndParse(UserUpdateRequestSchema, req.body);
 
     await validateUser(userId);
     await validateExistingEmail(data.email, userId);
+
+    const userPassword = password ? await generateHash(password) : undefined;
 
     const user = await db.user.update({
         where: { id: userId },
         data: {
             ...data,
+            password: userPassword,
             role: {
                 connect: { id: roleId },
             }
