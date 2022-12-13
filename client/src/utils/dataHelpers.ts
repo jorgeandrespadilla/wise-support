@@ -16,6 +16,10 @@ export const getInitials = (name: string) => {
     return names.length > 1 ? names[0][0] + names[1][0] : names[0][0];
 }
 
+export const pluralize = (count: number, singular: string, plural: string) => {
+    return count === 1 ? singular : plural;
+}
+
 export const sortDescByDateTime = <T>(data: T[], key: (item: T) => string) => {
     return data.sort((a, b) => {
         const aDate = parseISODate(key(a));

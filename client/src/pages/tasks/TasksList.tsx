@@ -10,10 +10,11 @@ import { Cell, HeaderCell, TableContainer, TableEmpty, TableLoader } from "compo
 import { handleAPIError } from "utils/validation";
 import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
-import { isDefined, sortDescByDateTime } from "utils/dataHelpers";
+import { isDefined, pluralize, sortDescByDateTime } from "utils/dataHelpers";
 import { deleteTask, getTasksByTicketId } from "services/tasks";
 import Authorize from "components/Authorize";
 import { role } from "shared/constants/roles";
+import StatsItem from "components/StatsItem";
 
 function TasksList() {
     const { id } = useParams<{ id: string }>();
@@ -60,6 +61,9 @@ function TasksList() {
         return task.description.toLowerCase().includes(search.toLowerCase());
     });
 
+    const totalTasks = tasks.data?.length || 0;
+    const totalTimeSpent = tasks.data?.reduce((acc, task) => acc + task.timeSpent, 0) || 0;
+
     return (
         <>
             <div className="flex flex-row justify-between items-center pb-4 space-x-2">
@@ -71,6 +75,15 @@ function TasksList() {
                 <Authorize roles={[role.AGENT]}>
                     <Button as="link" navigateTo="./new">Agregar</Button>
                 </Authorize>
+            </div>
+            <div className="flex flex-row gap-8 my-4">
+                <StatsItem 
+                    label="Tareas" 
+                    value={totalTasks.toString()} />
+                <StatsItem 
+                    label="Tiempo total"
+                    value={totalTimeSpent.toString()}
+                    measurement={pluralize(totalTimeSpent, "hora", "horas")} />
             </div>
             <TableContainer>
                 <thead>

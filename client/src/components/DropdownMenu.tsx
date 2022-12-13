@@ -19,8 +19,12 @@ function DropdownMenu({
 }: DropdownMenuProps) {
     const [isOpen, setIsOpen] = useState(false);
 
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
+        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
             setIsOpen(false);
         }
     }
@@ -28,9 +32,6 @@ function DropdownMenu({
     const handleKeyEvents = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             setIsOpen(false);
-        }
-        if (event.key === 'Enter' && ref.current && ref.current.contains(document.activeElement)) {
-            setIsOpen(!isOpen);
         }
     }
 
@@ -46,11 +47,11 @@ function DropdownMenu({
         };
     });
 
-    const ref = useRef<HTMLButtonElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <button ref={ref} className="relative">
-            <div onClick={() => setIsOpen(!isOpen)}>{toggle}</div>
+        <div ref={containerRef} className="relative">
+            <button onClick={toggleMenu} className="rounded-full">{toggle}</button>
             <Transition
                 show={isOpen}
                 enter="transition duration-100 ease-out"
@@ -78,7 +79,7 @@ function DropdownMenu({
                                                 {option.label}
                                             </button>
                                         )}
-                                        
+
                                     </div>
                                 </li>
                             ))}
@@ -86,7 +87,7 @@ function DropdownMenu({
                     ))}
                 </ul>
             </Transition>
-        </button>
+        </div>
     );
 };
 
