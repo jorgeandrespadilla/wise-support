@@ -16,6 +16,9 @@ import AddTask from 'pages/tasks/AddTask';
 import EditTask from 'pages/tasks/EditTask';
 import { allRoles, role } from 'shared/constants/roles';
 import Unauthorized from 'pages/error/Unauthorized';
+import CategoriesList from 'pages/categories/CategoriesList';
+import AddCategory from 'pages/categories/AddCategory';
+import EditCategory from 'pages/categories/EditCategory';
 
 const Router = () => (
     <Routes>
@@ -36,6 +39,10 @@ const Router = () => (
                 <Route path="/tickets/:id/tasks/new" element={<ProtectedRoute allowed={[role.AGENT]}>< AddTask /></ProtectedRoute>} />
                 <Route path="/tickets/:id/tasks/:taskId" element={<ProtectedRoute allowed={[role.AGENT]}>< EditTask /></ProtectedRoute>} />
             </Route>
+
+            <Route path="/categories" element={<ProtectedRoute allowed={[role.ADMIN]}>< CategoriesList /></ProtectedRoute>} />
+            <Route path="/categories/new" element={<ProtectedRoute allowed={[role.ADMIN]}>< AddCategory /></ProtectedRoute>} />
+            <Route path="/categories/:id" element={<ProtectedRoute allowed={[role.ADMIN]}>< EditCategory /></ProtectedRoute>} />
 
             <Route path="/unauthorized" element={< Unauthorized />} />
         </Route>

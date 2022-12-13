@@ -1,4 +1,4 @@
-import { RectangleStackIcon, UsersIcon } from "@heroicons/react/24/solid";
+import { RectangleStackIcon, TagIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { Outlet } from "react-router-dom";
 import { allRoles, role } from "shared/constants/roles";
 import { LinkConfig } from "types/ui";
@@ -15,6 +15,12 @@ const links: LinkConfig[] = [
     to: "/users",
     label: "Usuarios",
     icon: <UsersIcon className="h-5 w-5" />,
+    roles: [role.ADMIN]
+  },
+  { 
+    to: "/categories",
+    label: "Categorías",
+    icon: <TagIcon className="h-5 w-5" />,
     roles: [role.ADMIN]
   },
 ];
