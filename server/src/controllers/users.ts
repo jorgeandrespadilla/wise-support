@@ -1,7 +1,7 @@
 import { db } from "@/database/client";
 import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { GetUserRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
+import { GetUsersRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
 import { Role, SelectFields, User, UserProfile } from "@/types";
 
@@ -27,21 +27,16 @@ const userFieldsToSelect: SelectFields<User> = {
 
 
 export const getUsers = catchErrors(async (req, res) => {
-    const { role: roleCode } = validateAndParse(GetUserRequestSchema, req.query);
+    const { role: roleCode } = validateAndParse(GetUsersRequestSchema, req.query);
 
-    let filter = {};
-    if (roleCode) {
-        const role = await db.role.findUnique({
-            where: { code: roleCode }
-        });
-
-        if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
-
-        filter = { roleId: role.id };
-    }
+    if (roleCode) await validateRole(roleCode);
 
     const users = await db.user.findMany({
-        where: filter,
+        where: {
+            role: {
+                code: roleCode,
+            }
+        },
         select: userFieldsToSelect
     });
     
@@ -141,6 +136,14 @@ async function validateUser(userId: number) {
     });
 
     if (!user) throw new EntityNotFoundError("Usuario", { id: userId });
+}
+
+async function validateRole(roleCode: string) {
+    const role = await db.role.findUnique({
+        where: { code: roleCode }
+    });
+
+    if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
 }
 
 async function validateExistingEmail(email: string, userId?: number) {

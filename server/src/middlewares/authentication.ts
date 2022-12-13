@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from "http"
 import { db } from "@/database/client"
-import { InvalidTokenError, UnauthorizedError } from "@/common/errors"
+import { ForbiddenError, InvalidTokenError, UnauthorizedError } from "@/common/errors"
 import { catchErrors } from "@/utils/catchErrors"
 import { SelectFields, UserProfile } from "@/types"
 import { verifyAccessToken } from "@/utils/authToken"
@@ -38,9 +38,9 @@ export const authorize = (roles: string[]) => catchErrors(async (req, _res, next
         select: userFieldsToSelect
     });
 
-    if (!user) throw new InvalidTokenError('Usuario no encontrado.');
+    if (!user) throw new UnauthorizedError('Usuario no encontrado.');
 
-    if (!roles.includes(user.role.code)) throw new UnauthorizedError('El usuario no puede acceder a este recurso.');
+    if (!roles.includes(user.role.code)) throw new ForbiddenError('No tiene permisos para acceder a este recurso.');
 
     req.currentUser = user;
     next();

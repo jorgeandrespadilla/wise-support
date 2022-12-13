@@ -1,5 +1,5 @@
 import { today, tryParseDate } from '@/utils/dateHelpers';
-import { sanitizeEmail, sanitizeText } from '@/utils/sanitizers';
+import { sanitizeEmail, sanitizeOptionalField, sanitizeText } from '@/utils/sanitizers';
 import { isValidPassword, message, v } from '@/utils/validation';
 
 const minDate = new Date(1900, 0, 1);
@@ -25,8 +25,9 @@ const UserRequestSchema = v.object({
         .min(1, message.nonEmpty),
 });
 
-export const GetUserRequestSchema = v.object({
+export const GetUsersRequestSchema = v.object({
     role: v.string(message.required)
+        .transform(sanitizeOptionalField)
 }).partial({ role: true });
 
 export const UserCreateRequestSchema = UserRequestSchema.extend({
