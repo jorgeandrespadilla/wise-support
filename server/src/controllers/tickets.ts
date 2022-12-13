@@ -4,7 +4,7 @@ import { catchErrors } from "@/utils/catchErrors";
 import { SelectFields, TicketCategory, TicketDetail, TicketTask, TicketUser, UserProfile } from "@/types";
 import { omit } from "lodash";
 import { validateAndParse } from "@/utils/validation";
-import { GetTicketsRequestSchema, TicketCreateRequestSchema, TicketUpdateRequestSchema } from "@/schemas/tickets";
+import { GetTicketsRequestSchema, CreateTicketRequestSchema, UpdateTicketRequestSchema } from "@/schemas/tickets";
 import { generateCode } from "@/utils/uuid";
 import { today } from "@/utils/dateHelpers";
 import { role } from "@/constants/roles";
@@ -111,7 +111,7 @@ export const getTicketById = catchErrors(async (req, res) => {
 });
 
 export const createTicket = catchErrors(async (req, res) => {
-    const { assigneeId, supervisorId, categoryId, ...requestData } = validateAndParse(TicketCreateRequestSchema, req.body);
+    const { assigneeId, supervisorId, categoryId, ...requestData } = validateAndParse(CreateTicketRequestSchema, req.body);
 
     const ticketPriority = validateTicketPriority(requestData.priority);
 
@@ -138,7 +138,7 @@ export const createTicket = catchErrors(async (req, res) => {
 
 export const updateTicket = catchErrors(async (req, res) => {
     const ticketId = Number(req.params.ticketId);
-    const { assigneeId, supervisorId, categoryId, ...data } = validateAndParse(TicketUpdateRequestSchema, req.body);
+    const { assigneeId, supervisorId, categoryId, ...data } = validateAndParse(UpdateTicketRequestSchema, req.body);
 
     await validateTicket(ticketId);
     await validateAccessToTicket(ticketId, req.currentUser);

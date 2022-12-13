@@ -1,7 +1,7 @@
 import { db } from "@/database/client";
 import { catchErrors } from "@/utils/catchErrors";
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { GetUsersRequestSchema, UserCreateRequestSchema, UserUpdateRequestSchema } from "@/schemas/users";
+import { GetUsersRequestSchema, CreateUserRequestSchema, UpdateUserRequestSchema } from "@/schemas/users";
 import { validateAndParse } from "@/utils/validation";
 import { Role, SelectFields, User, UserProfile } from "@/types";
 import { generateHash } from "@/utils/crypto";
@@ -58,7 +58,7 @@ export const getUserById = catchErrors(async (req, res) => {
 });
 
 export const createUser = catchErrors(async (req, res) => {
-    const { roleId, password, ...data } = validateAndParse(UserCreateRequestSchema, req.body);
+    const { roleId, password, ...data } = validateAndParse(CreateUserRequestSchema, req.body);
 
     await validateExistingEmail(data.email);
 
@@ -79,7 +79,7 @@ export const createUser = catchErrors(async (req, res) => {
 
 export const updateUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
-    const { roleId, password, ...data } = validateAndParse(UserUpdateRequestSchema, req.body);
+    const { roleId, password, ...data } = validateAndParse(UpdateUserRequestSchema, req.body);
 
     await validateUser(userId);
     await validateExistingEmail(data.email, userId);

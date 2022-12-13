@@ -4,6 +4,11 @@ import { isValidPassword, message, v } from '@/utils/validation';
 
 const minDate = new Date(1900, 0, 1);
 
+export const GetUsersRequestSchema = v.object({
+    role: v.string(message.required)
+        .transform(sanitizeOptionalField)
+}).partial({ role: true });
+
 const UserRequestSchema = v.object({
     firstName: v.string(message.required)
         .min(1, message.nonEmpty)
@@ -25,18 +30,13 @@ const UserRequestSchema = v.object({
         .min(1, message.nonEmpty),
 });
 
-export const GetUsersRequestSchema = v.object({
-    role: v.string(message.required)
-        .transform(sanitizeOptionalField)
-}).partial({ role: true });
-
-export const UserCreateRequestSchema = UserRequestSchema.extend({
+export const CreateUserRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
         .min(1, message.nonEmpty)
         .refine(isValidPassword, message.password),
 });
 
-export const UserUpdateRequestSchema = UserRequestSchema.extend({
+export const UpdateUserRequestSchema = UserRequestSchema.extend({
     password: v.string(message.required)
         .refine(value => {
             if (value === '') return true;

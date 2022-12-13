@@ -1,6 +1,11 @@
 import { sanitizeOptionalField, sanitizeText } from '@/utils/sanitizers';
 import { message, v } from '@/utils/validation';
 
+export const GetTicketsRequestSchema = v.object({
+    status: v.string(message.required)
+        .transform(sanitizeOptionalField)
+}).partial({ status: true });
+
 const TicketRequestSchema = v.object({
     title: v.string(message.required)
         .min(1, message.nonEmpty)
@@ -19,14 +24,9 @@ const TicketRequestSchema = v.object({
         .min(1, message.nonEmpty),
 }).partial({ description: true });
 
-export const GetTicketsRequestSchema = v.object({
-    status: v.string(message.required)
-        .transform(sanitizeOptionalField)
-}).partial({ status: true });
+export const CreateTicketRequestSchema = TicketRequestSchema;
 
-export const TicketCreateRequestSchema = TicketRequestSchema;
-
-export const TicketUpdateRequestSchema = TicketRequestSchema.extend({
+export const UpdateTicketRequestSchema = TicketRequestSchema.extend({
     status: v.string(message.required)
         .min(1, message.nonEmpty),
 });
