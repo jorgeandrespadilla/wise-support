@@ -9,6 +9,8 @@ export const friendlyTicketPriority: Record<string, string> = {
     "HIGH": "Alta"
 };
 
+export const allTicketPriorities = Object.values(TicketPriority);
+
 export const ticketStatus = TicketStatus;
 
 export const friendlyTicketStatus: Record<string, string> = {
@@ -19,12 +21,12 @@ export const friendlyTicketStatus: Record<string, string> = {
     "CLOSED": "Cerrado"
 };
 
-export const allTicketStatus = Object.values(TicketStatus);
+export const allTicketStatuses = Object.values(TicketStatus);
 
 export const allowedStatusByRole: Record<string, string[]> = {
-    [role.ADMIN]: allTicketStatus,
-    [role.SUPERVISOR]: allTicketStatus,
-    [role.AGENT]: allTicketStatus.filter(status => !hasTicketEnded(status)),
+    [role.ADMIN]: allTicketStatuses,
+    [role.SUPERVISOR]: allTicketStatuses,
+    [role.AGENT]: allTicketStatuses.filter(status => !hasTicketEnded(status)),
 };
 
 export function hasTicketEnded(ticketStatus: string) {
