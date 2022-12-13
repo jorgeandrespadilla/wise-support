@@ -6,8 +6,10 @@ import { omit } from "lodash";
 import { validateAndParse } from "@/utils/validation";
 import { TicketCreateRequestSchema, TicketUpdateRequestSchema } from "@/schemas/tickets";
 import { generateCode } from "@/utils/uuid";
-import { TicketPriority, TicketStatus } from "@prisma/client";
 import { today } from "@/utils/dateHelpers";
+import { role } from "@/constants/roles";
+import { TicketPriority, TicketStatus } from "@prisma/client";
+import { allowedStatusByRole, friendlyTicketStatus, hasTicketEnded } from "@/constants/tickets";
 
 
 //#region Data selection
@@ -111,7 +113,7 @@ export const updateTicket = catchErrors(async (req, res) => {
     const { assigneeId, supervisorId, categoryId, ...data } = validateAndParse(TicketUpdateRequestSchema, req.body);
 
     await validateTicket(ticketId);
-    await validateCurrentTicketStatus(ticketId);
+    await validateTicketStatusByRoleCode(ticketId, data.status, req.currentUser.role.code);
 
     const ticket = await db.ticket.update({
         where: { id: ticketId },
@@ -119,7 +121,7 @@ export const updateTicket = catchErrors(async (req, res) => {
             ...data,
             status: data.status as TicketStatus,
             priority: data.priority as TicketPriority,
-            endedAt: hasEnded(data.status) ? today() : null,
+            endedAt: hasTicketEnded(data.status) ? today() : null,
             assignee: {
                 connect: { id: assigneeId }
             },
@@ -135,12 +137,10 @@ export const updateTicket = catchErrors(async (req, res) => {
     res.send(mapToTicketResponse(ticket));
 });
 
-
 export const deleteTicket = catchErrors(async (req, res) => {
     const ticketId = Number(req.params.ticketId);
 
     await validateTicket(ticketId);
-    await validateCurrentTicketStatus(ticketId);
     await validateTicketToDelete(ticketId);
 
     await db.ticket.delete({
@@ -149,7 +149,6 @@ export const deleteTicket = catchErrors(async (req, res) => {
 
     res.send({ message: "Ticket eliminado." });
 });
-
 
 function mapToTicketResponse(ticket: TicketDetail) {
     return {
@@ -169,10 +168,6 @@ function mapToTicketResponse(ticket: TicketDetail) {
 
 //#region Validation functions
 
-export function hasEnded(ticketStatus: string) {
-    return ticketStatus === "CLOSED" || ticketStatus === "CANCELED";
-}
-
 async function validateTicket(ticketId: number) {
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId }
@@ -180,18 +175,33 @@ async function validateTicket(ticketId: number) {
     if (!ticket) throw new EntityNotFoundError("Ticket", { id: ticketId });
 }
 
-async function validateCurrentTicketStatus(ticketId: number) {
+async function validateTicketStatusByRoleCode(ticketId: number, newStatus: string, roleCode: string) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId },
-        select: { status: true }
+        where: { id: ticketId }
     });
-   
-    if (hasEnded(ticket!.status)) {
-        throw new ValidationError(`El ticket ha sido finalizado`);
+    const currentStatus = ticket!.status;
+
+    if (roleCode !== role.ADMIN) {
+        // Other roles can only change the status of a ticket if it is not ended.
+        if (hasTicketEnded(currentStatus)) {
+            throw new ValidationError(`El ticket ha sido finalizado.`);
+        }
+        if (!allowedStatusByRole[roleCode].includes(newStatus)) {
+            throw new ValidationError(`El usuario no puede cambiar el estado a ${friendlyTicketStatus[newStatus]}.`);
+        }
     }
 }
 
 async function validateTicketToDelete(ticketId: number) {
+    const ticket = await db.ticket.findUnique({
+        where: { id: ticketId }
+    });
+    const currentStatus = ticket!.status;
+
+    if (hasTicketEnded(currentStatus)) {
+        throw new ValidationError(`El ticket ha sido finalizado.`);
+    }
+    
     const tasks = await db.task.findMany({
         where: { ticketId }
     });

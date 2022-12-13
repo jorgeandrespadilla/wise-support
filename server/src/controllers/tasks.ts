@@ -1,10 +1,10 @@
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
+import { hasTicketEnded } from "@/constants/tickets";
 import { db } from "@/database/client";
 import { TaskRequestSchema } from "@/schemas/tasks";
 import { SelectFields, Task } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
 import { validateAndParse } from "@/utils/validation";
-import { hasEnded } from "./tickets";
 
 const fieldsToSelect: SelectFields<Task> = {
     id: true,
@@ -42,7 +42,7 @@ export const createTask = catchErrors(async (req, res) => {
     const { ticketId, ...data } = validateAndParse(TaskRequestSchema, req.body);
 
     await validateTicket(ticketId);
-    await validateCurrentTicketStatus(ticketId);
+    await validateTicketStatus(ticketId);
 
     const task = await db.task.create({
         data: {
@@ -62,7 +62,7 @@ export const updateTask = catchErrors(async (req, res) => {
     const { ticketId, ...data } = validateAndParse(TaskRequestSchema, req.body);
 
     await validateTask(taskId);
-    await validateCurrentTicketStatus(ticketId);
+    await validateTicketStatus(ticketId);
 
     const task = await db.task.update({
         where: { id: taskId },
@@ -86,7 +86,7 @@ export const deleteTask = catchErrors(async (req, res) => {
         where: { id: taskId },
         select: { ticketId: true }
     });
-    await validateCurrentTicketStatus(task!.ticketId);
+    await validateTicketStatus(task!.ticketId);
 
     await db.task.delete({
         where: { id: taskId }
@@ -106,13 +106,14 @@ async function validateTicket(ticketId: number) {
     if (!ticket) throw new EntityNotFoundError("Ticket", { id: ticketId });
 }
 
-async function validateCurrentTicketStatus(ticketId: number) {
+async function validateTicketStatus(ticketId: number) {
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId },
         select: { status: true }
     });
+    const currentStatus = ticket!.status;
 
-    if (hasEnded(ticket!.status)) {
+    if (hasTicketEnded(currentStatus)) {
         throw new ValidationError(`El ticket ha sido finalizado`);
     }
 }
