@@ -26,6 +26,10 @@ export interface UpdateUserRequest extends AddUserRequest {}
 
 /** Tickets **/
 
+export interface GetTicketsRequest {
+    status?: string;
+}
+
 export interface AddTicketRequest {
     title: string;
     description: string;

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
 import Card from "components/Card";
 import ConfirmDialog from "components/ConfirmDialog";
 import IconButton from "components/IconButton";
 import CardHeader from "components/CardHeader";
-import Input from "components/Input";
 import Divider from "components/Divider";
 import { Cell, HeaderCell, TableContainer, TableEmpty, TableLoader } from "components/Table";
 import { handleAPIError } from "utils/validation";
@@ -14,19 +13,26 @@ import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { isDefined, sortDescByDateTime } from "utils/dataHelpers";
 import { deleteTicket, getTickets } from "services/tickets";
-import { ticketPriority, ticketStatus } from "shared/constants/options";
+import { showAllFilter, ticketPriority, ticketStatus, ticketStatusOptions } from "shared/constants/options";
 import Authorize from "components/Authorize";
 import { role } from "shared/constants/roles";
+import Dropdown from "components/Dropdown";
+import { GetTicketsRequest } from "types";
+
+const statusFilterOptions = [{ value: showAllFilter, label: "Todos" }, ...ticketStatusOptions];
 
 function TicketsList() {
-
     const [selectedTicketId, setSelectedTicketId] = useState(0);
-    const [search, setSearch] = useState("");
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState(showAllFilter);
     const confirmDialog = useModal();
 
-    const tickets = useQuery(['tickets'],
+    const tickets = useQuery(['tickets', selectedStatusFilter],
         async () => {
-            const data = await getTickets();
+            const statusFilter = selectedStatusFilter === showAllFilter ? "" : selectedStatusFilter;
+            const request: GetTicketsRequest = {
+                status: statusFilter
+            };
+            const data = await getTickets(request);
             return sortDescByDateTime(data, (ticket) => ticket.createdAt);
         },
         {
@@ -57,10 +63,6 @@ function TicketsList() {
         }
     );
 
-    const filteredTickets = tickets.data?.filter((ticket) => {
-        return ticket.title.toLowerCase().includes(search.toLowerCase());
-    });
-
     return (
         <>
             <Card>
@@ -68,12 +70,12 @@ function TicketsList() {
                     <CardHeader title="Tickets" />
                 </div>
                 <Divider vertical="lg" showRule />
-                <div className="flex flex-row justify-between items-center pb-4 space-x-2">
-                    <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={
-                        <div className="pl-3">
-                            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                        </div>
-                    } />
+                <div className="flex flex-row justify-between items-end pb-4 space-x-2">
+                    <Dropdown width="half" label="Estado" placeholder="Seleccione un estado" value={selectedStatusFilter} onChange={setSelectedStatusFilter}>
+                        {statusFilterOptions.map((status) => (
+                            <option key={status.value} value={status.value}>{status.label}</option>
+                        ))}
+                    </Dropdown>
                     <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
                         <Button as="link" navigateTo="/tickets/new">Agregar</Button>
                     </Authorize>
@@ -92,11 +94,11 @@ function TicketsList() {
                             ? (
                                 <TableLoader />
                             )
-                            : (isDefined(filteredTickets) && !filteredTickets.isEmpty()
+                            : (isDefined(tickets.data) && !tickets.data.isEmpty()
                                 ? (
-                                    filteredTickets!.map((ticket, index) => {
+                                    tickets.data.map((ticket, index) => {
                                         return (
-                                            <tr key={ticket.id} className={`table-row ${!filteredTickets.isLast(index) ? "border-b" : ""}`}>
+                                            <tr key={ticket.id} className={`table-row ${!tickets.data!.isLast(index) ? "border-b" : ""}`}>
                                                 <Cell>{ticket.title}</Cell>
                                                 <Cell>{ticketStatus[ticket.status]}</Cell>
                                                 <Cell>{ticketPriority[ticket.priority]}</Cell>
