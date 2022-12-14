@@ -19,6 +19,8 @@ import Unauthorized from 'pages/error/Unauthorized';
 import CategoriesList from 'pages/categories/CategoriesList';
 import AddCategory from 'pages/categories/AddCategory';
 import EditCategory from 'pages/categories/EditCategory';
+import StatsHome from 'pages/statistics/StatsHome';
+import PerformanceStats from 'pages/statistics/PerformanceStats';
 
 const Router = () => (
     <Routes>
@@ -43,6 +45,12 @@ const Router = () => (
             <Route path="/categories" element={<ProtectedRoute allowed={[role.ADMIN]}>< CategoriesList /></ProtectedRoute>} />
             <Route path="/categories/new" element={<ProtectedRoute allowed={[role.ADMIN]}>< AddCategory /></ProtectedRoute>} />
             <Route path="/categories/:id" element={<ProtectedRoute allowed={[role.ADMIN]}>< EditCategory /></ProtectedRoute>} />
+
+            <Route path="/stats" element={<ProtectedRoute allowed={allRoles}>< StatsHome /></ProtectedRoute>} >
+                <Route index element={<Navigate replace to="/stats/performance" />} />
+
+                <Route path="/stats/performance" element={<ProtectedRoute allowed={allRoles}>< PerformanceStats /></ProtectedRoute>} />
+            </Route>
 
             <Route path="/unauthorized" element={< Unauthorized />} />
         </Route>

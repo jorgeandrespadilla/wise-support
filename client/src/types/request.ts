@@ -65,3 +65,11 @@ export interface AddTaskRequest {
 }
 
 export interface UpdateTaskRequest extends AddTaskRequest {}
+
+
+/** Statistics **/
+
+export interface GetPerformanceStatsRequest {
+    startDate: string;
+    endDate: string;
+}

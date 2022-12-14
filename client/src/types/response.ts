@@ -92,3 +92,27 @@ export interface GetTaskResponse {
     createdAt: string; // Date
     timeSpent: number;
 }
+
+
+/** Statistics **/
+
+export interface StatsUserResponse {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
+export interface UserPerformanceResponse {
+    user: GetUserResponse;
+    resolvedTickets: number;
+    performanceScore: number;
+    attentionTime: number;
+}
+
+export interface GetPerformanceStatsResponse {
+    newTickets: number;
+    overallAttentionTime: number;
+    averagePerformanceScore: number;
+    users: UserPerformanceResponse[];
+}
