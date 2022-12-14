@@ -9,6 +9,10 @@ export const tryParseDate = (date: any) => {
     return date;
 }
 
+export const addDays = (date: Date, days: number) => {
+    return DateTime.fromJSDate(date).plus({ days }).toJSDate();
+}
+
 export const today = () => {
     return DateTime.now().toJSDate();
 }

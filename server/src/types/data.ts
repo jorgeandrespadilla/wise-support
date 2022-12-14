@@ -10,6 +10,10 @@ import {
 import { SubsetOf } from "./utilities";
 
 
+export interface TokenData {
+    userId?: number;
+}
+
 export interface Role extends SubsetOf<DbRole, {
     id: number;
     code: string,
@@ -29,7 +33,7 @@ export interface User extends SubsetOf<DbUser, {
     role: Role;
 }
 
-export interface UserProfile extends User {}
+export interface UserProfile extends User { }
 
 export interface Category extends SubsetOf<DbCategory, {
     id: number;
@@ -84,6 +88,39 @@ export interface TicketDetail extends SubsetOf<DbTicket, {
     tasks: TicketTask[];
 }
 
-export interface TokenData {
-    userId?: number;
+
+/** Statistics **/
+
+export interface StatsUser extends SubsetOf<DbUser, {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+}> { }
+
+export interface StatsTicket extends SubsetOf<DbTicket, {
+    id: number;
+    priority: TicketPriority;
+    timeEstimated: number;
+}> {
+    assignee: StatsUser;
+}
+
+export interface UserPerformance {
+    user: StatsUser;
+    resolvedTickets: number;
+    performanceScore: number;
+    attentionTime: number;
+}
+
+export interface PerformanceStats {
+    newTickets: number;
+    overallAttentionTime: number;
+    averagePerformanceScore: number;
+    users: UserPerformance[];
+}
+
+export interface TicketPerformance {
+    performanceScore: number;
+    attentionTime: number;
 }
