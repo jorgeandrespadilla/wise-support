@@ -1,3 +1,4 @@
+import { useAuth } from "hooks";
 import { useCurrentUser } from "hooks/useCurrentUser";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -16,15 +17,17 @@ function ProtectedRoute({
     allowed: roles,
     children,
 }: ProtectedRouteProps) {
-    const { isAuthorized } = useCurrentUser();
+    const { isAuthenticated } = useAuth();
+    const { isAuthorized, isLoading } = useCurrentUser();
     const location = useLocation();
 
-    if (!isAuthorized()) {
+    if (!isAuthenticated || (!isLoading && !isAuthorized())) {
         return <Navigate to={redirectTo} state={{ pathname: location.pathname }} replace />;
     }
-    else if (!isAuthorized(roles)) {
+    else if (!isAuthenticated || (!isLoading && !isAuthorized(roles))) {
         return <Navigate to="/unauthorized" replace />;
     }
+
     return children;
 }
 
