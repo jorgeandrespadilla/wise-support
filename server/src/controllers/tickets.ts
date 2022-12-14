@@ -84,12 +84,12 @@ const getTicketFiltersByRole = (userId: number, roleCode: string) => {
 export const getTickets = catchErrors(async (req, res) => {
     const requestData = validateAndParse(GetTicketsRequestSchema, req.query);
 
-    const ticketStatus = validateTicketStatus(requestData.status);
+    const ticketStatusFilter = validateTicketStatus(requestData.status);
 
     const tickets = await db.ticket.findMany({
         select: ticketFieldsToSelect,
         where: {
-            status: ticketStatus,
+            status: ticketStatusFilter,
             ...getTicketFiltersByRole(req.currentUser.id, req.currentUser.role.code),
         }
     });
@@ -113,13 +113,13 @@ export const getTicketById = catchErrors(async (req, res) => {
 export const createTicket = catchErrors(async (req, res) => {
     const { assigneeId, supervisorId, categoryId, ...requestData } = validateAndParse(CreateTicketRequestSchema, req.body);
 
-    const ticketPriority = validateTicketPriority(requestData.priority);
+    const newTicketPriority = validateTicketPriority(requestData.priority);
 
     const ticket = await db.ticket.create({
         data: {
             ...requestData,
             code: generateCode(),
-            priority: ticketPriority,
+            priority: newTicketPriority,
             status: ticketStatus.OPEN,
             assignee: {
                 connect: { id: assigneeId }
@@ -143,17 +143,17 @@ export const updateTicket = catchErrors(async (req, res) => {
     await validateTicket(ticketId);
     await validateAccessToTicket(ticketId, req.currentUser);
 
-    const ticketStatus = validateTicketStatus(data.status)!;
-    const ticketPriority = validateTicketPriority(data.priority)!;
-    await validateTicketStatusByRoleCode(ticketId, ticketStatus, req.currentUser.role.code);
+    const newTicketStatus = validateTicketStatus(data.status)!;
+    const newTicketPriority = validateTicketPriority(data.priority)!;
+    await validateTicketStatusToUpdate(ticketId, newTicketStatus, req.currentUser.role.code);
 
     const ticket = await db.ticket.update({
         where: { id: ticketId },
         data: {
             ...data,
-            status: ticketStatus,
-            priority: ticketPriority,
-            endedAt: hasTicketEnded(ticketStatus) ? today() : null,
+            status: newTicketStatus,
+            priority: newTicketPriority,
+            endedAt: hasTicketEnded(newTicketStatus) ? today() : null,
             assignee: {
                 connect: { id: assigneeId }
             },
@@ -234,14 +234,15 @@ function validateTicketPriority(priority: string | undefined) {
 }
 
 /**
- * Validates that the user can update the ticket based on the role.
+ * Validates if the ticket can be updated based on the ticket status, the user role and the tasks.
  */
-async function validateTicketStatusByRoleCode(ticketId: number, newStatus: string, roleCode: string) {
+async function validateTicketStatusToUpdate(ticketId: number, newStatus: TicketStatus, roleCode: string) {
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId }
     });
     const currentStatus = ticket!.status;
 
+    // Validate the ticket status based on the role.
     if (roleCode !== role.ADMIN) {
         // Other roles can only change the status of a ticket if it is not ended.
         if (hasTicketEnded(currentStatus)) {
@@ -251,10 +252,20 @@ async function validateTicketStatusByRoleCode(ticketId: number, newStatus: strin
             throw new ValidationError(`El usuario no puede cambiar el estado a ${friendlyTicketStatus[newStatus]}.`);
         }
     }
+
+    // Validate the ticket status based on the associated tasks.
+    const hasTasks = await hasAssociatedTasks(ticketId);
+    if (newStatus === ticketStatus.OPEN && hasTasks) {
+        throw new ValidationError('No se puede reabrir un ticket con tareas asociadas.');
+    }
+    const finalStatuses: string[] = [ticketStatus.RESOLVED, ticketStatus.CLOSED]; // CANCELED is not included because a ticket can be canceled even if it has not tasks.
+    if (finalStatuses.includes(newStatus) && !hasTasks) {
+        throw new ValidationError('No se puede marcar un ticket sin tareas asociadas como resuelto o cerrado.');
+    }
 }
 
 /**
- * Validates if the ticket has been ended and if it has tasks associated. 
+ * Validates if the ticket has been ended and has associated tasks.
  */
 async function validateTicketToDelete(ticketId: number) {
     const ticket = await db.ticket.findUnique({
@@ -266,11 +277,7 @@ async function validateTicketToDelete(ticketId: number) {
         throw new ValidationError(`El ticket ha sido finalizado.`);
     }
 
-    const tasks = await db.task.findMany({
-        where: { ticketId }
-    });
-
-    if (!tasks.isEmpty()) {
+    if (await hasAssociatedTasks(ticketId)) {
         throw new ValidationError("El ticket tiene tareas asociadas.");
     }
 }
@@ -281,6 +288,17 @@ async function validateTicketToDelete(ticketId: number) {
 async function validateAccessToTicket(ticketId: number, user: UserProfile) {
     const hasAccess = await hasAccessToTicket(ticketId, user);
     if (!hasAccess) throw new ForbiddenError("No tiene permisos para acceder al ticket.");
+}
+
+/**
+ * Checks if the ticket has associated tasks.
+ */
+async function hasAssociatedTasks(ticketId: number) {
+    const tasks = await db.task.findMany({
+        where: { ticketId }
+    });
+
+    return !tasks.isEmpty();
 }
 
 /**

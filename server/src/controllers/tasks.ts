@@ -1,5 +1,5 @@
 import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { hasTicketEnded } from "@/constants/tickets";
+import { ticketStatus } from "@/constants/tickets";
 import { db } from "@/database/client";
 import { TaskRequestSchema } from "@/schemas/tasks";
 import { SelectFields, Task } from "@/types";
@@ -113,8 +113,8 @@ async function validateTicketStatus(ticketId: number) {
     });
     const currentStatus = ticket!.status;
 
-    if (hasTicketEnded(currentStatus)) {
-        throw new ValidationError(`El ticket ha sido finalizado`);
+    if (currentStatus !== ticketStatus.IN_PROGRESS) {
+        throw new ValidationError(`El ticket no se encuentra en curso`);
     }
 }
 
