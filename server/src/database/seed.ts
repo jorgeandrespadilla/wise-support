@@ -41,8 +41,8 @@ const seedRoles = async () => {
 const seedUsers = async ({ roleId }: { roleId: IdFn }) => {
     const userData: Prisma.UserCreateInput[] = [
         {
-            firstName: "Admin",
-            lastName: "user",
+            firstName: "Usuario",
+            lastName: "Administrador",
             email: "admin@test.com",
             password: generateHashSync("admin123"),
             birthDate: new Date("2000-01-01T00:00:00.000"),
@@ -70,8 +70,8 @@ const seedUsers = async ({ roleId }: { roleId: IdFn }) => {
 const seedTestUsers = async ({ roleId }: { roleId: IdFn }) => {
     const userData: Prisma.UserCreateInput[] = [
         {
-            firstName: "Guest",
-            lastName: "User",
+            firstName: "Usuario",
+            lastName: "Invitado",
             email: "guest@test.com",
             password: generateHashSync("guest123"),
             birthDate: new Date("2001-06-12T00:00:00.000"),
@@ -82,9 +82,21 @@ const seedTestUsers = async ({ roleId }: { roleId: IdFn }) => {
             }
         },
         {
-            firstName: "John",
-            lastName: "Doe",
-            email: "john.doe@test.com",
+            firstName: "Daniela",
+            lastName: "Rodriguez",
+            email: "daniela.rodriguez@test.com",
+            password: generateHashSync("123456"),
+            birthDate: new Date("2002-09-24T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("SUPERVISOR")
+                }
+            }
+        },
+        {
+            firstName: "Juan",
+            lastName: "Alvarez",
+            email: "juan.alvarez@test.com",
             password: generateHashSync("123456"),
             birthDate: new Date("2001-02-01T00:00:00.000"),
             role: {
@@ -94,9 +106,21 @@ const seedTestUsers = async ({ roleId }: { roleId: IdFn }) => {
             }
         },
         {
-            firstName: "Alice",
-            lastName: "Smith",
-            email: "alice.smith@test.com",
+            firstName: "Ernesto",
+            lastName: "Perez",
+            email: "ernesto.perez@test.com",
+            password: generateHashSync("123456"),
+            birthDate: new Date("1997-10-18T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("AGENT")
+                }
+            }
+        },
+        {
+            firstName: "Ana",
+            lastName: "Gonzalez",
+            email: "ana.gonzalez@test.com",
             password: generateHashSync("123456"),
             birthDate: new Date("2001-04-10T00:00:00.000"),
             role: {
@@ -104,7 +128,31 @@ const seedTestUsers = async ({ roleId }: { roleId: IdFn }) => {
                     id: roleId("AGENT")
                 }
             }
-        }
+        },
+        {
+            firstName: "Carlos",
+            lastName: "Gomez",
+            email: "carlos.gomez@test.com",
+            password: generateHashSync("123456"),
+            birthDate: new Date("2000-08-15T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("AGENT")
+                }
+            }
+        },
+        {
+            firstName: "Andrés",
+            lastName: "García",
+            email: "andres.garcia@test.com",
+            password: generateHashSync("123456"),
+            birthDate: new Date("1984-06-03T00:00:00.000"),
+            role: {
+                connect: {
+                    id: roleId("AGENT")
+                }
+            }
+        },
     ];
     const users: User[] = [];
     for (const user of userData) {
@@ -125,6 +173,22 @@ const seedTestCategories = async () => {
             code: "LICENSE",
             name: "Licencias y permisos",
         },
+        {
+            code: "HARDWARE",
+            name: "Hardware",
+        },
+        {
+            code: "SOFTWARE",
+            name: "Software",
+        },
+        {
+            code: "NETWORK",
+            name: "Redes",
+        },
+        {
+            code: "OTHER",
+            name: "Otros",
+        }
     ];
     const categories: Category[] = [];
     for (const category of categoryData) {
@@ -142,13 +206,23 @@ const seedTestCategories = async () => {
 const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryId: IdFn }) => {
     const ticketCode: Record<string, string> = {
         "TICKET_1": generateCode(),
+        "TICKET_2": generateCode(),
+        "TICKET_3": generateCode(),
+        "TICKET_4": generateCode(),
+        "TICKET_5": generateCode(),
+        "TICKET_6": generateCode(),
+        "TICKET_7": generateCode(),
+        "TICKET_8": generateCode(),
+        "TICKET_9": generateCode(),
     };
 
     const ticketData: Prisma.TicketCreateInput[] = [
         {
             code: ticketCode["TICKET_1"],
-            title: "Problemas con la licencia de Windows",
-            description: "Los usuarios no pueden iniciar sesión en el sistema",
+            title: "Solicitud de renovación de licencia de software",
+            description: "Se requiere renovar la licencia del software de Windows que está a punto de vencer.",
+            priority: 'HIGH',
+            status: 'CLOSED',
             timeEstimated: 1,
             category: {
                 connect: {
@@ -157,15 +231,199 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             },
             supervisor: {
                 connect: {
-                    id: userId("john.doe@test.com")
+                    id: userId("daniela.rodriguez@test.com")
                 }
             },
             assignee: {
                 connect: {
-                    id: userId("alice.smith@test.com")
+                    id: userId("ernesto.perez@test.com")
                 }
             },
-        }
+        },
+        {
+            code: ticketCode["TICKET_2"],
+            title: "Solicitud de permiso de acceso a recursos compartidos",
+            description: "El usuario con código U012 necesita tener acceso a ciertos recursos compartidos en la red y requiere un permiso especial para ello.",
+            priority: 'MEDIUM',
+            status: 'RESOLVED',
+            timeEstimated: 2,
+            category: {
+                connect: {
+                    id: categoryId("LICENSE")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("juan.alvarez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("ernesto.perez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_3"],
+            title: "Problema con la impresora",
+            description: "La impresora de la oficina no está funcionando correctamente y necesita ser reparada o reemplazada.",
+            priority: 'MEDIUM',
+            status: 'IN_PROGRESS',
+            timeEstimated: 4,
+            category: {
+                connect: {
+                    id: categoryId("HARDWARE")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("daniela.rodriguez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("ernesto.perez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_4"],
+            title: "Problema con el teclado",
+            description: "El teclado del ordenador del usuario con código U021 no está funcionando correctamente y necesita ser reparado o reemplazado.",
+            priority: 'LOW',
+            status: 'CLOSED',
+            timeEstimated: 3,
+            category: {
+                connect: {
+                    id: categoryId("HARDWARE")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("juan.alvarez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("ernesto.perez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_5"],
+            title: "Error en el sistema operativo",
+            description: " El administrador del centro de datos ha informado que está recibiendo un mensaje de error en el sistema operativo y necesita ayuda para solucionarlo.",
+            priority: 'HIGH',
+            status: 'IN_PROGRESS',
+            timeEstimated: 5,
+            category: {
+                connect: {
+                    id: categoryId("SOFTWARE")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("daniela.rodriguez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("ana.gonzalez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_6"],
+            title: "Actualización de software",
+            description: "Se necesita actualizar el CRM en todos los ordenadores de la oficina para corregir un problema de seguridad conocido.",
+            priority: 'HIGH',
+            status: 'CLOSED',
+            timeEstimated: 8,
+            category: {
+                connect: {
+                    id: categoryId("SOFTWARE")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("juan.alvarez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("ana.gonzalez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_7"],
+            title: "Problemas de conectividad a internet",
+            description: "Los usuarios están informando problemas para conectarse a internet en ciertas áreas de la oficina. Se necesita investigar el problema y solucionarlo.",
+            priority: 'HIGH',
+            status: 'OPEN',
+            timeEstimated: 10,
+            category: {
+                connect: {
+                    id: categoryId("NETWORK")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("daniela.rodriguez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("carlos.gomez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_8"],
+            title: "Configuración de red inalámbrica",
+            description: "El jefe de recursos humanos (código U004)necesita ayuda para configurar la conexión inalámbrica en su ordenador.",
+            priority: 'LOW',
+            status: 'OPEN',
+            timeEstimated: 4,
+            category: {
+                connect: {
+                    id: categoryId("NETWORK")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("juan.alvarez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("carlos.gomez@test.com")
+                }
+            },
+        },
+        {
+            code: ticketCode["TICKET_9"],
+            title: "Problemas con el sistema de climatización del servidor",
+            description: "La temperatura en el centro de datos está demasiado alta y se necesita solucionar el problema.",
+            priority: 'HIGH',
+            status: 'OPEN',
+            timeEstimated: 6,
+            category: {
+                connect: {
+                    id: categoryId("OTHER")
+                }
+            },
+            supervisor: {
+                connect: {
+                    id: userId("juan.alvarez@test.com")
+                }
+            },
+            assignee: {
+                connect: {
+                    id: userId("andres.garcia@test.com")
+                }
+            },
+        },
     ];
     const tickets: Ticket[] = [];
     for (const ticket of ticketData) {
@@ -187,14 +445,95 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
 const seedTestTasks = async ({ ticketId }: { ticketId: IdFn }) => {
     const taskData: Prisma.TaskCreateInput[] = [
         {
-            description: "Revisar el estado de la licencia",
+            description: "Revisar el estado de la licencia y aplicar la actualización",
             timeSpent: 1,
             ticket: {
                 connect: {
                     id: ticketId("TICKET_1")
                 }
             },
-        }
+        },
+        {
+            description: "Revisar los recursos solicitados por el usuario",
+            timeSpent: 1,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_2")
+                }
+            },
+        },
+        {
+            description: "Crear permiso especial para el usuario con acceso limitado",
+            timeSpent: 1,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_2")
+                }
+            },
+        },
+        {
+            description: "Compartir recursos con el usuario y comprobar el funcionamiento con la nueva política de acceso",
+            timeSpent: 2,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_2")
+                }
+            },
+        },
+        {
+            description: "Reemplazar el teclado dañado",
+            timeSpent: 1,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_4")
+                }
+            },
+        },
+        {
+            description: "Revisar logs del sistema",
+            timeSpent: 1,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_5")
+                }
+            },
+        },
+        {
+            description: "Solicitar acceso a la nueva actualización del CRM",
+            timeSpent: 1,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_6")
+                }
+            },
+        },
+        {
+            description: "Revisar y comprobar requisitos de la nueva actualización del CRM",
+            timeSpent: 2,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_6")
+                }
+            },
+        },
+        {
+            description: "Instalar nueva actualización del CRM en entorno de pruebas",
+            timeSpent: 2,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_6")
+                }
+            },
+        },
+        {
+            description: "Desplegar nueva actualización del CRM en los ordenadores de los usuarios",
+            timeSpent: 4,
+            ticket: {
+                connect: {
+                    id: ticketId("TICKET_6")
+                }
+            },
+        },
     ];
     const tasks: Task[] = [];
     for (const task of taskData) {
