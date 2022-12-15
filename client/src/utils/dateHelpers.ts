@@ -8,7 +8,8 @@ const dateStrFormat = 'dd/MM/yyyy';
 type TimeZone = 'utc' | 'local';
 
 /**
- * Normalizes a DateTime object to a date without time and with default timezone
+ * Normalizes a DateTime object to a date without time and with default timezone.
+ * IMPORTANT: Use with caution! Server should handle client date timezone.
  * @param date DateTime object to normalize
  * @param zone Timezone to use
  * @returns A date without time and with the specified timezone
@@ -27,7 +28,7 @@ export function normalizeDate(date: DateTime, zone: TimeZone = 'utc'): DateTime 
  * @returns DateTime object
  */
  export function parseJSDate(date: Date): DateTime {
-    return normalizeDate(DateTime.fromJSDate(date));
+    return DateTime.fromJSDate(date);
 }
 
 /**
@@ -36,7 +37,7 @@ export function normalizeDate(date: DateTime, zone: TimeZone = 'utc'): DateTime 
  * @returns DateTime object
  */
 export function parseISODate(dateStr: string): DateTime {
-    return normalizeDate(DateTime.fromISO(dateStr));
+    return DateTime.fromISO(dateStr);
 }
 
 /**
@@ -45,7 +46,7 @@ export function parseISODate(dateStr: string): DateTime {
  * @returns Formatted date string
  */
 export function formatDate(date: DateTime): string {
-    return normalizeDate(date).toFormat(dateStrFormat);
+    return date.toFormat(dateStrFormat);
 }
 
 /**
@@ -54,7 +55,7 @@ export function formatDate(date: DateTime): string {
  * @returns ISO date string
  */
 export function datePickerToISODate(date: string): string {
-    return normalizeDate(DateTime.fromFormat(date, datePickerFormat)).toISO();
+    return DateTime.fromFormat(date, datePickerFormat).toISO();
 }
 
 /**
@@ -67,5 +68,5 @@ export function isoDateToDatePicker(date: string): string {
 }
 
 export function today(): DateTime {
-    return normalizeDate(DateTime.now());
+    return DateTime.now();
 }

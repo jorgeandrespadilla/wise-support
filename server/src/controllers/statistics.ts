@@ -1,4 +1,3 @@
-
 import { db } from "@/database/client";
 import { ticketPriority, ticketStatus } from "@/constants/tickets";
 import { PerformanceStatsResponse, SelectFields, StatsTicket, StatsUser, TicketPerformance, UserPerformance, UserPerformanceResponse } from "@/types";
