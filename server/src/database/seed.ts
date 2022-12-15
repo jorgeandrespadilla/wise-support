@@ -7,6 +7,10 @@ type IdFn = (value: string) => number | undefined;
 
 const prisma = new PrismaClient();
 
+// const randomDate = (start: Date, end: Date) => {
+//     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+// }
+
 const seedRoles = async () => {
     const roleData: Prisma.RoleCreateInput[] = [
         {
@@ -223,6 +227,9 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "Se requiere renovar la licencia del software de Windows que está a punto de vencer.",
             priority: 'HIGH',
             status: 'CLOSED',
+            createdAt: new Date("2022-12-11T03:27:29.391Z"),
+            updatedAt: new Date("2022-12-11T03:27:29.391Z"),
+            endedAt: new Date("2022-12-12T09:13:35.371Z"),
             timeEstimated: 1,
             category: {
                 connect: {
@@ -246,6 +253,8 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "El usuario con código U012 necesita tener acceso a ciertos recursos compartidos en la red y requiere un permiso especial para ello.",
             priority: 'MEDIUM',
             status: 'RESOLVED',
+            createdAt: new Date("2022-11-25T03:40:02.532Z"),
+            updatedAt: new Date("2022-11-25T03:40:02.532Z"),
             timeEstimated: 2,
             category: {
                 connect: {
@@ -269,6 +278,8 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "La impresora de la oficina no está funcionando correctamente y necesita ser reparada o reemplazada.",
             priority: 'MEDIUM',
             status: 'IN_PROGRESS',
+            createdAt: new Date("2022-11-19T12:17:19.357Z"),
+            updatedAt: new Date("2022-11-19T12:17:19.357Z"),
             timeEstimated: 4,
             category: {
                 connect: {
@@ -292,6 +303,9 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "El teclado del ordenador del usuario con código U021 no está funcionando correctamente y necesita ser reparado o reemplazado.",
             priority: 'LOW',
             status: 'CLOSED',
+            createdAt: new Date("2022-11-27T07:27:55.751Z"),
+            updatedAt: new Date("2022-11-27T07:27:55.751Z"),
+            endedAt: new Date("2022-12-14T18:14:05.458Z"),
             timeEstimated: 3,
             category: {
                 connect: {
@@ -315,6 +329,8 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: " El administrador del centro de datos ha informado que está recibiendo un mensaje de error en el sistema operativo y necesita ayuda para solucionarlo.",
             priority: 'HIGH',
             status: 'IN_PROGRESS',
+            createdAt: new Date("2022-12-10T11:50:06.018Z"),
+            updatedAt: new Date("2022-12-10T11:50:06.018Z"),
             timeEstimated: 5,
             category: {
                 connect: {
@@ -338,6 +354,9 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "Se necesita actualizar el CRM en todos los ordenadores de la oficina para corregir un problema de seguridad conocido.",
             priority: 'HIGH',
             status: 'CLOSED',
+            createdAt: new Date("2022-12-09T02:47:37.828Z"),
+            updatedAt: new Date("2022-12-09T02:47:37.828Z"),
+            endedAt: new Date("2022-12-13T06:14:56.390Z"),
             timeEstimated: 8,
             category: {
                 connect: {
@@ -361,6 +380,8 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "Los usuarios están informando problemas para conectarse a internet en ciertas áreas de la oficina. Se necesita investigar el problema y solucionarlo.",
             priority: 'HIGH',
             status: 'OPEN',
+            createdAt: new Date("2022-11-23T20:38:04.096Z"),
+            updatedAt: new Date("2022-11-23T20:38:04.096Z"),
             timeEstimated: 10,
             category: {
                 connect: {
@@ -384,6 +405,8 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "El jefe de recursos humanos (código U004)necesita ayuda para configurar la conexión inalámbrica en su ordenador.",
             priority: 'LOW',
             status: 'OPEN',
+            createdAt: new Date("2022-12-08T06:03:32.332Z"),
+            updatedAt: new Date("2022-12-08T06:03:32.332Z"),
             timeEstimated: 4,
             category: {
                 connect: {
@@ -407,6 +430,8 @@ const seedTestTickets = async ({ userId, categoryId }: { userId: IdFn, categoryI
             description: "La temperatura en el centro de datos está demasiado alta y se necesita solucionar el problema.",
             priority: 'HIGH',
             status: 'OPEN',
+            createdAt: new Date("2022-11-17T10:57:49.815Z"),
+            updatedAt: new Date("2022-11-17T10:57:49.815Z"),
             timeEstimated: 6,
             category: {
                 connect: {
