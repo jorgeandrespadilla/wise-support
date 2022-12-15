@@ -1,12 +1,13 @@
 
 import { db } from "@/database/client";
 import { ticketPriority, ticketStatus } from "@/constants/tickets";
-import { PerformanceStats, SelectFields, StatsTicket, StatsUser, TicketPerformance, UserPerformance } from "@/types";
+import { PerformanceStatsResponse, SelectFields, StatsTicket, StatsUser, TicketPerformance, UserPerformance, UserPerformanceResponse } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
 import { PerformanceStatsRequestSchema } from "@/schemas/statistics";
 import { validateAndParse } from "@/utils/validation";
 import { addDays } from "@/utils/dateHelpers";
 import { role } from "@/constants/roles";
+import { round } from "lodash";
 
 type TimeDifferenceType = "DELAYED" | "ON_TIME" | "EARLY";
 
@@ -98,14 +99,14 @@ export const getUsersPerformance = catchErrors(async (req, res) => {
         usersPerformanceByUserId[user.id].attentionTime += attentionTime;
     }
 
-    const usersPerformance = Object.values(usersPerformanceByUserId).map(record => {
+    const usersPerformance = Object.values(usersPerformanceByUserId).map((record): UserPerformanceResponse => {
         const averagePerformanceScore = record.resolvedTickets > 0 ? record.performanceScore / record.resolvedTickets : 0;
         return {
             user: {
                 ...record.user,
                 fullName: `${record.user.firstName} ${record.user.lastName}`,
             },
-            performanceScore: averagePerformanceScore,
+            performanceScore: round(averagePerformanceScore, 2),
             resolvedTickets: record.resolvedTickets,
             attentionTime: record.attentionTime,
         };
@@ -113,10 +114,10 @@ export const getUsersPerformance = catchErrors(async (req, res) => {
 
     const averagePerformanceScore = newTickets > 0 ? accumulatedPerformanceScore / newTickets : 0;
    
-    const response: PerformanceStats = {
+    const response: PerformanceStatsResponse = {
         newTickets: newTickets,
         overallAttentionTime: overallAttentionTime,
-        averagePerformanceScore: averagePerformanceScore,
+        averagePerformanceScore: round(averagePerformanceScore, 2),
         users: usersPerformance.sort((a, b) => b.performanceScore - a.performanceScore)
     }; 
 

@@ -71,7 +71,7 @@ function PerformanceStats() {
             <div className="flex flex-row gap-8 my-4">
                 <StatsItem
                     label="Nuevos tickets"
-                    value={stats.averagePerformanceScore.toString()} />
+                    value={stats.newTickets.toString()} />
                 <StatsItem
                     label="Tiempo de atención"
                     value={stats.overallAttentionTime.toString()}

@@ -106,6 +106,11 @@ export interface StatsTicket extends SubsetOf<DbTicket, {
     assignee: StatsUser;
 }
 
+export interface TicketPerformance {
+    performanceScore: number;
+    attentionTime: number;
+}
+
 export interface UserPerformance {
     user: StatsUser;
     resolvedTickets: number;
@@ -120,7 +125,14 @@ export interface PerformanceStats {
     users: UserPerformance[];
 }
 
-export interface TicketPerformance {
-    performanceScore: number;
-    attentionTime: number;
+export interface StatsUserResponse extends StatsUser {
+    fullName: string;
+}
+
+export interface UserPerformanceResponse extends UserPerformance {
+    user: StatsUserResponse;
+}
+
+export interface PerformanceStatsResponse extends PerformanceStats {
+    users: UserPerformanceResponse[];
 }
