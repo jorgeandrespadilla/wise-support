@@ -22,6 +22,15 @@ export interface DropdownOption {
     label: string;
 }
 
+export interface RadioGroupOption<T = string> {
+    /** The value of the option */
+    value: T;
+    /** The text to show in the option */
+    label: string;
+    /** The image to show in the option */
+    image: string;
+}
+
 export interface DropdownMenuOption {
     /** The text to show in the dropdown */
     label: string;

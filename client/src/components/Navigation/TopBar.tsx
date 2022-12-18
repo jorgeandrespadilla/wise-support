@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { ArrowLeftOnRectangleIcon, ChevronDownIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftOnRectangleIcon, ChevronDownIcon, Cog6ToothIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Authorize from "components/Authorize";
 import Avatar from "components/Avatar";
 import DropdownMenu from "components/DropdownMenu";
@@ -29,6 +29,11 @@ function TopBar({
         icon: <UserCircleIcon className="h-5 w-5" />,
         navigateTo: "/profile",
       },
+      {
+        label: "Ajustes",
+        icon: <Cog6ToothIcon className="h-5 w-5" />,
+        navigateTo: "/settings",
+      }
     ],
     [
       {
