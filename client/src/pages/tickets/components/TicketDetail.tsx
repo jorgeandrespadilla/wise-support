@@ -12,6 +12,8 @@ import { role } from "shared/constants/roles";
 import { getTicket, updateTicket } from "services/tickets";
 import { ticketPriorityOptions, ticketStatusOptions } from "shared/constants/options";
 import { useCurrentUser } from "hooks/useCurrentUser";
+import { formatDateForDisplay } from "utils/dateHelpers";
+import { isDefined } from "utils/dataHelpers";
 
 type FormData = {
     title: string;
@@ -51,33 +53,35 @@ function TicketDetail() {
 
     // Status options
     const limitedTicketStatus = ["OPEN", "IN_PROGRESS", "RESOLVED"];
-    const readonlyStatus= readonly && !limitedTicketStatus.includes(watch('status'));
+    const readonlyStatus = readonly && !limitedTicketStatus.includes(watch('status'));
     const statusOptions = readonly
         ? (
             limitedTicketStatus.includes(watch('status'))
-            ? ticketStatusOptions.filter((option) => limitedTicketStatus.includes(option.value))
-            : ticketStatusOptions
-        ) 
+                ? ticketStatusOptions.filter((option) => limitedTicketStatus.includes(option.value))
+                : ticketStatusOptions
+        )
         : ticketStatusOptions;
-    
-    useQuery(['ticket', id],
+
+    const ticket = useQuery(['ticket', id],
         async () => {
             if (!id) return;
             const res = await getTicket(id);
-            return {
-                title: res.title,
-                categoryId: res.categoryId.toString(),
-                description: res.description ?? "",
-                status: res.status,
-                priority: res.priority,
-                supervisorId: res.supervisorId.toString(),
-                assigneeId: res.assigneeId.toString(),
-                timeEstimated: res.timeEstimated,
-            } as FormData;
+            return res;
         },
         {
             onSuccess: (data) => {
-                reset(data);
+                if (!data) return;
+                const formData = {
+                    title: data.title,
+                    categoryId: data.categoryId.toString(),
+                    description: data.description ?? "",
+                    status: data.status,
+                    priority: data.priority,
+                    supervisorId: data.supervisorId.toString(),
+                    assigneeId: data.assigneeId.toString(),
+                    timeEstimated: data.timeEstimated,
+                } as FormData;
+                reset(formData);
             },
             onError: (e) => {
                 handleAPIError(e);
@@ -119,6 +123,8 @@ function TicketDetail() {
         },
     );
 
+
+
     return (
         <>
             <div className="flex flex-col pb-8 space-y-4">
@@ -150,6 +156,21 @@ function TicketDetail() {
                     ))}
                 </DropdownField>
                 <NumberField name="timeEstimated" label="Tiempo estimado (en horas)" control={control} disabled={readonly} />
+            </div>
+            <div className="flex flex-row items-baseline space-x-2 pb-8">
+                {
+                    isDefined(ticket.data) && (
+                        <p className="text-sm text-gray-500">Creado el {formatDateForDisplay(new Date(ticket.data.createdAt), "local", "datetime")}</p>
+                    )
+                }
+                {
+                    isDefined(ticket.data) && ticket.data.endedAt !== null && (
+                        <>
+                            <p className="text-gray-500 text-lg"> · </p>
+                            <p className="text-sm text-gray-500">Finalizado el {formatDateForDisplay(new Date(ticket.data.endedAt), "local", "datetime")}</p>
+                        </>
+                    )
+                }
             </div>
             <div className="flex items-center space-x-2">
                 <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>

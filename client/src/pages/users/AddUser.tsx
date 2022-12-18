@@ -31,7 +31,7 @@ function AddUser() {
             email: "",
             roleId: "",
             password: "",
-            birthDate: today().toISO(),
+            birthDate: today(),
         },
     });
 

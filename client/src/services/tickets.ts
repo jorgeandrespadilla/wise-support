@@ -1,12 +1,12 @@
-import { AddTicketRequest, GetTicketResponse, UpdateTicketRequest } from "types";
+import { AddTicketRequest, GetTicketsRequest, GetTicketResponse, UpdateTicketRequest } from "types";
 import api from "utils/api";
 
 export const getTicket = async (id: string) => {
     return await api.get<GetTicketResponse>(`/tickets/${id}`);
 }
 
-export const getTickets = async () => {
-    return await api.get<GetTicketResponse[]>("/tickets");
+export const getTickets = async (request: GetTicketsRequest) => {
+    return await api.get<GetTicketResponse[]>("/tickets", request);
 }
 
 export const addTicket = async (request: AddTicketRequest) => {

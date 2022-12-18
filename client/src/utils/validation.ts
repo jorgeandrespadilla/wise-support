@@ -3,7 +3,7 @@ import zod from 'zod';
 import { z, ZodType } from "zod/lib";
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from "react-hot-toast";
-import { formatDate, parseJSDate } from "./dateHelpers";
+import { formatDateForDisplay } from "./dateHelpers";
 
 
 //#region Error handling
@@ -104,8 +104,9 @@ export const message = {
     max: (max: number) => createMessage(`Debe ser menor o igual a ${max}`),
 
     date: createTypeMessage('Fecha inválida'),
-    minDate: (minDate: Date) => createMessage(`No debe ser anterior al ${formatDate(parseJSDate(minDate))}`),
-    maxDate: (maxDate: Date) => createMessage(`No debe ser posterior al ${formatDate(parseJSDate(maxDate))}`),
+    minDate: (minDate: Date) => createMessage(`No debe ser anterior al ${formatDateForDisplay(minDate)}`),
+    maxDate: (maxDate: Date) => createMessage(`No debe ser posterior al ${formatDateForDisplay(maxDate)}`),
+    maxDateToday: createMessage('No debe ser posterior a la fecha actual'),
 
     boolean: createTypeMessage('Valor inválido'),
     password: createMessage('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'),

@@ -1,3 +1,4 @@
+import { useAuth } from "hooks";
 import { useCurrentUser } from "hooks/useCurrentUser";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -8,6 +9,8 @@ type ProtectedRouteProps = {
     children: JSX.Element;
 };
 
+let initialRender = true;
+
 /**
  * A component that secures a route based on session status and role.
  */
@@ -16,15 +19,19 @@ function ProtectedRoute({
     allowed: roles,
     children,
 }: ProtectedRouteProps) {
-    const { isAuthorized } = useCurrentUser();
+    const { isAuthenticated } = useAuth();
+    const { isAuthorized, isLoading } = useCurrentUser();
     const location = useLocation();
 
-    if (!isAuthorized()) {
-        return <Navigate to={redirectTo} state={{ pathname: location.pathname }} replace />;
+    if (!isAuthenticated || (!isLoading && !isAuthorized())) {
+        const state = initialRender ? { pathname: location.pathname } : undefined;
+        return <Navigate to={redirectTo} state={state} replace />;
     }
-    else if (!isAuthorized(roles)) {
+    else if (!isAuthenticated || (!isLoading && !isAuthorized(roles))) {
         return <Navigate to="/unauthorized" replace />;
     }
+    initialRender = false;
+
     return children;
 }
 

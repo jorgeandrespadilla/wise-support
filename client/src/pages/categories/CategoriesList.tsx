@@ -10,22 +10,21 @@ import Input from "components/Input";
 import Divider from "components/Divider";
 import { Cell, HeaderCell, TableContainer, TableEmpty, TableLoader } from "components/Table";
 import { handleAPIError } from "utils/validation";
-import { deleteUser, getUsers } from "services/users";
 import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { isDefined, sortAsc } from "utils/dataHelpers";
-import { formatDateForDisplay } from "utils/dateHelpers";
+import { deleteCategory, getCategories } from "services/categories";
 
-function UsersList() {
+function CategoriesList() {
 
-    const [selectedUserId, setSelectedUserId] = useState(0);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(0);
     const [search, setSearch] = useState("");
     const confirmDialog = useModal();
 
-    const users = useQuery(['users'],
+    const categories = useQuery(['categories'],
         async () => {
-            const data = await getUsers();
-            return sortAsc(data, (user) => user.fullName);
+            const data = await getCategories();
+            return sortAsc(data, (category) => category.name);
         },
         {
             onError: (e) => {
@@ -34,36 +33,36 @@ function UsersList() {
         }
     );
 
-    const deleteUserToast = useLoadingToast("deleteUser", {
-        loading: "Eliminando usuario...",
-        success: "Usuario eliminado",
+    const deleteCategoryToast = useLoadingToast("deleteCategory", {
+        loading: "Eliminando categoría...",
+        success: "Categoría eliminada",
     });
     const { mutate: handleDelete } = useMutation(
         async (id: number) => {
-            deleteUserToast.loading();
-            await deleteUser(id.toString());
+            deleteCategoryToast.loading();
+            await deleteCategory(id.toString());
         },
         {
             onSuccess: () => {
-                deleteUserToast.success();
-                users.refetch();
+                deleteCategoryToast.success();
+                categories.refetch();
             },
             onError: (e) => {
-                deleteUserToast.error();
-                handleAPIError(e, { toastId: deleteUserToast.toastId });
+                deleteCategoryToast.error();
+                handleAPIError(e, { toastId: deleteCategoryToast.toastId });
             }
         }
     );
 
-    const filteredUsers = users.data?.filter((user) => {
-        return user.fullName.toLowerCase().includes(search.toLowerCase());
+    const filteredCategories = categories.data?.filter((category) => {
+        return category.name.toLowerCase().includes(search.toLowerCase());
     });
 
     return (
         <>
             <Card>
                 <div className="flex flex-row justify-between items-center">
-                    <CardHeader title="Usuarios" />
+                    <CardHeader title="Categorías" />
                 </div>
                 <Divider vertical="lg" showRule />
                 <div className="flex flex-row justify-between items-center pb-4 space-x-2">
@@ -72,37 +71,33 @@ function UsersList() {
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                         </div>
                     } />
-                    <Button as="link" navigateTo="/users/new">Agregar</Button>
+                    <Button as="link" navigateTo="/categories/new">Agregar</Button>
                 </div>
                 <TableContainer>
                     <thead>
                         <tr className="border-0 border-b-2 text-left">
                             <HeaderCell>Nombre</HeaderCell>
-                            <HeaderCell>Correo</HeaderCell>
-                            <HeaderCell>Rol</HeaderCell>
-                            <HeaderCell>Fecha de nacimiento</HeaderCell>
+                            <HeaderCell>Descripción</HeaderCell>
                             <HeaderCell>Acciones</HeaderCell>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.isLoading
+                        {categories.isLoading
                             ? (
                                 <TableLoader />
                             )
-                            : (isDefined(filteredUsers) && !filteredUsers.isEmpty()
+                            : (isDefined(filteredCategories) && !filteredCategories.isEmpty()
                                 ? (
-                                    filteredUsers!.map((user, index) => {
+                                    filteredCategories!.map((category, index) => {
                                         return (
-                                            <tr key={user.id} className={`table-row ${!filteredUsers.isLast(index) ? "border-b" : ""}`}>
-                                                <Cell>{user.fullName}</Cell>
-                                                <Cell>{user.email}</Cell>
-                                                <Cell>{user.role.name}</Cell>
-                                                <Cell>{formatDateForDisplay(new Date(user.birthDate))}</Cell>
+                                            <tr key={category.id} className={`table-row ${!filteredCategories.isLast(index) ? "border-b" : ""}`}>
+                                                <Cell>{category.name}</Cell>
+                                                <Cell disabled={!category.description}>{category.description ?? "No disponible"}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton as="link" navigateTo={`/categories/${category.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
-                                                            setSelectedUserId(user.id);
+                                                            setSelectedCategoryId(category.id);
                                                             confirmDialog.open();
                                                         }} />
                                                     </div>
@@ -120,23 +115,23 @@ function UsersList() {
                 </TableContainer>
             </Card>
             <ConfirmDialog
-                title="Eliminar usuario"
-                description="¿Estás seguro de que quieres eliminar este usuario?"
+                title="Eliminar categoría"
+                description="¿Estás seguro de que quieres eliminar esta categoría?"
                 confirmText="Eliminar"
                 cancelText="Cancelar"
                 visible={confirmDialog.visible}
                 setVisible={confirmDialog.setVisible}
                 onCancel={() => {
                     confirmDialog.close();
-                    setSelectedUserId(0);
+                    setSelectedCategoryId(0);
                 }}
                 onConfirm={() => {
                     confirmDialog.close();
-                    handleDelete(selectedUserId);
+                    handleDelete(selectedCategoryId);
                 }}
             />
         </>
     );
 }
 
-export default UsersList;
+export default CategoriesList;

@@ -10,12 +10,24 @@ import {
 import { SubsetOf } from "./utilities";
 
 
+/** Authentication **/
+
+export interface TokenData {
+    userId?: number;
+}
+
+
+/** Roles **/
+
 export interface Role extends SubsetOf<DbRole, {
     id: number;
     code: string,
     name: string,
     description: string | null,
 }> { }
+
+
+/** Users **/
 
 export interface User extends SubsetOf<DbUser, {
     id: number;
@@ -31,6 +43,19 @@ export interface User extends SubsetOf<DbUser, {
 
 export interface UserProfile extends User {}
 
+export interface UserResponse extends Omit<User, 'birthDate'> {
+    fullName: string;
+    birthDate: string;
+}
+
+export interface UserProfileResponse extends Omit<UserProfile, 'birthDate'> {
+    fullName: string;
+    birthDate: string;
+}
+
+
+/** Categories **/
+
 export interface Category extends SubsetOf<DbCategory, {
     id: number;
     code: string;
@@ -38,12 +63,18 @@ export interface Category extends SubsetOf<DbCategory, {
     description: string | null;
 }> { }
 
+
+/** Tasks **/
+
 export interface Task extends SubsetOf<DbTask, {
     id: number;
     description: string;
     timeSpent: number;
     createdAt: Date;
 }> { }
+
+
+/** Tickets **/
 
 export interface TicketUser extends SubsetOf<DbUser, {
     id: number;
@@ -84,6 +115,51 @@ export interface TicketDetail extends SubsetOf<DbTicket, {
     tasks: TicketTask[];
 }
 
-export interface TokenData {
-    userId?: number;
+
+/** Statistics **/
+
+export interface StatsUser extends SubsetOf<DbUser, {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+}> { }
+
+export interface StatsTicket extends SubsetOf<DbTicket, {
+    id: number;
+    priority: TicketPriority;
+    timeEstimated: number;
+}> {
+    assignee: StatsUser;
+}
+
+export interface TicketPerformance {
+    performanceScore: number;
+    attentionTime: number;
+}
+
+export interface UserPerformance {
+    user: StatsUser;
+    resolvedTickets: number;
+    performanceScore: number;
+    attentionTime: number;
+}
+
+export interface PerformanceStats {
+    newTickets: number;
+    overallAttentionTime: number;
+    averagePerformanceScore: number;
+    users: UserPerformance[];
+}
+
+export interface StatsUserResponse extends StatsUser {
+    fullName: string;
+}
+
+export interface UserPerformanceResponse extends UserPerformance {
+    user: StatsUserResponse;
+}
+
+export interface PerformanceStatsResponse extends PerformanceStats {
+    users: UserPerformanceResponse[];
 }

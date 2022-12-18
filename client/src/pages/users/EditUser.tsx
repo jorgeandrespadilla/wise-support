@@ -32,7 +32,7 @@ function EditUser() {
             email: "",
             roleId: "",
             password: "",
-            birthDate: today().toISO(),
+            birthDate: today("iso"),
         },
     });
 
