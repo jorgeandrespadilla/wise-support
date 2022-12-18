@@ -9,6 +9,8 @@ type ProtectedRouteProps = {
     children: JSX.Element;
 };
 
+let initialRender = true;
+
 /**
  * A component that secures a route based on session status and role.
  */
@@ -22,11 +24,13 @@ function ProtectedRoute({
     const location = useLocation();
 
     if (!isAuthenticated || (!isLoading && !isAuthorized())) {
-        return <Navigate to={redirectTo} state={{ pathname: location.pathname }} replace />;
+        const state = initialRender ? { pathname: location.pathname } : undefined;
+        return <Navigate to={redirectTo} state={state} replace />;
     }
     else if (!isAuthenticated || (!isLoading && !isAuthorized(roles))) {
         return <Navigate to="/unauthorized" replace />;
     }
+    initialRender = false;
 
     return children;
 }

@@ -46,10 +46,10 @@ const Router = () => (
             <Route path="/categories/new" element={<ProtectedRoute allowed={[role.ADMIN]}>< AddCategory /></ProtectedRoute>} />
             <Route path="/categories/:id" element={<ProtectedRoute allowed={[role.ADMIN]}>< EditCategory /></ProtectedRoute>} />
 
-            <Route path="/stats" element={<ProtectedRoute allowed={allRoles}>< StatsHome /></ProtectedRoute>} >
+            <Route path="/stats" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< StatsHome /></ProtectedRoute>} >
                 <Route index element={<Navigate replace to="/stats/performance" />} />
 
-                <Route path="/stats/performance" element={<ProtectedRoute allowed={allRoles}>< PerformanceStats /></ProtectedRoute>} />
+                <Route path="/stats/performance" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< PerformanceStats /></ProtectedRoute>} />
             </Route>
 
             <Route path="/unauthorized" element={< Unauthorized />} />

@@ -25,7 +25,7 @@ const navLinks: LinkConfig[] = [
         to: "/stats",
         label: "Estadísticas",
         icon: <ChartPieIcon className="h-5 w-5" />,
-        roles: [role.ADMIN]
+        roles: [role.ADMIN, role.SUPERVISOR]
     },
 ];
 
