@@ -1,13 +1,17 @@
 import { useId } from "react";
-import { BaseInputProps } from "types/ui";
+import { BaseInputProps, BaseTextAreaType } from "types/ui";
+import 'quill/dist/quill.snow.css';
+import MarkdownEditor from "./MarkdownEditor";
 
 type TextAreaProps = BaseInputProps & {
+    type?: BaseTextAreaType;
     rows?: number;
     value: string;
     onChange: (value: string) => void;
 };
 
 function TextArea({
+    type = "text",
     label,
     value,
     width = "full",
@@ -20,9 +24,13 @@ function TextArea({
 }: TextAreaProps) {
     const field = useId();
 
-    function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         const newValue = event.target.value;
         onChange(newValue);
+    }
+
+    function handleMarkdownEditorChange(value: string) {
+        onChange(value);
     }
 
     return (
@@ -35,15 +43,18 @@ function TextArea({
                 )
             }
             <div className="relative">
-                <textarea
-                    id={field}
-                    value={value}
-                    placeholder={placeholder}
-                    rows={rows}
-                    disabled={disabled}
-                    onChange={handleChange}
-                    className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
-                />
+                {type === "text"
+                    ? <textarea
+                        id={field}
+                        value={value}
+                        placeholder={placeholder}
+                        rows={rows}
+                        disabled={disabled}
+                        onChange={handleTextAreaChange}
+                        className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
+                    />
+                    : <MarkdownEditor value={value} onChange={handleMarkdownEditorChange} />
+                }
             </div>
             {
                 feedback && (

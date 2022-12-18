@@ -1,7 +1,17 @@
+import { Link } from "react-router-dom";
+
 type IconButtonProps = {
+    as?: "button" | "link";
     type?: "normal" | "minimal";
     size?: "sm" | "md" | "lg";
+    /**
+     * Only used when as="button"
+     */
     onClick?: () => void;
+    /**
+     * Only used when as="link"
+     */
+    navigateTo?: string;
     icon: React.ReactNode;
 }
 
@@ -17,19 +27,27 @@ const buttonSize = {
 }
 
 function IconButton({
+    as = "button",
     type = "normal",
     size = "md",
     onClick = () => { },
+    navigateTo,
     icon,
 }: IconButtonProps) {
+
     return (
-        <button
-            type="button"
-            className={`flex justify-center items-center ${buttonType[type]} ${buttonSize[size]}`}
-            onClick={onClick}
-        >
-            {icon}
-        </button>
+        as === "link"
+            ? <Link
+                to={navigateTo}
+                className={`flex justify-center items-center ${buttonType[type]} ${buttonSize[size]}`}>
+                {icon}
+            </Link>
+            : <button
+                type="button"
+                className={`flex justify-center items-center ${buttonType[type]} ${buttonSize[size]}`}
+                onClick={onClick}>
+                {icon}
+            </button>
     );
 }
 

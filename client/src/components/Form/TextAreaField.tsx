@@ -1,10 +1,11 @@
 import { Controller, FieldValues } from "react-hook-form";
-import { FormInputProps } from "types";
+import { BaseTextAreaType, FormInputProps } from "types";
 import TextArea from "components/TextArea";
 
 type TextAreaFieldProps<TFields extends FieldValues, TValue> = FormInputProps<TFields> & {
+    type?: BaseTextAreaType;
     /**
-     * Minimum number of rows to display
+     * Minimum number of rows to display. If the type is not "text", this will be ignored.
      */
     rows?: number;
     /**

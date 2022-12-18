@@ -1,5 +1,12 @@
 import { FieldValues, UseFormSetError, Path, UseFormGetValues } from "react-hook-form";
+import zod from 'zod';
+import { z, ZodType } from "zod/lib";
+import { zodResolver } from '@hookform/resolvers/zod';
 import toast from "react-hot-toast";
+import { formatDateForDisplay } from "./dateHelpers";
+
+
+//#region Error handling
 
 type FieldError = {
     path: (string | number)[];
@@ -60,3 +67,72 @@ const handleFormError = <TFields extends FieldValues = FieldValues>(fieldErrors:
         }
     });
 }
+
+//#endregion
+
+
+//#region Form validation
+
+type TypeValidationMessage = {
+    required_error: string;
+    invalid_type_error?: string;
+};
+
+type ValidationMessage = {
+    message: string;
+};
+
+const createTypeMessage = (invalidTypeMessage?: string): TypeValidationMessage => ({
+    required_error: 'Campo obligatorio',
+    invalid_type_error: invalidTypeMessage
+});
+const createMessage = (message: string): ValidationMessage => ({ message });
+
+/**
+ * Validation messages.
+ */
+export const message = {
+    required: createTypeMessage(),
+    email: createMessage('Correo electrónico inválido'),
+    nonEmpty: createMessage('Campo obligatorio'),
+    minLength: (minLength: number) => createMessage(`Debe tener al menos ${minLength} caracter${minLength === 1 ? "" : "es"}`),
+    maxLength: (maxLength: number) => createMessage(`Debe tener como máximo ${maxLength} caracter${maxLength === 1 ? "" : "es"}`),
+    exactLength: (length: number) => createMessage(`Debe tener ${length} caracter${length === 1 ? "" : "es"}`),
+
+    number: createTypeMessage('Número inválido'),
+    min: (min: number) => createMessage(`Debe ser mayor o igual a ${min}`),
+    max: (max: number) => createMessage(`Debe ser menor o igual a ${max}`),
+
+    date: createTypeMessage('Fecha inválida'),
+    minDate: (minDate: Date) => createMessage(`No debe ser anterior al ${formatDateForDisplay(minDate)}`),
+    maxDate: (maxDate: Date) => createMessage(`No debe ser posterior al ${formatDateForDisplay(maxDate)}`),
+    maxDateToday: createMessage('No debe ser posterior a la fecha actual'),
+
+    boolean: createTypeMessage('Valor inválido'),
+    password: createMessage('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'),
+};
+
+const errorMap: zod.ZodErrorMap = (issue) => {
+    if (issue.code === zod.ZodIssueCode.invalid_date) {
+        return { message: "Fecha inválida" };
+    }
+    return { message: "Campo inválido" };
+};
+zod.setErrorMap(errorMap); // Set the error map for all Zod schemas
+
+/**
+ * Zod validation.
+ */
+export const v = zod;
+
+/**
+ * Resolver a Zod schema.
+ */
+export const schemaResolver = zodResolver;
+
+/**
+ * Infer the type of a Zod schema.
+ */
+export type InferSchemaType<T extends ZodType<any, any, any>> = z.infer<T>;
+
+//#endregion

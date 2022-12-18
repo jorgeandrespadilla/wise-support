@@ -84,7 +84,7 @@ function AddTicket() {
                         <option key={category.id} value={category.id}>{category.name}</option>
                     ))}
                 </DropdownField>
-                <TextAreaField name="description" label="Descripción" control={control} />
+                <TextAreaField type="markdown" name="description" label="Descripción" control={control} />
                 <DropdownField name="priority" label="Prioridad" placeholder="Seleccione una opción" control={control}>
                     {ticketPriorityOptions.map((priority) => (
                         <option key={priority.value} value={priority.value}>{priority.label}</option>

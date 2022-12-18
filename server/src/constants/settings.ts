@@ -27,3 +27,18 @@ export const LOG_CONFIG = {
     outputPath: "logs/server_%DATE%.log", // DATE is replaced with the current date based on log file rotation
     logLevel: IS_DEV ? "debug" : "info"
 };
+
+export const DATE_CONFIG = {
+    /**
+     * Date format used for JSON responses.
+     */
+    shortDateFormat: "yyyy-MM-dd",
+    /**
+     * Date format used for display purposes.
+     */
+    dateDisplayFormat: "dd/MM/yyyy",
+    /**
+     * Minimum date allowed.
+     */
+    minDate: new Date("1900-01-01"),
+};

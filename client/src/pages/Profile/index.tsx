@@ -6,7 +6,7 @@ import Loader from "components/Loader";
 import { useCurrentUser } from "hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 import { isDefined } from "utils/dataHelpers";
-import { formatDate, parseISODate } from "utils/dateHelpers";
+import { formatDateForDisplay } from "utils/dateHelpers";
 
 function Profile() {
     const { user, isLoading } = useCurrentUser();
@@ -33,7 +33,7 @@ function Profile() {
                                     <InfoLabel label="Nombre" value={user.fullName} />
                                     <InfoLabel label="Correo" value={user.email} />
                                     <InfoLabel label="Rol" value={user.role.name} />
-                                    <InfoLabel label="Fecha de nacimiento" value={formatDate(parseISODate(user.birthDate))} />
+                                    <InfoLabel label="Fecha de nacimiento" value={formatDateForDisplay(new Date(user.birthDate))} />
                                 </div>
                                 <div className="flex justify-start items-center space-x-2">
                                     <Button type="secondary" onClick={goBack}>Regresar</Button>

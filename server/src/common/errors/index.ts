@@ -31,6 +31,14 @@ export class ValidationError extends ServerError {
     }
 }
 
+export class InvalidTokenError extends ServerError {
+    constructor(reasonMessage: string = 'Token inválido.') {
+        super(`Token inválido.`, 'INVALID_TOKEN', StatusCode.UNAUTHORIZED, {
+            reason: reasonMessage,
+        });
+    }
+}
+
 export class UnauthorizedError extends ServerError {
     constructor(reasonMessage: string) {
         super(`Usuario no autorizado.`, 'UNAUTHORIZED', StatusCode.UNAUTHORIZED, {
@@ -39,9 +47,9 @@ export class UnauthorizedError extends ServerError {
     }
 }
 
-export class InvalidTokenError extends ServerError {
-    constructor(reasonMessage: string = 'Token inválido.') {
-        super(`Token inválido.`, 'INVALID_TOKEN', StatusCode.UNAUTHORIZED, {
+export class ForbiddenError extends ServerError {
+    constructor(reasonMessage: string = 'Acceso restringido.') {
+        super(`Usuario no autorizado.`, 'FORBIDDEN', StatusCode.FORBIDDEN, {
             reason: reasonMessage,
         });
     }

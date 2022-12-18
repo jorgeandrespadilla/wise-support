@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react';
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DropdownMenuOption } from 'types';
 
 type DropdownMenuProps = {
@@ -18,8 +19,18 @@ function DropdownMenu({
 }: DropdownMenuProps) {
     const [isOpen, setIsOpen] = useState(false);
 
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
+        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
+        }
+    }
+
+    const handleKeyEvents = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
             setIsOpen(false);
         }
     }
@@ -27,17 +38,20 @@ function DropdownMenu({
     useEffect(() => {
         // Clicks on the document
         document.addEventListener("mousedown", handleClickOutside);
+        // Handles keyboard events
+        document.addEventListener("keydown", handleKeyEvents);
         return () => {
-            // Remove event listener
+            // Remove event listeners
             document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyEvents);
         };
     });
 
-    const ref = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <div ref={ref} className="relative">
-            <div onClick={() => setIsOpen(!isOpen)}>{toggle}</div>
+        <div ref={containerRef} className="relative">
+            <button onClick={toggleMenu} className="rounded-full">{toggle}</button>
             <Transition
                 show={isOpen}
                 enter="transition duration-100 ease-out"
@@ -55,17 +69,17 @@ function DropdownMenu({
                                 <li key={index} className='px-1'>
                                     <div onClick={() => setIsOpen(false)}>
                                         {option.navigateTo ? (
-                                            <a href={option.navigateTo} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 transition-all duration-300 cursor-pointer">
+                                            <Link to={option.navigateTo} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 transition-all duration-300 cursor-pointer">
                                                 {option.icon && <span>{option.icon}</span>}
                                                 {option.label}
-                                            </a>
+                                            </Link>
                                         ) : (
                                             <button onClick={option.action} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 transition-all duration-300 cursor-pointer">
                                                 {option.icon && <span>{option.icon}</span>}
                                                 {option.label}
                                             </button>
                                         )}
-                                        
+
                                     </div>
                                 </li>
                             ))}

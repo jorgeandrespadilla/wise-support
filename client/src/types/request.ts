@@ -26,6 +26,10 @@ export interface UpdateUserRequest extends AddUserRequest {}
 
 /** Tickets **/
 
+export interface GetTicketsRequest {
+    status?: string;
+}
+
 export interface AddTicketRequest {
     title: string;
     description: string;
@@ -61,3 +65,11 @@ export interface AddTaskRequest {
 }
 
 export interface UpdateTaskRequest extends AddTaskRequest {}
+
+
+/** Statistics **/
+
+export interface GetPerformanceStatsRequest {
+    startDate: string;
+    endDate: string;
+}

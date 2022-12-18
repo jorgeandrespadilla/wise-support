@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import Button from "components/Button";
 import ConfirmDialog from "components/ConfirmDialog";
@@ -10,10 +10,11 @@ import { Cell, HeaderCell, TableContainer, TableEmpty, TableLoader } from "compo
 import { handleAPIError } from "utils/validation";
 import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
-import { isDefined, sortDescByDateTime } from "utils/dataHelpers";
+import { isDefined, pluralize, sortDescByDateTime } from "utils/dataHelpers";
 import { deleteTask, getTasksByTicketId } from "services/tasks";
 import Authorize from "components/Authorize";
 import { role } from "shared/constants/roles";
+import StatsItem from "components/StatsItem";
 
 function TasksList() {
     const { id } = useParams<{ id: string }>();
@@ -60,6 +61,9 @@ function TasksList() {
         return task.description.toLowerCase().includes(search.toLowerCase());
     });
 
+    const totalTasks = tasks.data?.length || 0;
+    const totalTimeSpent = tasks.data?.reduce((acc, task) => acc + task.timeSpent, 0) || 0;
+
     return (
         <>
             <div className="flex flex-row justify-between items-center pb-4 space-x-2">
@@ -69,10 +73,17 @@ function TasksList() {
                     </div>
                 } />
                 <Authorize roles={[role.AGENT]}>
-                    <Link to="./new">
-                        <Button>Agregar</Button>
-                    </Link>
+                    <Button as="link" navigateTo="./new">Agregar</Button>
                 </Authorize>
+            </div>
+            <div className="flex flex-row gap-8 my-4">
+                <StatsItem 
+                    label="Tareas" 
+                    value={totalTasks.toString()} />
+                <StatsItem 
+                    label="Tiempo total"
+                    value={totalTimeSpent.toString()}
+                    measurement={pluralize(totalTimeSpent, "hora", "horas")} />
             </div>
             <TableContainer>
                 <thead>
@@ -99,9 +110,7 @@ function TasksList() {
                                             <Authorize roles={[role.AGENT]}>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <Link to={`./${task.id}`}>
-                                                            <IconButton icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        </Link>
+                                                        <IconButton as="link" navigateTo={`./${task.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedTaskId(task.id);
                                                             confirmDialog.open();

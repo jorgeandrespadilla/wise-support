@@ -24,4 +24,10 @@ export const ticketPriorityOptions: DropdownOption[] = Object.entries(ticketPrio
     value: key,
 }));
 
+export const showAllFilter = "ALL";
+
+export const showAllFilterOption: DropdownOption = {
+    label: "Todos",
+    value: showAllFilter,
+};
 
