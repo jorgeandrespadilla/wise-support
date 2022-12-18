@@ -1,0 +1,78 @@
+/** Quill Editor overrides **/
+.ql-snow.ql-toolbar {
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+}
+
+.ql-snow.ql-toolbar .ql-picker {
+    height: 32px;
+}
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 0.375rem;
+}
+
+.ql-snow.ql-toolbar .ql-picker-label::before {
+    line-height: 30px;
+}
+
+.ql-snow.ql-toolbar .ql-picker-options {
+    border-radius: 0.375rem;
+}
+
+.ql-snow.ql-container {
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+}
+
+/** Dark Mode **/
+.dark .ql-snow.ql-toolbar,
+.dark .ql-snow.ql-container,
+.dark .ql-snow.ql-toolbar .ql-picker {
+    background-color: rgb(30 41 59);
+    color: #fff;
+}
+
+.dark .ql-snow .ql-editor pre.ql-syntax {
+    background-color: rgb(51 65 85);
+}
+
+.dark .ql-snow.ql-toolbar .ql-picker .ql-picker-options {
+    background-color: inherit;
+}
+
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker) .ql-stroke {
+    stroke: #fff;
+}
+
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker) :is(.ql-fill, .ql-stroke.ql-fill) {
+    fill: #fff;
+}
+
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker-label).ql-active,
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker-label):hover {
+    color: #3b82f6;
+}
+
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker-label).ql-active .ql-stroke,
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker-label):hover .ql-stroke {
+    stroke: #3b82f6;
+}
+
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker-label).ql-active .ql-fill,
+.dark .ql-snow.ql-toolbar :is(button, .ql-picker-label):hover .ql-fill {
+    fill: #3b82f6;
+}
+
+.dark .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
+    color: #3b82f6;
+}
+
+.dark .ql-snow.ql-toolbar .ql-expanded :is(.ql-picker-label, .ql-stroke, .ql-fill) {
+    color: #ccc !important;
+    stroke: #ccc !important;
+    fill: #ccc !important;
+}

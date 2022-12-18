@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
+import './MarkdownEditor.css';
 
 type MarkdownEditorProps = {
     placeholder?: string;
