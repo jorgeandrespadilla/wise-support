@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
 import { Path, FieldValues, RegisterOptions, Control } from 'react-hook-form';
 
+export type ColorScheme = "light" | "dark";
+export type Theme = ColorScheme | "system";
+
 export interface LinkConfig {
     /** The URL of the link */
     to: string;

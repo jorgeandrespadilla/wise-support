@@ -3,31 +3,44 @@ const storageEvent = {
     update: "updateStorage",
 };
 
+type StorageType = "sessionStorage" | "localStorage";
+
+const storageMap: Record<StorageType, Storage> = {
+    sessionStorage,
+    localStorage,
+};
+
 /**
  * Utilities to work with the browser's session storage and synchronize it across tabs.
  */
-export const storage = {
-    get: (key: string) => sessionStorage.getItem(key),
-    set: (key: string, value: string) => {
-        sessionStorage.setItem(key, value);
-        sendStorageUpdate();
-    },
-    remove: (key: string) => {
-        sessionStorage.removeItem(key);
-        sendStorageUpdate();
-    },
-    isEmpty: () => sessionStorage.length === 0,
-    length: sessionStorage.length,
-};
+export const storageHandler = (type: StorageType) => {
+    const storage = storageMap[type];
+    return {
+        get: (key: string) => storage.getItem(key),
+        set: (key: string, value: string) => {
+            storage.setItem(key, value);
+            sendStorageUpdate();
+        },
+        remove: (key: string) => {
+            storage.removeItem(key);
+            sendStorageUpdate();
+        },
+        isEmpty: () => storage.length === 0,
+        length: storage.length,
+    };
+}
 
 /**
  * Creates a storage handler for the given key.
  */
-export const itemStorage = (key: string) => ({
-    get: () => storage.get(key),
-    set: (value: string) => storage.set(key, value),
-    remove: () => storage.remove(key),
-});
+export const itemStorage = <T = string>(key: string, type: StorageType = "sessionStorage") => {
+    const storage = storageHandler(type);
+    return {
+        get: () => storage.get(key) as T | null,
+        set: (value: string) => storage.set(key, value),
+        remove: () => storage.remove(key),
+    };
+}
 
 /**
  * Triggers an event based on changes to the storage using the given key.
@@ -73,7 +86,7 @@ export const getStorageUpdate = () => {
  * Listens for changes to the local storage and updates the session storage.
  * @returns A function to remove the listener.
  */
-export const listenForStorageUpdates = (onUpdateCompleted = () => {}) => {
+export const listenForStorageUpdates = (onUpdateCompleted = () => { }) => {
     const callback = (event: StorageEvent) => {
         if (event.key === storageEvent.get) {
             // Some tab asked for the sessionStorage -> send it

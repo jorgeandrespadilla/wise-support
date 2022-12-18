@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from 'context/AuthProvider';
 import { HttpProvider } from 'context/HttpProvider';
+import { ThemeProvider } from 'context/ThemeProvider';
 import App from './App';
 import "shared/extensions"; // Load extension methods
 import './index.css';
@@ -16,7 +17,9 @@ root.render(
     <BrowserRouter>
       <HttpProvider>
         <AuthProvider>
-          <App />
+          <ThemeProvider defaultTheme='system'>
+            <App />
+          </ThemeProvider>
         </AuthProvider>
       </HttpProvider>
     </BrowserRouter>
