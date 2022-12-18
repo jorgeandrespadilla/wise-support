@@ -23,6 +23,7 @@ import StatsHome from 'pages/statistics/StatsHome';
 import PerformanceStats from 'pages/statistics/PerformanceStats';
 import SettingsHome from 'pages/settings/SettingsHome';
 import AppearanceSettings from 'pages/settings/AppearanceSettings';
+import CategoriesStats from 'pages/statistics/CategoriesStats';
 
 const Router = () => (
     <Routes>
@@ -51,6 +52,7 @@ const Router = () => (
                 <Route index element={<Navigate replace to="/stats/performance" />} />
 
                 <Route path="/stats/performance" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< PerformanceStats /></ProtectedRoute>} />
+                <Route path="/stats/categories" element={<ProtectedRoute allowed={[role.ADMIN]}>< CategoriesStats /></ProtectedRoute>} />
             </Route>
 
             {/* Options dropdown */}
