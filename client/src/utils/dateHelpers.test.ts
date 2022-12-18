@@ -34,6 +34,11 @@ describe("dateHelpers", () => {
             const dateStr = formatDateForDisplay(date, "local");
             expect(dateStr).toBe(expectedDate(date, "/"));
         });
+        it("should convert a date object to a correct UTC datetime format", () => {
+            const date = new Date("2019-08-10");
+            const dateStr = formatDateForDisplay(date, "utc", "datetime");
+            expect(dateStr).toBe(`10/08/2019 00:00`);
+        });
     });
     describe("datePickerToISODate", () => {
         it("should convert a date picker format to a correct ISO date", () => {

@@ -4,20 +4,40 @@ export { DateTime } from 'luxon';
 
 const datePickerFormat = 'yyyy-MM-dd';
 const dateDisplayFormat = 'dd/MM/yyyy';
+const datetimeDisplayFormat = 'dd/MM/yyyy HH:mm';
 
+/**
+ * Timezone format.
+ * 'local' - Local timezone
+ * 'utc' - UTC timezone
+ */
 type TimezoneFormat = 'local' | 'utc';
+
+/**
+ * Date format.
+ * 'default' - Default date format (simple date string)
+ * 'iso' - ISO date format
+ */
 type DateFormat = 'default' | 'iso';
+
+/**
+ * Date format for display.
+ * 'date' - Date only
+ * 'datetime' - Date and time
+ */
+type DisplayFormat = 'date' | 'datetime';
 
 /**
  * Formats a date to a string for display purposes.
  * @param date Date to format
  * @returns Date string
  */
-export const formatDateForDisplay = (date: Date, zone: TimezoneFormat = "utc"): string => {
+export const formatDateForDisplay = (date: Date, zone: TimezoneFormat = "utc", display: DisplayFormat = "date"): string => {
+    const displayFormat = display === "date" ? dateDisplayFormat : datetimeDisplayFormat;
     if (zone === "utc") {
-        return normalizeDate(date).toFormat(dateDisplayFormat);
+        return normalizeDate(date).toFormat(displayFormat);
     }
-    return DateTime.fromJSDate(date).toFormat(dateDisplayFormat);
+    return DateTime.fromJSDate(date).toFormat(displayFormat);
 }
 
 /**
