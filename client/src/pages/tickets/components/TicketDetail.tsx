@@ -165,12 +165,10 @@ function TicketDetail() {
                 }
                 {
                     isDefined(ticket.data) && ticket.data.endedAt !== null && (
-                        <p className="text-gray-500 text-lg"> · </p>
-                    )
-                }
-                {
-                    isDefined(ticket.data) && ticket.data.endedAt !== null && (
-                        <p className="text-sm text-gray-500">Finalizado el {formatDateForDisplay(new Date(ticket.data.endedAt), "local", "datetime")}</p>
+                        <>
+                            <p className="text-gray-500 text-lg"> · </p>
+                            <p className="text-sm text-gray-500">Finalizado el {formatDateForDisplay(new Date(ticket.data.endedAt), "local", "datetime")}</p>
+                        </>
                     )
                 }
             </div>
