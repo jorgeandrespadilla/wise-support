@@ -118,6 +118,8 @@ export interface TicketDetail extends SubsetOf<DbTicket, {
 
 /** Statistics **/
 
+//#region Users performance
+
 export interface StatsUser extends SubsetOf<DbUser, {
     id: number;
     firstName: string;
@@ -163,3 +165,30 @@ export interface UserPerformanceResponse extends UserPerformance {
 export interface PerformanceStatsResponse extends PerformanceStats {
     users: UserPerformanceResponse[];
 }
+
+//#endregion
+
+//#region Categories statistics
+
+export interface StatsCategoryDetail extends SubsetOf<DbCategory, {
+    id: number;
+    name: string;
+    code: string;
+    description: string | null;
+}> { }
+
+export interface StatsTicketWithCategory extends SubsetOf<DbTicket, {}> {
+    category: StatsCategoryDetail;
+}
+
+export interface StatsCategoryResponse {
+    category: StatsCategoryDetail;
+    totalTickets: number;
+}
+
+export interface CategoriesStatsResponse {
+    categories: StatsCategoryResponse[];
+    totalCategories: number;
+}
+
+//#endregion
