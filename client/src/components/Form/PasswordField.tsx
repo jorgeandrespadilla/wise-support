@@ -19,8 +19,8 @@ function PasswordField<TFields extends FieldValues>({
             type={showPassword ? 'text' : 'password'}
             suffixContent={
                 togglePassword && (
-                    <IconButton type="minimal" onClick={() => setShowPassword(!showPassword)} icon={
-                        showPassword 
+                    <IconButton title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} type="minimal" onClick={() => setShowPassword(!showPassword)} icon={
+                        showPassword
                             ? <EyeIcon className="h-5 w-5 text-gray-500" />
                             : <EyeSlashIcon className="h-5 w-5 text-gray-500" />
                     } />

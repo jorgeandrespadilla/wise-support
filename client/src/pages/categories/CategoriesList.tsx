@@ -93,8 +93,8 @@ function CategoriesList() {
                                                 <Cell disabled={!category.description}>{category.description ?? "No disponible"}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/categories/${category.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                        <IconButton title="Editar categoría" as="link" navigateTo={`/categories/${category.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Eliminar categoría" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedCategoryId(category.id);
                                                             confirmDialog.open();
                                                         }} />

@@ -98,8 +98,8 @@ function UsersList() {
                                                 <Cell>{formatDateForDisplay(new Date(user.birthDate))}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                        <IconButton title="Editar usuario" as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Eliminar usuario" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedUserId(user.id);
                                                             confirmDialog.open();
                                                         }} />

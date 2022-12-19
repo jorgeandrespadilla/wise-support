@@ -111,8 +111,8 @@ function TasksList() {
                                             <Authorize roles={[role.AGENT]}>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`./${task.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                        <IconButton title="Editar tarea" as="link" navigateTo={`./${task.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Eliminar tarea" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedTaskId(task.id);
                                                             confirmDialog.open();
                                                         }} />

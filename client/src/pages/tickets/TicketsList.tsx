@@ -102,9 +102,9 @@ function TicketsList() {
                                                 <Cell>{ticketPriority[ticket.priority]}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/tickets/${ticket.id}/detail`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Editar ticket" as="link" navigateTo={`/tickets/${ticket.id}/detail`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
-                                                            <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                            <IconButton title="Eliminar ticket" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                                 setSelectedTicketId(ticket.id);
                                                                 confirmDialog.open();
                                                             }} />

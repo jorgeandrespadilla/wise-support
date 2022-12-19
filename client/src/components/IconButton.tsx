@@ -12,6 +12,10 @@ type IconButtonProps = {
      * Only used when as="link"
      */
     navigateTo?: string;
+    /**
+     * Title attribute (used for accessibility and tooltips)
+     */
+    title: string;
     icon: React.ReactNode;
 }
 
@@ -32,6 +36,7 @@ function IconButton({
     size = "md",
     onClick = () => { },
     navigateTo,
+    title,
     icon,
 }: IconButtonProps) {
 
@@ -39,11 +44,13 @@ function IconButton({
         as === "link"
             ? <Link
                 to={navigateTo}
+                title={title}
                 className={`flex justify-center items-center ${buttonType[type]} ${buttonSize[size]}`}>
                 {icon}
             </Link>
             : <button
                 type="button"
+                title={title}
                 className={`flex justify-center items-center ${buttonType[type]} ${buttonSize[size]}`}
                 onClick={onClick}>
                 {icon}
