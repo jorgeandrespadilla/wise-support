@@ -86,7 +86,7 @@ function EditCategory() {
                 <TextAreaField name="description" label="Descripción" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleUpdate(data))}>Guardar</Button>
                 <Button as="link" navigateTo="/categories" type="secondary">Cancelar</Button>
             </div>
         </Card>

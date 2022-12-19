@@ -34,10 +34,10 @@ function IconButton({
     as = "button",
     type = "normal",
     size = "md",
-    onClick = () => { },
-    navigateTo,
     title,
     icon,
+    onClick = () => { },
+    navigateTo = "#",
 }: IconButtonProps) {
 
     return (

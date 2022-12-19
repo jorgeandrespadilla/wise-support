@@ -25,6 +25,14 @@ export const buttonType = {
     danger: "bg-danger hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
 };
 
+export const disabledLinkByButtonType = {
+    primary: "opacity-50 hover:bg-opacity-100",
+    secondary: "opacity-50 hover:bg-white",
+    text: "opacity-50 hover:bg-transparent",
+    minimal: "opacity-50 hover:bg-transparent",
+    danger: "opacity-50 hover:bg-opacity-100",
+};
+
 export const buttonSize = {
     sm: 'px-4 py-2 text-sm',
     md: 'px-6 py-2 text-base',
@@ -49,14 +57,13 @@ function Button({
     disabled = false,
     children,
     onClick = () => { },
-    navigateTo,
+    navigateTo = "#",
 }: ButtonProps) {
     return (
         as === "link"
             ? <Link
                 to={navigateTo}
-                disabled={disabled}
-                className={`${buttonType[type]} ${buttonSize[size]} ${type === "minimal" ? "px-1 py-1" : ""} text-center font-bold rounded ${borderRadius[rounded]}`}>
+                className={`${buttonType[type]} ${buttonSize[size]} ${type === "minimal" ? "px-1 py-1" : ""} text-center font-bold rounded ${borderRadius[rounded]} ${disabled ? `${disabledLinkByButtonType[type]} pointer-events-none` : ""}`}>
                 {children}
             </Link>
             : <button 

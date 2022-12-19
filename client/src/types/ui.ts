@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Path, FieldValues, RegisterOptions, Control } from 'react-hook-form';
+import { FieldValues, RegisterOptions, Control, FieldPath } from 'react-hook-form';
 
 export type ColorScheme = "light" | "dark";
 export type Theme = ColorScheme | "system";
@@ -83,7 +83,7 @@ export type InputDecorationProps = {
 };
 
 export type BaseFormInputProps<TFormValues extends FieldValues = FieldValues> = {
-    name: Path<TFormValues>;
+    name: FieldPath<TFormValues>;
     control?: Control<TFormValues>;
     rules?: RegisterOptions;
 };

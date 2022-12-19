@@ -104,7 +104,7 @@ function AddTicket() {
                 <NumberField name="timeEstimated" label="Tiempo estimado (en horas)" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(handleAdd)}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleAdd(data))}>Guardar</Button>
                 <Link to="/tickets">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

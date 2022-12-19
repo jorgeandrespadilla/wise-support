@@ -1,4 +1,4 @@
-import { FieldValues, UseFormSetError, Path, UseFormGetValues } from "react-hook-form";
+import { FieldValues, UseFormSetError, UseFormGetValues, FieldPath } from "react-hook-form";
 import zod from 'zod';
 import { z, ZodType } from "zod/lib";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -58,7 +58,7 @@ const handleFormError = <TFields extends FieldValues = FieldValues>(fieldErrors:
     const formFields = Object.keys(form.getValues());
 
     fieldErrors.forEach(fieldError => {
-        const path = fieldError.path.join(".") as Path<TFields>;
+        const path = fieldError.path.join(".") as FieldPath<TFields>;
         if (formFields.includes(path)) {
             form.setError(path, { message: fieldError.message });
         }

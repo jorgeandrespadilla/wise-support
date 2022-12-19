@@ -109,7 +109,7 @@ function EditUser() {
                 </DropdownField>
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleUpdate(data))}>Guardar</Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>
