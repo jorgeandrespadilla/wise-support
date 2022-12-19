@@ -8,8 +8,7 @@ function NotFound() {
     const goBack = () => navigate(-1);
 
     return (
-
-        <div className="lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 min-h-screen items-center flex justify-center ">
+        <div className="dark:bg-slate-900 dark:text-slate-200 lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 min-h-screen items-center flex justify-center ">
             <div className="relative">
                 <div className="flex justify-center">
                     <img src={brokenImage} alt="No encontrado" className="max-h-72" />

@@ -61,20 +61,20 @@ function DropdownMenu({
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
             >
-                <ul className={`absolute ${menuAlign}-0 bg-white shadow-md rounded py-1 mt-2 border w-48 border-gray-200 text-gray-600`} >
+                <ul className={`absolute ${menuAlign}-0 bg-white dark:bg-slate-800 shadow-md rounded py-1 mt-2 border w-48 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300`} >
                     {optionGroups.map((options, index) => (
                         <React.Fragment key={index}>
-                            {index > 0 && <li className="border-t border-gray-200 my-1"></li>}
+                            {index > 0 && <li className="border-t dark:border-gray-700 border-gray-200 my-1"></li>}
                             {options.map((option, index) => (
                                 <li key={index} className='px-1'>
                                     <div onClick={() => setIsOpen(false)}>
                                         {option.navigateTo ? (
-                                            <Link to={option.navigateTo} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 transition-all duration-300 cursor-pointer">
+                                            <Link to={option.navigateTo} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 dark:bg-opacity-10 transition-all duration-300 cursor-pointer">
                                                 {option.icon && <span>{option.icon}</span>}
                                                 {option.label}
                                             </Link>
                                         ) : (
-                                            <button onClick={option.action} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 transition-all duration-300 cursor-pointer">
+                                            <button onClick={option.action} className="flex gap-2 items-center text-left rounded px-4 py-2 w-full hover:bg-blue-100 dark:bg-opacity-10 transition-all duration-300 cursor-pointer">
                                                 {option.icon && <span>{option.icon}</span>}
                                                 {option.label}
                                             </button>

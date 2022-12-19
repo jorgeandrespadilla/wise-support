@@ -17,7 +17,7 @@ function NavItem({
     <li>
       <NavLink className={
         ({ isActive }: { isActive: boolean }) => {
-          return `block hover:bg-blue-100 px-4 py-2 rounded transition-all duration-300 ${isActive ? "text-blue-500" : "text-gray-500"}`;
+          return `block hover:bg-blue-100 dark:hover:bg-opacity-10 px-4 py-2 rounded transition-all duration-300 ${isActive ? "text-blue-500" : "text-gray-500 dark:text-gray-200"}`;
         }
       } key={index} to={to}>
         <div className="flex flex-row gap-2 items-center">

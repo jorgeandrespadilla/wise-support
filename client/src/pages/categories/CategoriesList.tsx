@@ -61,9 +61,7 @@ function CategoriesList() {
     return (
         <>
             <Card>
-                <div className="flex flex-row justify-between items-center">
-                    <CardHeader title="Categorías" />
-                </div>
+                <CardHeader title="Categorías" />
                 <Divider vertical="lg" showRule />
                 <div className="flex flex-row justify-between items-center pb-4 space-x-2">
                     <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={

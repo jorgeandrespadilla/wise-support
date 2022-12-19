@@ -34,6 +34,7 @@
 .dark .ql-snow.ql-toolbar .ql-picker {
     background-color: rgb(30 41 59);
     color: #fff;
+    border-color: rgb(55 65 81);
 }
 
 .dark .ql-snow .ql-editor pre.ql-syntax {
@@ -42,6 +43,7 @@
 
 .dark .ql-snow.ql-toolbar .ql-picker .ql-picker-options {
     background-color: inherit;
+    border-color: rgb(55 65 81);
 }
 
 .dark .ql-snow.ql-toolbar :is(button, .ql-picker) .ql-stroke {
@@ -75,4 +77,5 @@
     color: #ccc !important;
     stroke: #ccc !important;
     fill: #ccc !important;
+    border-color: rgb(55 65 81);
 }

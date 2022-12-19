@@ -66,7 +66,7 @@ function TopBar({
       </div>
       <DropdownMenu
         toggle={
-          <div className="flex flex-row items-center space-x-2 cursor-pointer text-gray-600">
+          <div className="flex flex-row items-center space-x-2 cursor-pointer text-gray-600 dark:text-slate-300">
             <Avatar userName={user?.fullName ?? ""} />
             <ChevronDownIcon className="w-5 h-5" />
           </div>

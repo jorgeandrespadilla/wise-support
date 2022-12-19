@@ -37,7 +37,7 @@ function TextArea({
         <div className={width === "full" ? "w-full" : "w-72"}>
             {
                 label && (
-                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700">
+                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">
                         {label}
                     </label>
                 )
@@ -51,7 +51,7 @@ function TextArea({
                         rows={rows}
                         disabled={disabled}
                         onChange={handleTextAreaChange}
-                        className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
+                        className={`lock border border-gray-300 dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
                     />
                     : <MarkdownEditor value={value} onChange={handleMarkdownEditorChange} />
                 }
