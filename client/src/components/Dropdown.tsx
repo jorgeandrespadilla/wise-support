@@ -1,4 +1,6 @@
+import { useMediaQuery } from "hooks";
 import { useId } from "react";
+import { breakpoints } from "shared/constants/themes";
 import { BaseInputProps } from "types/ui";
 
 type InputProps = BaseInputProps & {
@@ -25,6 +27,7 @@ function Dropdown({
     children,
 }: InputProps) {
     const field = useId();
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
 
     function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const newValue = event.target.value;
@@ -34,10 +37,10 @@ function Dropdown({
     const emptyValue = value === "";
 
     return (
-        <div className={width === "full" ? "w-full" : "w-72"}>
+        <div className={!isDesktop || width === "full"? "w-full" : "w-72"}>
             {
                 label && (
-                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700">
+                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">
                         {label}
                     </label>
                 )
@@ -49,7 +52,7 @@ function Dropdown({
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={handleChange}
-                    className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${emptyValue ? 'text-gray-500' : ''} ${invalid ? 'border-danger' : ''} ${disabled ? 'bg-gray-100' : ''}`}
+                    className={`lock border border-gray-300 dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${emptyValue ? 'text-gray-500' : 'dark:text-white'} ${invalid ? 'border-danger' : ''} ${disabled ? 'bg-gray-100 dark:bg-slate-800' : ''}`}
                 >
                     <>
                         <option value="" disabled hidden>{placeholder}</option>

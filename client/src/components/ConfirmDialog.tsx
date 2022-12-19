@@ -50,10 +50,10 @@ function ConfirmDialog({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">{title}</h3>
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-slate-800 p-6 text-left align-middle shadow-xl transition-all">
+                <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">{title}</h3>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">{description}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
                 </div>
                 <div className="mt-4 space-x-2 flex justify-end">
                   <Button size="sm" type='secondary' onClick={() => {

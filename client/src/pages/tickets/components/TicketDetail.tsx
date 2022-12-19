@@ -14,6 +14,8 @@ import { ticketPriorityOptions, ticketStatusOptions } from "shared/constants/opt
 import { useCurrentUser } from "hooks/useCurrentUser";
 import { formatDateForDisplay } from "utils/dateHelpers";
 import { isDefined } from "utils/dataHelpers";
+import { useMediaQuery } from "hooks";
+import { breakpoints } from "shared/constants/themes";
 
 type FormData = {
     title: string;
@@ -29,6 +31,7 @@ type FormData = {
 function TicketDetail() {
 
     const { id } = useParams<{ id: string }>();
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
     const navigate = useNavigate();
     const { isAuthorized } = useCurrentUser();
 
@@ -157,17 +160,21 @@ function TicketDetail() {
                 </DropdownField>
                 <NumberField name="timeEstimated" label="Tiempo estimado (en horas)" control={control} disabled={readonly} />
             </div>
-            <div className="flex flex-row items-baseline space-x-2 pb-8">
+            <div className="flex flex-col md:flex-row items-baseline gap-2 pb-8">
                 {
                     isDefined(ticket.data) && (
-                        <p className="text-sm text-gray-500">Creado el {formatDateForDisplay(new Date(ticket.data.createdAt), "local", "datetime")}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Creado el {formatDateForDisplay(new Date(ticket.data.createdAt), "local", "datetime")}</p>
                     )
                 }
                 {
                     isDefined(ticket.data) && ticket.data.endedAt !== null && (
                         <>
-                            <p className="text-gray-500 text-lg"> · </p>
-                            <p className="text-sm text-gray-500">Finalizado el {formatDateForDisplay(new Date(ticket.data.endedAt), "local", "datetime")}</p>
+                            {
+                                isDesktop && (
+                                    <p className="text-gray-500 dark:text-gray-400 text-lg"> · </p>
+                                )
+                            }
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Finalizado el {formatDateForDisplay(new Date(ticket.data.endedAt), "local", "datetime")}</p>
                         </>
                     )
                 }

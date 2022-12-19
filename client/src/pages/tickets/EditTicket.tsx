@@ -1,4 +1,5 @@
 import Card from "components/Card";
+import CardHeader from "components/CardHeader";
 import TabBar from "components/Navigation/TabBar";
 import { Outlet } from "react-router-dom";
 import { allRoles } from "shared/constants/roles";
@@ -7,7 +8,7 @@ function EditTicket() {
 
     return (
         <Card>
-            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Ticket</h1>
+            <CardHeader title="Ticket" />
             <TabBar tabs={[
                 { to: "./detail", label: "Detalle", roles: allRoles },
                 { to: "./tasks", label: "Tareas", roles: allRoles },

@@ -8,7 +8,7 @@ type ThemeOptionProps = {
 
 function ThemeOption({ option, checked }: ThemeOptionProps) {
     return (
-        <div className={`flex flex-col items-start ${checked ? 'text-primary' : ''}`}>
+        <div className={`flex flex-col items-center md:items-start ${checked ? 'text-primary' : ''}`}>
             <div className={`relative rounded-lg overflow-hidden border-2 ${checked ? 'border-blue-500' : 'border-transparent'}`}>
                 {checked && (
                     <CheckCircleIcon className="absolute w-6 h-6 text-blue-500" />

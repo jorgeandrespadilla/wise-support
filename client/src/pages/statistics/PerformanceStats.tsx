@@ -10,6 +10,10 @@ import { useForm } from 'react-hook-form';
 import { normalizeTimezone, today } from 'utils/dateHelpers';
 import { DatePicker } from 'components/Form';
 import toast from 'utils/toast';
+import Divider from 'components/Divider';
+import { useMediaQuery } from 'hooks';
+import { breakpoints } from 'shared/constants/themes';
+import StatsContainer from 'components/StatsContainer';
 
 type FormData = {
     startDate: string;
@@ -24,6 +28,8 @@ const initialData = {
 };
 
 function PerformanceStats() {
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
+
     const { control, reset, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             startDate: today("iso"),
@@ -60,15 +66,20 @@ function PerformanceStats() {
     return (
         <>
             <form onSubmit={handleSubmit(() => usersPerformance.refetch())}>
-                <div className="flex flex-row justify-between items-end pb-4 space-x-2">
-                    <div className="flex flex-row gap-2">
+                <div className="flex flex-col md:flex-row justify-between md:items-end pb-4 gap-4">
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-2">
                         <DatePicker dateFormat='iso' width='half' name="startDate" label="Fecha de inicio" control={control} />
                         <DatePicker dateFormat='iso' width='half' name="endDate" label="Fecha de fin" control={control} />
                     </div>
                     <Button as="submit">Buscar</Button>
                 </div>
             </form>
-            <div className="flex flex-row gap-8 my-4">
+            {
+                !isDesktop && (
+                    <Divider vertical='md' showRule />
+                )
+            }
+            <StatsContainer>
                 <StatsItem
                     label="Nuevos tickets"
                     value={stats.newTickets.toString()} />
@@ -79,7 +90,7 @@ function PerformanceStats() {
                 <StatsItem
                     label="Puntuación promedio"
                     value={stats.averagePerformanceScore.toString()} />
-            </div>
+            </StatsContainer>
             <TableContainer>
                 <thead>
                     <tr className="border-0 border-b-2 text-left">

@@ -2,6 +2,7 @@ export { useAuth } from "./useAuth";
 export { useCategoriesData } from "./useCategoriesData";
 export { useCurrentUser } from "./useCurrentUser";
 export { useLoadingToast } from "./useLoadingToast";
+export { useMediaQuery } from "./useMediaQuery";
 export { useModal } from "./useModal";
 export { useRolesData } from "./useRolesData";
 export { useTheme } from "./useTheme";

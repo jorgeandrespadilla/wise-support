@@ -1,4 +1,6 @@
+import { useMediaQuery } from "hooks";
 import { useId } from "react";
+import { breakpoints } from "shared/constants/themes";
 import { BaseInputProps, BaseInputType, InputDecorationProps, InputMode } from "types/ui";
 
 type InputProps = BaseInputProps & InputDecorationProps & {
@@ -28,6 +30,7 @@ function Input({
     onChange = () => { },
 }: InputProps) {
     const field = useId();
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const newValue = event.target.value;
@@ -35,10 +38,10 @@ function Input({
     }
 
     return (
-        <div className={width === "full" ? "w-full" : "w-72"}>
+        <div className={!isDesktop || width === "full" ? "w-full" : "w-72"}>
             {
                 label && (
-                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700">
+                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">
                         {label}
                     </label>
                 )
@@ -61,7 +64,7 @@ function Input({
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={handleChange}
-                    className={`lock border border-gray-300 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${prefixContent ? 'pl-10' : ''} ${suffixContent ? 'pr-10' : ''} ${invalid ? 'border-danger' : ''} ${disabled ? 'bg-gray-100 text-gray-600' : ''}`}
+                    className={`lock border dark:text-white border-gray-300 dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${prefixContent ? 'pl-10' : ''} ${suffixContent ? 'pr-10' : ''} ${invalid ? 'border-danger' : ''} ${disabled ? 'bg-gray-100 text-gray-600' : ''}`}
                 />
                 {
                     suffixContent && (

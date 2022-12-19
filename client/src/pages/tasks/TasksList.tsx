@@ -15,6 +15,7 @@ import { deleteTask, getTasksByTicketId } from "services/tasks";
 import Authorize from "components/Authorize";
 import { role } from "shared/constants/roles";
 import StatsItem from "components/StatsItem";
+import StatsContainer from "components/StatsContainer";
 
 function TasksList() {
     const { id } = useParams<{ id: string }>();
@@ -76,7 +77,7 @@ function TasksList() {
                     <Button as="link" navigateTo="./new">Agregar</Button>
                 </Authorize>
             </div>
-            <div className="flex flex-row gap-8 my-4">
+            <StatsContainer>
                 <StatsItem 
                     label="Tareas" 
                     value={totalTasks.toString()} />
@@ -84,7 +85,7 @@ function TasksList() {
                     label="Tiempo total"
                     value={totalTimeSpent.toString()}
                     measurement={pluralize(totalTimeSpent, "hora", "horas")} />
-            </div>
+            </StatsContainer>
             <TableContainer>
                 <thead>
                     <tr className="border-0 border-b-2 text-left">
@@ -110,8 +111,8 @@ function TasksList() {
                                             <Authorize roles={[role.AGENT]}>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`./${task.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                        <IconButton title="Editar tarea" as="link" navigateTo={`./${task.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Eliminar tarea" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedTaskId(task.id);
                                                             confirmDialog.open();
                                                         }} />

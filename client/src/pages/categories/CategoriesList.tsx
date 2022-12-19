@@ -61,11 +61,9 @@ function CategoriesList() {
     return (
         <>
             <Card>
-                <div className="flex flex-row justify-between items-center">
-                    <CardHeader title="Categorías" />
-                </div>
+                <CardHeader title="Categorías" />
                 <Divider vertical="lg" showRule />
-                <div className="flex flex-row justify-between items-center pb-4 space-x-2">
+                <div className="flex flex-row justify-between items-center pb-4 gap-4">
                     <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={
                         <div className="pl-3">
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
@@ -95,8 +93,8 @@ function CategoriesList() {
                                                 <Cell disabled={!category.description}>{category.description ?? "No disponible"}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/categories/${category.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                        <IconButton title="Editar categoría" as="link" navigateTo={`/categories/${category.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Eliminar categoría" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedCategoryId(category.id);
                                                             confirmDialog.open();
                                                         }} />

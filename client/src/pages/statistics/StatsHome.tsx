@@ -1,4 +1,5 @@
 import Card from "components/Card";
+import CardHeader from "components/CardHeader";
 import TabBar from "components/Navigation/TabBar";
 import { Outlet } from "react-router-dom";
 import { role } from "shared/constants/roles";
@@ -7,7 +8,7 @@ function StatsHome() {
 
     return (
         <Card>
-            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Estadísticas</h1>
+            <CardHeader title="Estadísticas" />
             <TabBar tabs={[
                 { to: "./performance", label: "Productividad", roles: [role.ADMIN, role.SUPERVISOR] },
                 { to: "./categories", label: "Categorías", roles: [role.ADMIN] },

@@ -8,7 +8,7 @@ function TableEmpty({ label = "No se encontraron resultados" }: TableEmptyProps)
     return (
         <tr>
             <Cell colSpan={100} align="center">
-                <div className="text-sm text-neutral p-4 py-3">
+                <div className="text-sm text-neutral dark:text-gray-400 p-4 py-3">
                     {label}
                 </div>
             </Cell>
