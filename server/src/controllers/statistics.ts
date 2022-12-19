@@ -1,12 +1,12 @@
+import { round } from "lodash";
 import { db } from "@/database/client";
-import { ticketPriority, ticketStatus } from "@/constants/tickets";
+import { PerformanceStatsRequestSchema } from "@/schemas/statistics";
 import { PerformanceStatsResponse, SelectFields, StatsTicket, StatsUser, TicketPerformance, UserPerformance, UserPerformanceResponse } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
-import { PerformanceStatsRequestSchema } from "@/schemas/statistics";
 import { validateAndParse } from "@/utils/validation";
-import { addDays } from "@/utils/dateHelpers";
+import { addDaysToDate } from "@/utils/dateHelpers";
 import { role } from "@/constants/roles";
-import { round } from "lodash";
+import { ticketPriority, ticketStatus } from "@/constants/tickets";
 
 type TimeDifferenceType = "DELAYED" | "ON_TIME" | "EARLY";
 
@@ -65,7 +65,7 @@ export const getUsersPerformance = catchErrors(async (req, res) => {
                 gte: requestData.startDate,
             },
             endedAt: {
-                lte: addDays(requestData.endDate, 1),
+                lte: addDaysToDate(requestData.endDate, 1),
             },
             // If current user is supervisor, only show tickets assigned to his subordinates.
             supervisorId: isSupervisor ? req.currentUser.id : undefined,

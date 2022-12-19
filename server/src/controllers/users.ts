@@ -1,10 +1,11 @@
 import { db } from "@/database/client";
-import { catchErrors } from "@/utils/catchErrors";
-import { EntityNotFoundError, ValidationError } from "@/common/errors";
 import { GetUsersRequestSchema, CreateUserRequestSchema, UpdateUserRequestSchema } from "@/schemas/users";
+import { Role, SelectFields, User, UserProfile, UserProfileResponse, UserResponse } from "@/types";
+import { EntityNotFoundError, ValidationError } from "@/common/errors";
+import { catchErrors } from "@/utils/catchErrors";
 import { validateAndParse } from "@/utils/validation";
-import { Role, SelectFields, User, UserProfile } from "@/types";
 import { generateHash } from "@/utils/crypto";
+import { formatDate } from "@/utils/dateHelpers";
 
 const roleFieldsToSelect: SelectFields<Role> = {
     id: true,
@@ -54,6 +55,7 @@ export const getUserById = catchErrors(async (req, res) => {
         where: { id: userId },
         select: userFieldsToSelect
     });
+
     res.send(mapToUserResponse(user!));
 });
 
@@ -74,6 +76,7 @@ export const createUser = catchErrors(async (req, res) => {
         },
         select: userFieldsToSelect
     });
+
     res.send(mapToUserResponse(user));
 });
 
@@ -97,16 +100,15 @@ export const updateUser = catchErrors(async (req, res) => {
         },
         select: userFieldsToSelect
     });
+
     res.send(mapToUserResponse(user));
 });
 
 export const deleteUser = catchErrors(async (req, res) => {
     const userId = Number(req.params.userId);
 
-    if (userId === req.currentUser.id) {
-        throw new ValidationError("La cuenta actual no puede ser eliminada.");
-    }
     await validateUser(userId);
+    validateCurrentUser(userId, req.currentUser.id);
     await validateUserToDelete(userId);
 
     await db.user.delete({
@@ -120,17 +122,19 @@ export const getCurrentUser = catchErrors(async (req, res) => {
     res.send(mapToUserProfileResponse(req.currentUser));
 });
 
-function mapToUserResponse(user: User) {
+function mapToUserResponse(user: User): UserResponse {
     return {
         ...user,
         fullName: `${user.firstName} ${user.lastName}`,
+        birthDate: formatDate(user.birthDate),
     };
 }
 
-function mapToUserProfileResponse(user: UserProfile) {
+function mapToUserProfileResponse(user: UserProfile): UserProfileResponse {
     return {
         ...user,
         fullName: `${user.firstName} ${user.lastName}`,
+        birthDate: formatDate(user.birthDate),
     };
 }
 
@@ -142,7 +146,15 @@ async function validateUser(userId: number) {
         where: { id: userId }
     });
 
-    if (!user) throw new EntityNotFoundError("Usuario", { id: userId });
+    if (!user) {
+        throw new EntityNotFoundError("Usuario", { id: userId });
+    }
+}
+
+function validateCurrentUser(userId: number, currentUserId: number) {
+    if (userId === currentUserId) {
+        throw new ValidationError("La cuenta actual no puede ser eliminada.");
+    }
 }
 
 async function validateRole(roleCode: string) {
@@ -150,7 +162,9 @@ async function validateRole(roleCode: string) {
         where: { code: roleCode }
     });
 
-    if (!role) throw new EntityNotFoundError("Rol", { code: roleCode });
+    if (!role) {
+        throw new EntityNotFoundError("Rol", { code: roleCode });
+    }
 }
 
 async function validateExistingEmail(email: string, userId?: number) {

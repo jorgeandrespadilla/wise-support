@@ -1,8 +1,7 @@
+import { DATE_CONFIG } from '@/constants/settings';
 import { today, tryParseDate } from '@/utils/dateHelpers';
 import { sanitizeEmail, sanitizeOptionalField, sanitizeText } from '@/utils/sanitizers';
 import { isValidPassword, message, v } from '@/utils/validation';
-
-const minDate = new Date(1900, 0, 1);
 
 export const GetUsersRequestSchema = v.object({
     role: v.string(message.required)
@@ -19,8 +18,8 @@ const UserRequestSchema = v.object({
     birthDate: v.preprocess(
         tryParseDate,
         v.date(message.date)
-            .min(minDate, message.minDate(minDate))
-            .max(today(), message.maxDate(today()))
+            .min(DATE_CONFIG.minDate, message.minDate(DATE_CONFIG.minDate))
+            .max(today("endOfDay"), message.maxDateToday)
     ),
     email: v.string(message.required)
         .min(1, message.nonEmpty)

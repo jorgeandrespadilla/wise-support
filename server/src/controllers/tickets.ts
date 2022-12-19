@@ -6,7 +6,7 @@ import { omit } from "lodash";
 import { validateAndParse } from "@/utils/validation";
 import { GetTicketsRequestSchema, CreateTicketRequestSchema, UpdateTicketRequestSchema } from "@/schemas/tickets";
 import { generateCode } from "@/utils/uuid";
-import { today } from "@/utils/dateHelpers";
+import { now } from "@/utils/dateHelpers";
 import { role } from "@/constants/roles";
 import { TicketPriority, TicketStatus } from "@prisma/client";
 import { allTicketStatuses, allTicketPriorities, allowedStatusByRole, friendlyTicketStatus, hasTicketEnded, ticketStatus } from "@/constants/tickets";
@@ -153,7 +153,7 @@ export const updateTicket = catchErrors(async (req, res) => {
             ...data,
             status: newTicketStatus,
             priority: newTicketPriority,
-            endedAt: hasTicketEnded(newTicketStatus) ? today() : null,
+            endedAt: hasTicketEnded(newTicketStatus) ? now() : null,
             assignee: {
                 connect: { id: assigneeId }
             },

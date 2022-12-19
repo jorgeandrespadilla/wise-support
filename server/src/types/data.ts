@@ -10,9 +10,14 @@ import {
 import { SubsetOf } from "./utilities";
 
 
+/** Authentication **/
+
 export interface TokenData {
     userId?: number;
 }
+
+
+/** Roles **/
 
 export interface Role extends SubsetOf<DbRole, {
     id: number;
@@ -20,6 +25,9 @@ export interface Role extends SubsetOf<DbRole, {
     name: string,
     description: string | null,
 }> { }
+
+
+/** Users **/
 
 export interface User extends SubsetOf<DbUser, {
     id: number;
@@ -33,7 +41,20 @@ export interface User extends SubsetOf<DbUser, {
     role: Role;
 }
 
-export interface UserProfile extends User { }
+export interface UserProfile extends User {}
+
+export interface UserResponse extends Omit<User, 'birthDate'> {
+    fullName: string;
+    birthDate: string;
+}
+
+export interface UserProfileResponse extends Omit<UserProfile, 'birthDate'> {
+    fullName: string;
+    birthDate: string;
+}
+
+
+/** Categories **/
 
 export interface Category extends SubsetOf<DbCategory, {
     id: number;
@@ -42,12 +63,18 @@ export interface Category extends SubsetOf<DbCategory, {
     description: string | null;
 }> { }
 
+
+/** Tasks **/
+
 export interface Task extends SubsetOf<DbTask, {
     id: number;
     description: string;
     timeSpent: number;
     createdAt: Date;
 }> { }
+
+
+/** Tickets **/
 
 export interface TicketUser extends SubsetOf<DbUser, {
     id: number;

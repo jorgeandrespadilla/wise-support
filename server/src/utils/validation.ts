@@ -1,6 +1,6 @@
 import zod, { z, ZodType } from 'zod';
 import { ValidationError } from '@/common/errors';
-import { formatDate } from './dateHelpers';
+import { formatDateForDisplay } from './dateHelpers';
 
 type TypeValidationMessage = {
     required_error: string;
@@ -38,8 +38,9 @@ export const message = {
     max: (max: number) => createMessage(`Debe ser menor o igual a ${max}`),
 
     date: createTypeMessage('Fecha inválida'),
-    minDate: (minDate: Date) => createMessage(`No debe ser anterior al ${formatDate(minDate)}`),
-    maxDate: (maxDate: Date) => createMessage(`No debe ser posterior al ${formatDate(maxDate)}`),
+    minDate: (minDate: Date) => createMessage(`No debe ser anterior al ${formatDateForDisplay(minDate)}`),
+    maxDate: (maxDate: Date) => createMessage(`No debe ser posterior al ${formatDateForDisplay(maxDate)}`),
+    maxDateToday: createMessage('No debe ser posterior a la fecha actual'),
     minDateLessThanMaxDate: createMessage('La fecha de inicio no debe ser posterior a la fecha de fin'),
 
     boolean: createTypeMessage('Valor inválido'),
