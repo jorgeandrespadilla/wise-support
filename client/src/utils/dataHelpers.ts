@@ -1,4 +1,4 @@
-import { parseISODate } from "./dateHelpers";
+import { tryParseDate } from "./dateHelpers";
 
 export const sortAsc = <T>(data: T[], key: (item: T) => string) => {
     return data.sort((a, b) => key(a).localeCompare(key(b)));
@@ -22,8 +22,8 @@ export const pluralize = (count: number, singular: string, plural: string) => {
 
 export const sortDescByDateTime = <T>(data: T[], key: (item: T) => string) => {
     return data.sort((a, b) => {
-        const aDate = parseISODate(key(a));
-        const bDate = parseISODate(key(b));
+        const aDate = tryParseDate(key(a));
+        const bDate = tryParseDate(key(b));
         if (aDate > bDate) {
             return -1;
         }

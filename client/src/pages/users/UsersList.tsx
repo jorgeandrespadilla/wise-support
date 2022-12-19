@@ -9,12 +9,12 @@ import CardHeader from "components/CardHeader";
 import Input from "components/Input";
 import Divider from "components/Divider";
 import { Cell, HeaderCell, TableContainer, TableEmpty, TableLoader } from "components/Table";
-import { formatDate, parseISODate } from "utils/dateHelpers";
 import { handleAPIError } from "utils/validation";
 import { deleteUser, getUsers } from "services/users";
 import { useModal } from "hooks/useModal";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { isDefined, sortAsc } from "utils/dataHelpers";
+import { formatDateForDisplay } from "utils/dateHelpers";
 
 function UsersList() {
 
@@ -97,7 +97,7 @@ function UsersList() {
                                                 <Cell>{user.fullName}</Cell>
                                                 <Cell>{user.email}</Cell>
                                                 <Cell>{user.role.name}</Cell>
-                                                <Cell>{formatDate(parseISODate(user.birthDate))}</Cell>
+                                                <Cell>{formatDateForDisplay(new Date(user.birthDate))}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
                                                         <IconButton as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />

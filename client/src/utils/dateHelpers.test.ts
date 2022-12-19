@@ -1,53 +1,43 @@
-import { DateTime } from 'luxon';
+import { padStart } from 'lodash';
 import {
-    normalizeDate,
-    parseJSDate,
-    parseISODate,
-    formatDate,
+    formatDateForDisplay,
     datePickerToISODate,
     isoDateToDatePicker,
+    tryParseDate,
+    normalizeTimezone,
+    today,
 } from './dateHelpers';
 
+const expectedDate = (date: Date, delimiter: string) => {
+    const day = padStart(date.getDate().toString(),2,'0');
+    const month = padStart((date.getMonth() + 1).toString(),2,'0');
+    const year = date.getFullYear().toString();
+    return `${day}${delimiter}${month}${delimiter}${year}`;
+}
+
+const expectedDateInverse = (date: Date, delimiter: string) => {
+    const day = padStart(date.getDate().toString(),2,'0');
+    const month = padStart((date.getMonth() + 1).toString(),2,'0');
+    const year = date.getFullYear().toString();
+    return `${year}${delimiter}${month}${delimiter}${day}`;
+}
+
 describe("dateHelpers", () => {
-    describe("normalizeDate", () => {
-        it("should return a date without time and with default timezone", () => {
-            const date = new Date("2020-01-01T06:31:10.000Z");
-            const result = normalizeDate(DateTime.fromJSDate(date));
-            expect(result.get("second")).toBe(0);
-            expect(result.get("minute")).toBe(0);
-            expect(result.get("hour")).toBe(0);
-            expect(result.get("day")).toBe(1);
-            expect(result.get("month")).toBe(1);
-            expect(result.get("year")).toBe(2020);
+    describe("formatDateForDisplay", () => {
+        it("should convert a date object to a correct UTC date format", () => {
+            const date = new Date("2019-08-10");
+            const dateStr = formatDateForDisplay(date);
+            expect(dateStr).toBe("10/08/2019");
         });
-    });
-    describe("parseJSDate", () => {
-        it("should parse a JS Date object to a DateTime object", () => {
-            const date = parseJSDate(new Date(2020, 0, 1));
-            expect(date.get("day")).toBe(1);
-            expect(date.get("month")).toBe(1);
-            expect(date.get("year")).toBe(2020);
-        });
-    });
-    describe("parseISODate", () => {
-        it("should parse a date string in ISO format to a DateTime object", () => {
-            const isoDate = "2020-01-01T00:00:00.000Z";
-            const date = parseISODate(isoDate);
-            expect(date.get("day")).toBe(1);
-            expect(date.get("month")).toBe(1);
-            expect(date.get("year")).toBe(2020);
-        });
-    });
-    describe("formatDate", () => {
-        it("should convert a date to a correct date string format", () => {
-            const date = parseJSDate(new Date(2019, 8, 10));
-            const dateStr = formatDate(date);
-            expect(dateStr).toBe("10/09/2019");
+        it("should convert a date object to a correct local date format", () => {
+            const date = new Date("2019-08-10");
+            const dateStr = formatDateForDisplay(date, "local");
+            expect(dateStr).toBe(expectedDate(date, "/"));
         });
     });
     describe("datePickerToISODate", () => {
         it("should convert a date picker format to a correct ISO date", () => {
-            const isoDate = datePickerToISODate("2019-09-10");
+            const isoDate = datePickerToISODate("2019-09-10");            
             expect(isoDate).toBe("2019-09-10T00:00:00.000Z");
        });
     });
@@ -55,6 +45,40 @@ describe("dateHelpers", () => {
         it("should convert a ISO date to a correct date picker format", () => {
             const datePickerDate = isoDateToDatePicker("2019-09-10T00:00:00.000Z");
             expect(datePickerDate).toBe("2019-09-10");
+        });
+    });
+    describe("today", () => {
+        it("should return the current date in ISO format", () => {
+            const todayDate = today("iso");
+            const expected = expectedDateInverse(new Date(), "-");
+            expect(todayDate).toBe(`${expected}T00:00:00.000Z`);
+        });
+        it("should return the current date in date picker format", () => {
+            const todayDate = today();
+            const expected = expectedDateInverse(new Date(), "-");
+            expect(todayDate).toBe(expected);
+        });
+    });
+    describe("tryParseDate", () => {
+        it("should parse a date string in ISO format to a date object", () => {
+            const isoDate = "2020-01-01T00:00:00.000Z";
+            const date: Date = tryParseDate(isoDate);
+            expect(date.toISOString()).toBe(isoDate);
+        });
+        it("should parse a simple date string to a date object", () => {
+            const simpleDate = "2020-01-01";
+            const date: Date = tryParseDate(simpleDate);
+            expect(date.toISOString()).toBe("2020-01-01T00:00:00.000Z");
+        });
+    });
+    describe("normalizeTimezone", () => {
+        it("should normalize a date in ISO format to a date in ISO format subtracting the timezone offset", () => {
+            const initialIsoDate = "2020-01-01T00:00:00.000Z";
+            const initialDate: Date = tryParseDate(initialIsoDate);
+            const finalIsoDate = normalizeTimezone(initialIsoDate);
+            const finalDate: Date = tryParseDate(finalIsoDate);
+            const offset = initialDate.getTimezoneOffset() * 60 * 1000;
+            expect(finalDate.getTime()).toBe(initialDate.getTime() + offset);
         });
     });
 });

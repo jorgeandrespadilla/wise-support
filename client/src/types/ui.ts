@@ -44,6 +44,8 @@ export type BaseTextAreaType = "text" | "markdown";
 
 export type InputMode = "text" | "numeric" | "decimal";
 
+export type DateFormat = "default" | "iso";
+
 export type BaseInputProps = {
     /** The label to show above the input */
     label?: string;

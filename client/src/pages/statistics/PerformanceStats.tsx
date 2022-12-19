@@ -7,7 +7,7 @@ import StatsItem from "components/StatsItem";
 import { getUsersPerformance } from 'services/statistics';
 import { GetPerformanceStatsRequest } from 'types';
 import { useForm } from 'react-hook-form';
-import { today } from 'utils/dateHelpers';
+import { normalizeTimezone, today } from 'utils/dateHelpers';
 import { DatePicker } from 'components/Form';
 import toast from 'utils/toast';
 
@@ -26,8 +26,8 @@ const initialData = {
 function PerformanceStats() {
     const { control, reset, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
-            startDate: today().toISO(),
-            endDate: today().toISO(),
+            startDate: today("iso"),
+            endDate: today("iso"),
         },
     });
 
@@ -36,8 +36,8 @@ function PerformanceStats() {
             const query = form.getValues();
 
             const request: GetPerformanceStatsRequest = {
-                startDate: query.startDate,
-                endDate: query.endDate,
+                startDate: normalizeTimezone(query.startDate),
+                endDate: normalizeTimezone(query.endDate),
             };
             const data = await getUsersPerformance(request);
             if (data.users.isEmpty()) {
@@ -62,8 +62,8 @@ function PerformanceStats() {
             <form onSubmit={handleSubmit(() => usersPerformance.refetch())}>
                 <div className="flex flex-row justify-between items-end pb-4 space-x-2">
                     <div className="flex flex-row gap-2">
-                        <DatePicker width='half' name="startDate" label="Fecha de inicio" control={control} />
-                        <DatePicker width='half' name="endDate" label="Fecha de fin" control={control} />
+                        <DatePicker dateFormat='iso' width='half' name="startDate" label="Fecha de inicio" control={control} />
+                        <DatePicker dateFormat='iso' width='half' name="endDate" label="Fecha de fin" control={control} />
                     </div>
                     <Button as="submit">Buscar</Button>
                 </div>
