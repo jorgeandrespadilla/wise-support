@@ -36,7 +36,7 @@ function EditCategory() {
             return {
                 name: res.name,
                 code: res.code,
-                description: res.description,
+                description: res.description ?? "",
             } as FormData;
         },
         {
