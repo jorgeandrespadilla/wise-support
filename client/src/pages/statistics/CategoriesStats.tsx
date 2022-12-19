@@ -65,8 +65,8 @@ function CategoriesStats() {
                     <Button as="submit">Buscar</Button>
                 </div>
             </form>
-            <div className="flex flex-row gap-8 my-4">
-                <StatsItem
+            <div className="flex justify-center gap-8 my-4">
+                <StatsItem width='third'
                     label="Total de categorías"
                     value={stats.totalCategories.toString()} />
             </div>

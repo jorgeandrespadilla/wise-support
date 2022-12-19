@@ -51,7 +51,7 @@ function TextArea({
                         rows={rows}
                         disabled={disabled}
                         onChange={handleTextAreaChange}
-                        className={`lock border border-gray-300 dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
+                        className={`lock border border-gray-300 dark:text-white dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
                     />
                     : <MarkdownEditor value={value} onChange={handleMarkdownEditorChange} />
                 }

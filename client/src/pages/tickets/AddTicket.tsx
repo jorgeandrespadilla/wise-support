@@ -12,6 +12,7 @@ import { useUsersData } from "hooks/useUsersData";
 import { role } from "shared/constants/roles";
 import { addTicket } from "services/tickets";
 import { ticketPriorityOptions } from "shared/constants/options";
+import CardHeader from "components/CardHeader";
 
 type FormData = {
     title: string;
@@ -76,8 +77,8 @@ function AddTicket() {
 
     return (
         <Card>
-            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Nuevo Ticket</h1>
-            <div className="flex flex-col pb-8 space-y-4">
+            <CardHeader title="Nuevo Ticket" />
+            <div className="flex flex-col pt-8 pb-8 space-y-4">
                 <TextField name="title" label="Asunto" control={control} />
                 <DropdownField name="categoryId" label="Categoría" placeholder="Seleccione una categoría" control={control}>
                     {categories.data?.map((category) => (

@@ -8,6 +8,7 @@ import { AddCategoryRequest } from "types";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { useMutation } from "@tanstack/react-query";
 import { addCategory } from "services/categories";
+import CardHeader from "components/CardHeader";
 
 type FormData = {
     name: string;
@@ -56,8 +57,8 @@ function AddCategory() {
 
     return (
         <Card>
-            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Nueva Categoría</h1>
-            <div className="flex flex-col pb-8 space-y-4">
+            <CardHeader title="Nueva Categoría" />
+            <div className="flex flex-col pt-8 pb-8 space-y-4">
                 <TextField name="name" label="Nombre" control={control} />
                 <TextField name="code" label="Código" control={control} />
                 <TextAreaField name="description" label="Descripción" control={control} />
