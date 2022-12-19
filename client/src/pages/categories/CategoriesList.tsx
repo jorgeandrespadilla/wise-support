@@ -63,7 +63,7 @@ function CategoriesList() {
             <Card>
                 <CardHeader title="Categorías" />
                 <Divider vertical="lg" showRule />
-                <div className="flex flex-row justify-between items-center pb-4 space-x-2">
+                <div className="flex flex-row justify-between items-center pb-4 gap-4">
                     <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={
                         <div className="pl-3">
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />

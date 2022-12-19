@@ -11,10 +11,10 @@ function NotFound() {
         <div className="dark:bg-slate-900 dark:text-slate-200 lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 min-h-screen items-center flex justify-center ">
             <div className="relative">
                 <div className="flex justify-center">
-                    <img src={brokenImage} alt="No encontrado" className="max-h-72" />
+                    <img src={brokenImage} alt="No encontrado" className="max-h-56 md:max-h-72" />
                 </div>
                 <div className="py-6">
-                    <h1 className="my-2 text-primary font-bold text-3xl lg:text-4xl text-center font-poppins" >
+                    <h1 className="my-2 text-primary font-bold text-2xl md:text-3xl lg:text-4xl text-center font-poppins" >
                         Página no encontrada
                     </h1 >
                     <div className="my-4 sm:w-full flex justify-center">

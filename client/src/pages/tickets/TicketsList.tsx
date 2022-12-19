@@ -68,7 +68,7 @@ function TicketsList() {
             <Card>
                 <CardHeader title="Tickets" />
                 <Divider vertical="lg" showRule />
-                <div className="flex flex-row justify-between items-end pb-4 space-x-2">
+                <div className="flex flex-row justify-between items-end pb-4 gap-4">
                     <Dropdown width="half" label="Estado" placeholder="Seleccione un estado" value={selectedStatusFilter} onChange={setSelectedStatusFilter}>
                         {statusFilterOptions.map((status) => (
                             <option key={status.value} value={status.value}>{status.label}</option>

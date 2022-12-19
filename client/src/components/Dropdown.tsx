@@ -1,4 +1,6 @@
+import { useMediaQuery } from "hooks";
 import { useId } from "react";
+import { breakpoints } from "shared/constants/themes";
 import { BaseInputProps } from "types/ui";
 
 type InputProps = BaseInputProps & {
@@ -25,6 +27,7 @@ function Dropdown({
     children,
 }: InputProps) {
     const field = useId();
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
 
     function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const newValue = event.target.value;
@@ -34,7 +37,7 @@ function Dropdown({
     const emptyValue = value === "";
 
     return (
-        <div className={width === "full" ? "w-full" : "w-72"}>
+        <div className={!isDesktop || width === "full"? "w-full" : "w-72"}>
             {
                 label && (
                     <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">

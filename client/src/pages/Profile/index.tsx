@@ -21,7 +21,7 @@ function Profile() {
                 <Avatar userName={user?.fullName ?? ""} />
                 <h1 className="inline-block align-middle font-poppins pr-4 dark:text-white">Perfil de Usuario</h1>
             </div>
-            <Divider showRule={true} vertical="sm" />
+            <Divider vertical="sm" showRule />
             {
                 isLoading
                     ? (

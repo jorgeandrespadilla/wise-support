@@ -15,6 +15,7 @@ import { deleteTask, getTasksByTicketId } from "services/tasks";
 import Authorize from "components/Authorize";
 import { role } from "shared/constants/roles";
 import StatsItem from "components/StatsItem";
+import StatsContainer from "components/StatsContainer";
 
 function TasksList() {
     const { id } = useParams<{ id: string }>();
@@ -76,7 +77,7 @@ function TasksList() {
                     <Button as="link" navigateTo="./new">Agregar</Button>
                 </Authorize>
             </div>
-            <div className="flex flex-row gap-8 my-4">
+            <StatsContainer>
                 <StatsItem 
                     label="Tareas" 
                     value={totalTasks.toString()} />
@@ -84,7 +85,7 @@ function TasksList() {
                     label="Tiempo total"
                     value={totalTimeSpent.toString()}
                     measurement={pluralize(totalTimeSpent, "hora", "horas")} />
-            </div>
+            </StatsContainer>
             <TableContainer>
                 <thead>
                     <tr className="border-0 border-b-2 text-left">

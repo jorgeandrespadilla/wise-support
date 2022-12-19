@@ -1,4 +1,6 @@
+import { useMediaQuery } from "hooks";
 import { useId } from "react";
+import { breakpoints } from "shared/constants/themes";
 import { BaseInputProps, BaseInputType, InputDecorationProps, InputMode } from "types/ui";
 
 type InputProps = BaseInputProps & InputDecorationProps & {
@@ -28,6 +30,7 @@ function Input({
     onChange = () => { },
 }: InputProps) {
     const field = useId();
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const newValue = event.target.value;
@@ -35,7 +38,7 @@ function Input({
     }
 
     return (
-        <div className={width === "full" ? "w-full" : "w-72"}>
+        <div className={!isDesktop || width === "full" ? "w-full" : "w-72"}>
             {
                 label && (
                     <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">

@@ -126,7 +126,7 @@ function TopBar({
                     <span className="hidden">Cerrar menú</span>
                   </NavToggle>
                 </div>
-                <Divider showRule={true} vertical="lg" />
+                <Divider vertical="lg" showRule />
                 <ul className="flex flex-col justify-center space-y-2 w-full">
                   {
                     links.map((link, index) => (

@@ -2,6 +2,8 @@ import { useId } from "react";
 import { BaseInputProps, BaseTextAreaType } from "types/ui";
 import 'quill/dist/quill.snow.css';
 import MarkdownEditor from "./MarkdownEditor";
+import { breakpoints } from "shared/constants/themes";
+import { useMediaQuery } from "hooks";
 
 type TextAreaProps = BaseInputProps & {
     type?: BaseTextAreaType;
@@ -23,6 +25,7 @@ function TextArea({
     onChange = () => { },
 }: TextAreaProps) {
     const field = useId();
+    const isDesktop = useMediaQuery(breakpoints.up("md"));
 
     function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         const newValue = event.target.value;
@@ -34,7 +37,7 @@ function TextArea({
     }
 
     return (
-        <div className={width === "full" ? "w-full" : "w-72"}>
+        <div className={!isDesktop || width === "full" ? "w-full" : "w-72"}>
             {
                 label && (
                     <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">
