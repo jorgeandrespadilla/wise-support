@@ -24,7 +24,7 @@ function ThemeOption({ option, checked }: ThemeOptionProps) {
                 <img
                     src={option.image}
                     alt={option.label}
-                    className="w-full h-full object-cover"
+                    className="w-full lg:h-44 object-cover"
                 />
             </div>
             <span className="pt-2">{option.label}</span>

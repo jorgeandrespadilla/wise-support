@@ -16,7 +16,7 @@ function HomeLink({ appTitle, onClick = () => {} }: HomeLinkProps) {
                 src={isDarkTheme ? logo.dark : logo.light}
                 alt={appTitle}
                 title={appTitle}
-                className="h-10"
+                className="h-10 w-10"
             />
         </NavLink>
     );
