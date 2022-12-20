@@ -11,5 +11,10 @@ module.exports = {
         project: './tsconfig.json',
         tsconfigRootDir: __dirname,
     },
-    rules: {},
+    rules: {
+        '@typescript-eslint/no-empty-function': [
+            'warn',
+            { allow: ['arrowFunctions'] },
+        ],
+    },
 };

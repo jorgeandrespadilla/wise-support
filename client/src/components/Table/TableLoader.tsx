@@ -1,5 +1,5 @@
-import Loader from "components/Loader";
-import Cell from "./Cell";
+import Loader from 'components/Loader';
+import Cell from './Cell';
 
 function TableLoader() {
     return (

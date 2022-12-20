@@ -1,32 +1,32 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import Button from "components/Button";
-import { handleAPIError } from "utils/validation";
-import { NumberField, TextAreaField } from "components/Form";
-import { AddTaskRequest } from "types";
-import { useLoadingToast } from "hooks/useLoadingToast";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import Button from 'components/Button';
+import { handleAPIError } from 'utils/validation';
+import { NumberField, TextAreaField } from 'components/Form';
+import { AddTaskRequest } from 'types';
+import { useLoadingToast } from 'hooks/useLoadingToast';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { getTask, updateTask } from "services/tasks";
+import { getTask, updateTask } from 'services/tasks';
 
 type FormData = {
     description: string;
     timeSpent: number;
-}
+};
 
 function EditTask() {
-
-    const { id, taskId } = useParams<{ id: string, taskId: string }>();
+    const { id, taskId } = useParams<{ id: string; taskId: string }>();
     const navigate = useNavigate();
 
     const { control, reset, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
-            description: "",
+            description: '',
             timeSpent: 0,
         },
     });
-    
-    useQuery(['task', taskId],
+
+    useQuery(
+        ['task', taskId],
         async () => {
             if (!taskId) return;
             const res = await getTask(taskId);
@@ -36,20 +36,20 @@ function EditTask() {
             } as FormData;
         },
         {
-            onSuccess: (data) => {
+            onSuccess: data => {
                 reset(data);
             },
-            onError: (e) => {
+            onError: e => {
                 handleAPIError(e);
                 navigate(-1);
             },
             refetchOnWindowFocus: false,
-        }
+        },
     );
 
-    const editTaskToast = useLoadingToast("editTask", {
-        loading: "Modificando tarea...",
-        success: "Tarea agregada",
+    const editTaskToast = useLoadingToast('editTask', {
+        loading: 'Modificando tarea...',
+        success: 'Tarea agregada',
     });
     const { mutate: handleUpdate } = useMutation(
         async (ticket: FormData) => {
@@ -67,11 +67,10 @@ function EditTask() {
                 editTaskToast.success();
                 navigate(-1);
             },
-            onError: (e) => {
+            onError: e => {
                 editTaskToast.error();
                 handleAPIError(e, { form, toastId: editTaskToast.toastId });
             },
-
         },
     );
 
@@ -79,11 +78,21 @@ function EditTask() {
         <>
             <h1 className="font-poppins text-xl text-neutral pb-4">Tarea</h1>
             <div className="flex flex-col pb-8 space-y-4">
-                <TextAreaField name="description" label="Descripción" control={control} />
-                <NumberField name="timeSpent" label="Tiempo empleado (en horas)" control={control} />
+                <TextAreaField
+                    name="description"
+                    label="Descripción"
+                    control={control}
+                />
+                <NumberField
+                    name="timeSpent"
+                    label="Tiempo empleado (en horas)"
+                    control={control}
+                />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(data => handleUpdate(data))}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleUpdate(data))}>
+                    Guardar
+                </Button>
                 <Link to="../tasks">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

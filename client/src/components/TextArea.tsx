@@ -1,9 +1,9 @@
-import { useId } from "react";
-import { BaseInputProps, BaseTextAreaType } from "types/ui";
+import { useId } from 'react';
+import { BaseInputProps, BaseTextAreaType } from 'types/ui';
 import 'quill/dist/quill.snow.css';
-import MarkdownEditor from "./MarkdownEditor";
-import { breakpoints } from "shared/constants/themes";
-import { useMediaQuery } from "hooks";
+import MarkdownEditor from './MarkdownEditor';
+import { breakpoints } from 'shared/constants/themes';
+import { useMediaQuery } from 'hooks';
 
 type TextAreaProps = BaseInputProps & {
     type?: BaseTextAreaType;
@@ -13,21 +13,23 @@ type TextAreaProps = BaseInputProps & {
 };
 
 function TextArea({
-    type = "text",
+    type = 'text',
     label,
     value,
-    width = "full",
-    placeholder = "",
-    feedback = "",
+    width = 'full',
+    placeholder = '',
+    feedback = '',
     rows = 5,
     invalid = false,
     disabled = false,
-    onChange = () => { },
+    onChange = () => {},
 }: TextAreaProps) {
     const field = useId();
-    const isDesktop = useMediaQuery(breakpoints.up("md"));
+    const isDesktop = useMediaQuery(breakpoints.up('md'));
 
-    function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    function handleTextAreaChange(
+        event: React.ChangeEvent<HTMLTextAreaElement>,
+    ) {
         const newValue = event.target.value;
         onChange(newValue);
     }
@@ -37,35 +39,44 @@ function TextArea({
     }
 
     return (
-        <div className={!isDesktop || width === "full" ? "w-full" : "w-72"}>
-            {
-                label && (
-                    <label htmlFor={field} className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200">
-                        {label}
-                    </label>
-                )
-            }
+        <div className={!isDesktop || width === 'full' ? 'w-full' : 'w-72'}>
+            {label && (
+                <label
+                    htmlFor={field}
+                    className="block text-sm mb-1 font-medium text-gray-700 dark:text-gray-200"
+                >
+                    {label}
+                </label>
+            )}
             <div className="relative">
-                {type === "text"
-                    ? <textarea
+                {type === 'text' ? (
+                    <textarea
                         id={field}
                         value={value}
                         placeholder={placeholder}
                         rows={rows}
                         disabled={disabled}
                         onChange={handleTextAreaChange}
-                        className={`lock border border-gray-300 dark:text-white dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${invalid ? 'border-danger' : ''}`}
+                        className={`lock border border-gray-300 dark:text-white dark:border-gray-700 dark:bg-slate-800 rounded-md outline-none px-3 py-2 w-full sm:text-sm ${
+                            invalid ? 'border-danger' : ''
+                        }`}
                     />
-                    : <MarkdownEditor value={value} onChange={handleMarkdownEditorChange} />
-                }
+                ) : (
+                    <MarkdownEditor
+                        value={value}
+                        onChange={handleMarkdownEditorChange}
+                    />
+                )}
             </div>
-            {
-                feedback && (
-                    <label className={`block text-xs mt-0.5 ml-1 font-medium ${invalid ? 'text-danger' : 'text-gray-500'}`}>
-                        {feedback}
-                    </label>
-                )
-            }
+            {feedback && (
+                <label
+                    className={`block text-xs mt-0.5 ml-1 font-medium ${
+                        invalid ? 'text-danger' : 'text-gray-500'
+                    }`}
+                >
+                    {feedback}
+                </label>
+            )}
         </div>
     );
 }

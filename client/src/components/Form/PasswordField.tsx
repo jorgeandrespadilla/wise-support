@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { FieldValues } from "react-hook-form";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import IconButton from "components/IconButton";
-import FormField from "./FormField";
-import { FormInputProps } from "types/ui";
+import { useState } from 'react';
+import { FieldValues } from 'react-hook-form';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
+import IconButton from 'components/IconButton';
+import FormField from './FormField';
+import { FormInputProps } from 'types/ui';
 
-type PasswordFieldProps<TFields extends FieldValues> = FormInputProps<TFields> & {
-    togglePassword?: boolean;
-};
+type PasswordFieldProps<TFields extends FieldValues> =
+    FormInputProps<TFields> & {
+        togglePassword?: boolean;
+    };
 
 function PasswordField<TFields extends FieldValues>({
     togglePassword = false,
@@ -19,11 +20,22 @@ function PasswordField<TFields extends FieldValues>({
             type={showPassword ? 'text' : 'password'}
             suffixContent={
                 togglePassword && (
-                    <IconButton title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} type="minimal" onClick={() => setShowPassword(!showPassword)} icon={
-                        showPassword
-                            ? <EyeIcon className="h-5 w-5 text-gray-500" />
-                            : <EyeSlashIcon className="h-5 w-5 text-gray-500" />
-                    } />
+                    <IconButton
+                        title={
+                            showPassword
+                                ? 'Ocultar contraseña'
+                                : 'Mostrar contraseña'
+                        }
+                        type="minimal"
+                        onClick={() => setShowPassword(!showPassword)}
+                        icon={
+                            showPassword ? (
+                                <EyeIcon className="h-5 w-5 text-gray-500" />
+                            ) : (
+                                <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                            )
+                        }
+                    />
                 )
             }
             clickableSuffix

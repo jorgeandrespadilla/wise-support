@@ -27,45 +27,191 @@ import CategoriesStats from 'pages/statistics/CategoriesStats';
 
 const Router = () => (
     <Routes>
-        <Route path="/login" element={< Login />} />
-        <Route path="/" element={<ProtectedRoute>< MainLayout /></ProtectedRoute>}>
+        <Route path="/login" element={<Login />} />
+        <Route
+            path="/"
+            element={
+                <ProtectedRoute>
+                    <MainLayout />
+                </ProtectedRoute>
+            }
+        >
             <Route index element={<Navigate replace to="/tickets" />} />
 
-            <Route path="/users" element={<ProtectedRoute allowed={[role.ADMIN]}>< UsersList /></ProtectedRoute>} />
-            <Route path="/users/new" element={<ProtectedRoute allowed={[role.ADMIN]}>< AddUser /></ProtectedRoute>} />
-            <Route path="/users/:id" element={<ProtectedRoute allowed={[role.ADMIN]}>< EditUser /></ProtectedRoute>} />
+            <Route
+                path="/users"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <UsersList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/users/new"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <AddUser />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/users/:id"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <EditUser />
+                    </ProtectedRoute>
+                }
+            />
 
-            <Route path="/tickets" element={<ProtectedRoute allowed={allRoles}>< TicketsList /></ProtectedRoute>} />
-            <Route path="/tickets/new" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< AddTicket /></ProtectedRoute>} />
-            <Route path="/tickets/:id" element={<ProtectedRoute allowed={allRoles}>< EditTicket /></ProtectedRoute>} >
-                <Route path="/tickets/:id/detail" element={<ProtectedRoute allowed={allRoles}>< TicketDetail /></ProtectedRoute>} />
-                <Route path="/tickets/:id/tasks" element={<ProtectedRoute allowed={allRoles}>< TasksList /></ProtectedRoute>} />
-                <Route path="/tickets/:id/tasks/new" element={<ProtectedRoute allowed={[role.AGENT]}>< AddTask /></ProtectedRoute>} />
-                <Route path="/tickets/:id/tasks/:taskId" element={<ProtectedRoute allowed={[role.AGENT]}>< EditTask /></ProtectedRoute>} />
+            <Route
+                path="/tickets"
+                element={
+                    <ProtectedRoute allowed={allRoles}>
+                        <TicketsList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/tickets/new"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>
+                        <AddTicket />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/tickets/:id"
+                element={
+                    <ProtectedRoute allowed={allRoles}>
+                        <EditTicket />
+                    </ProtectedRoute>
+                }
+            >
+                <Route
+                    path="/tickets/:id/detail"
+                    element={
+                        <ProtectedRoute allowed={allRoles}>
+                            <TicketDetail />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/tickets/:id/tasks"
+                    element={
+                        <ProtectedRoute allowed={allRoles}>
+                            <TasksList />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/tickets/:id/tasks/new"
+                    element={
+                        <ProtectedRoute allowed={[role.AGENT]}>
+                            <AddTask />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/tickets/:id/tasks/:taskId"
+                    element={
+                        <ProtectedRoute allowed={[role.AGENT]}>
+                            <EditTask />
+                        </ProtectedRoute>
+                    }
+                />
             </Route>
 
-            <Route path="/categories" element={<ProtectedRoute allowed={[role.ADMIN]}>< CategoriesList /></ProtectedRoute>} />
-            <Route path="/categories/new" element={<ProtectedRoute allowed={[role.ADMIN]}>< AddCategory /></ProtectedRoute>} />
-            <Route path="/categories/:id" element={<ProtectedRoute allowed={[role.ADMIN]}>< EditCategory /></ProtectedRoute>} />
+            <Route
+                path="/categories"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <CategoriesList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/categories/new"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <AddCategory />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/categories/:id"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <EditCategory />
+                    </ProtectedRoute>
+                }
+            />
 
-            <Route path="/stats" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< StatsHome /></ProtectedRoute>} >
-                <Route index element={<Navigate replace to="/stats/performance" />} />
+            <Route
+                path="/stats"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>
+                        <StatsHome />
+                    </ProtectedRoute>
+                }
+            >
+                <Route
+                    index
+                    element={<Navigate replace to="/stats/performance" />}
+                />
 
-                <Route path="/stats/performance" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< PerformanceStats /></ProtectedRoute>} />
-                <Route path="/stats/categories" element={<ProtectedRoute allowed={[role.ADMIN]}>< CategoriesStats /></ProtectedRoute>} />
+                <Route
+                    path="/stats/performance"
+                    element={
+                        <ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>
+                            <PerformanceStats />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/stats/categories"
+                    element={
+                        <ProtectedRoute allowed={[role.ADMIN]}>
+                            <CategoriesStats />
+                        </ProtectedRoute>
+                    }
+                />
             </Route>
 
             {/* Options dropdown */}
-            <Route path="/profile" element={<ProtectedRoute allowed={allRoles}>< Profile /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute allowed={allRoles}>< SettingsHome /></ProtectedRoute>} >
-                <Route index element={<Navigate replace to="/settings/appearance" />} />
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute allowed={allRoles}>
+                        <Profile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/settings"
+                element={
+                    <ProtectedRoute allowed={allRoles}>
+                        <SettingsHome />
+                    </ProtectedRoute>
+                }
+            >
+                <Route
+                    index
+                    element={<Navigate replace to="/settings/appearance" />}
+                />
 
-                <Route path="/settings/appearance" element={<ProtectedRoute allowed={allRoles}>< AppearanceSettings /></ProtectedRoute>} />
+                <Route
+                    path="/settings/appearance"
+                    element={
+                        <ProtectedRoute allowed={allRoles}>
+                            <AppearanceSettings />
+                        </ProtectedRoute>
+                    }
+                />
             </Route>
 
-            <Route path="/unauthorized" element={< Unauthorized />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
-        <Route path="*" element={< NotFound />} />
+        <Route path="*" element={<NotFound />} />
     </Routes>
 );
 

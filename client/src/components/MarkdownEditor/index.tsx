@@ -26,9 +26,9 @@ const quillConfig = {
 let loads = 0;
 
 function MarkdownEditor({
-    placeholder = "",
-    value = "",
-    onChange = () => { },
+    placeholder = '',
+    value = '',
+    onChange = () => {},
 }: MarkdownEditorProps) {
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<HTMLDivElement>(null);
@@ -39,11 +39,14 @@ function MarkdownEditor({
         if (!editor) {
             return;
         }
-        
+
         if (loads === 0) {
             editor.innerHTML = value;
             initialValueRef.current = value;
-        } else if (initialValueRef.current === "" && value !== initialValueRef.current) {
+        } else if (
+            initialValueRef.current === '' &&
+            value !== initialValueRef.current
+        ) {
             // If the value changes and it's not the initial value, update the editor
             initialValueRef.current = value;
             editor.innerHTML = value;
@@ -52,9 +55,11 @@ function MarkdownEditor({
     }, [value]);
 
     useLayoutEffect(() => {
-        let quill = new Quill(editorRef.current as Element, { placeholder, ...quillConfig });
+        const quill = new Quill(editorRef.current as Element, {
+            placeholder,
+            ...quillConfig,
+        });
 
-        
         const insertInitialValue = () => {
             quill.clipboard.dangerouslyPasteHTML(0, initialValueRef.current);
             quill.blur();
@@ -63,7 +68,8 @@ function MarkdownEditor({
             initialValueRef.current = getHTMLValue() as string;
             onChange(getHTMLValue() as string);
         };
-        const getHTMLValue = () => editorContainerRef.current?.querySelector('.ql-editor')?.innerHTML;
+        const getHTMLValue = () =>
+            editorContainerRef.current?.querySelector('.ql-editor')?.innerHTML;
 
         insertInitialValue();
 
@@ -83,6 +89,6 @@ function MarkdownEditor({
             <div ref={editorRef} />
         </div>
     );
-};
+}
 
 export default MarkdownEditor;

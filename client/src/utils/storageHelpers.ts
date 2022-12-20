@@ -1,9 +1,9 @@
 const storageEvent = {
-    get: "getStorage",
-    update: "updateStorage",
+    get: 'getStorage',
+    update: 'updateStorage',
 };
 
-type StorageType = "sessionStorage" | "localStorage";
+type StorageType = 'sessionStorage' | 'localStorage';
 
 const storageMap: Record<StorageType, Storage> = {
     sessionStorage,
@@ -28,19 +28,22 @@ export const storageHandler = (type: StorageType) => {
         isEmpty: () => storage.length === 0,
         length: storage.length,
     };
-}
+};
 
 /**
  * Creates a storage handler for the given key.
  */
-export const itemStorage = <T = string>(key: string, type: StorageType = "sessionStorage") => {
+export const itemStorage = <T = string>(
+    key: string,
+    type: StorageType = 'sessionStorage',
+) => {
     const storage = storageHandler(type);
     return {
         get: () => storage.get(key) as T | null,
         set: (value: string) => storage.set(key, value),
         remove: () => storage.remove(key),
     };
-}
+};
 
 /**
  * Triggers an event based on changes to the storage using the given key.
@@ -73,20 +76,20 @@ export function removeStorageListener(callback: (event: StorageEvent) => void) {
  */
 export const sendStorageUpdate = () => {
     triggerStorageEvent(storageEvent.update, JSON.stringify(sessionStorage));
-}
+};
 
 /**
  * Asks other tabs for session storage updates.
  */
 export const getStorageUpdate = () => {
     triggerStorageEvent(storageEvent.get, String(Date.now()));
-}
+};
 
 /**
  * Listens for changes to the local storage and updates the session storage.
  * @returns A function to remove the listener.
  */
-export const listenForStorageUpdates = (onUpdateCompleted = () => { }) => {
+export const listenForStorageUpdates = (onUpdateCompleted = () => {}) => {
     const callback = (event: StorageEvent) => {
         if (event.key === storageEvent.get) {
             // Some tab asked for the sessionStorage -> send it
@@ -100,7 +103,7 @@ export const listenForStorageUpdates = (onUpdateCompleted = () => { }) => {
             }
             onUpdateCompleted();
         }
-    }
+    };
     addStorageListener(callback);
     return () => removeStorageListener(callback);
-}
+};

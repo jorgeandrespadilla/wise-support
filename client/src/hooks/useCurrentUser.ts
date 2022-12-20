@@ -1,18 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "services/users";
-import { isDefined } from "utils/dataHelpers";
-import { handleAPIError } from "utils/validation";
-import { useAuth } from "./useAuth";
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from 'services/users';
+import { isDefined } from 'utils/dataHelpers';
+import { handleAPIError } from 'utils/validation';
+import { useAuth } from './useAuth';
 
 export const useCurrentUser = () => {
     const { isAuthenticated } = useAuth();
-    
-    const userProfile = useQuery(['userProfile', isAuthenticated],
+
+    const userProfile = useQuery(
+        ['userProfile', isAuthenticated],
         async () => {
             return await getProfile();
         },
         {
-            onError: (e) => {
+            onError: e => {
                 handleAPIError(e);
             },
             enabled: isAuthenticated,
@@ -30,11 +31,11 @@ export const useCurrentUser = () => {
         if (!isDefined(roles)) return true;
         const { role } = userProfile.data;
         return roles.includes(role.code);
-    }
+    };
 
     return {
         user: userProfile.data,
         isLoading: userProfile.isLoading,
-        isAuthorized
+        isAuthorized,
     };
 };

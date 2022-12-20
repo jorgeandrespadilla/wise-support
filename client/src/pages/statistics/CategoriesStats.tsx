@@ -1,8 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import Button from "components/Button";
-import { Cell, HeaderCell, TableContainer, TableEmpty, TableLoader } from "components/Table";
-import { handleAPIError } from "utils/validation";
-import StatsItem from "components/StatsItem";
+import Button from 'components/Button';
+import {
+    Cell,
+    HeaderCell,
+    TableContainer,
+    TableEmpty,
+    TableLoader,
+} from 'components/Table';
+import { handleAPIError } from 'utils/validation';
+import StatsItem from 'components/StatsItem';
 import { getCategoriesStats } from 'services/statistics';
 import { GetCategoriesStatsRequest, GetCategoriesStatsResponse } from 'types';
 import { useForm } from 'react-hook-form';
@@ -17,7 +23,7 @@ import StatsContainer from 'components/StatsContainer';
 type FormData = {
     startDate: string;
     endDate: string;
-}
+};
 
 const initialData: GetCategoriesStatsResponse = {
     categories: [],
@@ -25,16 +31,17 @@ const initialData: GetCategoriesStatsResponse = {
 };
 
 function CategoriesStats() {
-    const isDesktop = useMediaQuery(breakpoints.up("md"));
+    const isDesktop = useMediaQuery(breakpoints.up('md'));
 
     const { control, reset, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
-            startDate: today("iso"),
-            endDate: today("iso"),
+            startDate: today('iso'),
+            endDate: today('iso'),
         },
     });
 
-    const categoriesStats = useQuery(['categoriesStats'],
+    const categoriesStats = useQuery(
+        ['categoriesStats'],
         async () => {
             const query = form.getValues();
 
@@ -44,18 +51,18 @@ function CategoriesStats() {
             };
             const data = await getCategoriesStats(request);
             if (data.categories.isEmpty()) {
-                toast.error("No se encontraron resultados");
+                toast.error('No se encontraron resultados');
             }
             return data;
         },
         {
-            onError: (e) => {
+            onError: e => {
                 handleAPIError(e, { form });
             },
             enabled: false,
             initialData: initialData,
             cacheTime: 0,
-        }
+        },
     );
 
     const stats = categoriesStats.data ?? initialData;
@@ -65,21 +72,31 @@ function CategoriesStats() {
             <form onSubmit={handleSubmit(() => categoriesStats.refetch())}>
                 <div className="flex flex-col md:flex-row justify-between md:items-end pb-4 gap-4">
                     <div className="flex flex-col md:flex-row gap-4 md:gap-2">
-                        <DatePicker dateFormat='iso' width='half' name="startDate" label="Fecha de inicio" control={control} />
-                        <DatePicker dateFormat='iso' width='half' name="endDate" label="Fecha de fin" control={control} />
+                        <DatePicker
+                            dateFormat="iso"
+                            width="half"
+                            name="startDate"
+                            label="Fecha de inicio"
+                            control={control}
+                        />
+                        <DatePicker
+                            dateFormat="iso"
+                            width="half"
+                            name="endDate"
+                            label="Fecha de fin"
+                            control={control}
+                        />
                     </div>
                     <Button as="submit">Buscar</Button>
                 </div>
             </form>
-            {
-                !isDesktop && (
-                    <Divider vertical='md' showRule />
-                )
-            }
+            {!isDesktop && <Divider vertical="md" showRule />}
             <StatsContainer>
-                <StatsItem width='third'
+                <StatsItem
+                    width="third"
                     label="Total de categorías"
-                    value={stats.totalCategories.toString()} />
+                    value={stats.totalCategories.toString()}
+                />
             </StatsContainer>
             <TableContainer>
                 <thead>
@@ -90,27 +107,35 @@ function CategoriesStats() {
                     </tr>
                 </thead>
                 <tbody>
-                    {categoriesStats.isFetching
-                        ? (
-                            <TableLoader />
-                        )
-                        : (!stats.categories.isEmpty()
-                            ? (
-                                stats.categories.map((categoryStats, index) => {
-                                    return (
-                                        <tr key={categoryStats.category.id} className={`table-row ${!stats.categories.isLast(index) ? "border-b" : ""}`}>
-                                            <Cell>{categoryStats.category.name}</Cell>
-                                            <Cell disabled={!categoryStats.category.description}>{categoryStats.category.description ?? "No disponible"}</Cell>
-                                            <Cell>{categoryStats.totalTickets}</Cell>
-                                        </tr>
-                                    );
-                                })
-                            )
-                            : (
-                                <TableEmpty />
-                            )
-                        )
-                    }
+                    {categoriesStats.isFetching ? (
+                        <TableLoader />
+                    ) : !stats.categories.isEmpty() ? (
+                        stats.categories.map((categoryStats, index) => {
+                            return (
+                                <tr
+                                    key={categoryStats.category.id}
+                                    className={`table-row ${
+                                        !stats.categories.isLast(index)
+                                            ? 'border-b'
+                                            : ''
+                                    }`}
+                                >
+                                    <Cell>{categoryStats.category.name}</Cell>
+                                    <Cell
+                                        disabled={
+                                            !categoryStats.category.description
+                                        }
+                                    >
+                                        {categoryStats.category.description ??
+                                            'No disponible'}
+                                    </Cell>
+                                    <Cell>{categoryStats.totalTickets}</Cell>
+                                </tr>
+                            );
+                        })
+                    ) : (
+                        <TableEmpty />
+                    )}
                 </tbody>
             </TableContainer>
         </>

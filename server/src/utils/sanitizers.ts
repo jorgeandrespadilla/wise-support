@@ -11,4 +11,4 @@ export const sanitizeEmail = (value: string) => {
  */
 export const sanitizeOptionalField = (value: string) => {
     return value.trim() || undefined;
-}
+};

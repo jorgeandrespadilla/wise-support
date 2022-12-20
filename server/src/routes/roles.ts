@@ -5,6 +5,6 @@ import { allRoles } from '@/constants/roles';
 
 const router = express.Router();
 
-router.get("/roles", authorize(allRoles), users.getRoles);
+router.get('/roles', authorize(allRoles), users.getRoles);
 
 export default router;

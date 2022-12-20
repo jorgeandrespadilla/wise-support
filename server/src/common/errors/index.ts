@@ -1,4 +1,4 @@
-import { StatusCode } from "@/constants/http";
+import { StatusCode } from '@/constants/http';
 
 export type ErrorData = { [key: string]: any };
 
@@ -15,13 +15,22 @@ export class ServerError extends Error {
 
 export class RouteNotFoundError extends ServerError {
     constructor(originalUrl: string) {
-        super(`La ruta '${originalUrl}' no existe.`, 'ROUTE_NOT_FOUND', StatusCode.NOT_FOUND);
+        super(
+            `La ruta '${originalUrl}' no existe.`,
+            'ROUTE_NOT_FOUND',
+            StatusCode.NOT_FOUND,
+        );
     }
 }
 
 export class EntityNotFoundError extends ServerError {
     constructor(entityName: string, data: ErrorData = {}) {
-        super(`${entityName} no encontrado.`, 'ENTITY_NOT_FOUND', StatusCode.NOT_FOUND, data);
+        super(
+            `${entityName} no encontrado.`,
+            'ENTITY_NOT_FOUND',
+            StatusCode.NOT_FOUND,
+            data,
+        );
     }
 }
 
@@ -32,7 +41,7 @@ export class ValidationError extends ServerError {
 }
 
 export class InvalidTokenError extends ServerError {
-    constructor(reasonMessage: string = 'Token inválido.') {
+    constructor(reasonMessage = 'Token inválido.') {
         super(`Token inválido.`, 'INVALID_TOKEN', StatusCode.UNAUTHORIZED, {
             reason: reasonMessage,
         });
@@ -41,14 +50,19 @@ export class InvalidTokenError extends ServerError {
 
 export class UnauthorizedError extends ServerError {
     constructor(reasonMessage: string) {
-        super(`Usuario no autorizado.`, 'UNAUTHORIZED', StatusCode.UNAUTHORIZED, {
-            reason: reasonMessage,
-        });
+        super(
+            `Usuario no autorizado.`,
+            'UNAUTHORIZED',
+            StatusCode.UNAUTHORIZED,
+            {
+                reason: reasonMessage,
+            },
+        );
     }
 }
 
 export class ForbiddenError extends ServerError {
-    constructor(reasonMessage: string = 'Acceso restringido.') {
+    constructor(reasonMessage = 'Acceso restringido.') {
         super(`Usuario no autorizado.`, 'FORBIDDEN', StatusCode.FORBIDDEN, {
             reason: reasonMessage,
         });
