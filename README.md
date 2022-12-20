@@ -1,36 +1,72 @@
-# Proyecto Final de Ingeniería Web
+<p align="center">
+  <img src="preview/logo.png" alt="Wise Support Logo" width="100" />
+  <h1 align="center">Wise Support</h1>
+  <p align="center"><i>Jorge Andrés Padilla</i></p>
+  <p align="center">
+    Sistema para la gestión de tickets de soporte creado con TypeScript, Express y React.
+  </p>
+</p>
 
-**Autor**: *Jorge Andrés Padilla*
+## Previsualización
 
-![image](https://user-images.githubusercontent.com/58148764/202833990-26870275-9114-46b4-9276-2c0b1fe78755.png)
+![Modo claro](preview/light-mode.png)
+_Modo claro_
+
+![Modo oscuro](preview/dark-mode.png)
+_Modo oscuro_
+
+![Estadísticas](preview/stats.png)
+_Estadísticas_
+
+![Ajustes](preview/settings.png)
+_Ajustes_
 
 ## Descripción
 
 Este repositorio contiene el código fuente de la aplicación web desarrollada para el proyecto final de Ingeniería Web.
 
+Wise Support es un sistema enfocado en la gestión de tickets soporte que se generan dentro de una empresa, con el objetivo de dar seguimiento al nivel de productividad de cada uno de los usuarios de soporte a lo largo del tiempo en función de los tickets atendidos. Para ello, la aplicación ofrece las siguientes funcionalidades:
+
+-   Gestión de usuarios.
+-   Gestión de tickets.
+-   Gestión de categorías de tickets.
+-   Gestión de tareas asociadas a los tickets.
+-   Visualización de estadísticas.
+
+El sistema maneja tres tipos de usuarios:
+
+-   **Administrador**: tiene acceso a todas las funcionalidades del sistema.
+-   **Supervisor**: asigna tickets a los usuarios de soporte y da seguimiento a los tickets asignados. Además, puede ver las estadísticas de productividad de los usuarios de soporte.
+-   **Agente** (usuario de soporte): atiende los tickets asignados por el supervisor y registra las tareas realizadas para dar solución a los tickets.
+
 ## Estructura
 
 El repositorio está compuesto por dos componentes:
-- Backend que contiene la API del proyecto (código fuente ubicado en el directorio `server`).
-- Frontend que contiene la aplicación SPA del proyecto (código fuente ubicado en el directorio `client`).
+
+-   Backend que contiene la API del proyecto (código fuente ubicado en el directorio `server`).
+-   Frontend que contiene la aplicación SPA del proyecto (código fuente ubicado en el directorio `client`).
 
 ## Características
 
-- Manejo de usuarios (CRUD).
-- Autenticación y control de acceso.
+-   Manejo de usuarios.
+-   Visualización de estadísticas.
+-   Autenticación y control de acceso basado en roles.
+-   Uso de migraciones para la administración de la base de datos.
+-   Diseño responsivo y accesible.
 
 ## Tecnologías y Herramientas
 
-- Los proyectos fueron desarrollados en TypeScript** usando la versión 16 de Node.js, y son gestionados usando NPM Workspaces.
-- El **Backend** utiliza Express.js y Prisma (ORM).
-- El **Frontend** utiliza React.js y Tailwind CSS para el diseño de la aplicación.
-- El proyecto utiliza PostgreSQL para el almacenamiento de los datos.
-- El sistema de autenticación se implementa usando JWT (JSON Web Tokens).
+-   Los proyectos fueron desarrollados en TypeScript\*\* usando la versión 16 de Node.js, y son gestionados usando NPM Workspaces.
+-   El **Backend** utiliza Express.js y Prisma (ORM).
+-   El **Frontend** utiliza React.js y Tailwind CSS para el diseño de la aplicación.
+-   El proyecto utiliza PostgreSQL para el almacenamiento de los datos.
+-   El sistema de autenticación se implementa usando JWT (JSON Web Tokens).
+-   El proyecto utiliza Jest para la ejecución de pruebas unitarias.
+-   El proyecto utiliza ESLint y Prettier para la verificación y formateo del código fuente.
 
 ## Instalaciones y Configuraciones Previas
 
-1. Instalar PostgreSQL y crear una base de datos llamada `ingweb`.
-   
+1. Instalar PostgreSQL y crear una base de datos llamada `wise_support`.
 2. Clonar el repositorio.
 
 3. Instalar las dependencias de Node.js ejecutando el comando `npm install` en la raíz del proyecto.
@@ -47,19 +83,19 @@ El repositorio está compuesto por dos componentes:
 
 2. Variables de entorno del proyecto `server`:
 
-    Variable	                | Descripción
-    ---          	            | ---
-    `SERVER_PORT`               | Número de puerto para escuchar las peticiones HTTP
-    `SERVER_BASE_URL`           | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)
-    `JWT_ACCESS_TOKEN_SECRET`   | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)
-    `JWT_REFRESH_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)
-    `DATABASE_URL`              | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings))
+    | Variable                   | Descripción                                                                                                            |
+    | -------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+    | `SERVER_PORT`              | Número de puerto para escuchar las peticiones HTTP                                                                     |
+    | `SERVER_BASE_URL`          | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)                                          |
+    | `JWT_ACCESS_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)                             |
+    | `JWT_REFRESH_TOKEN_SECRET` | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)                     |
+    | `DATABASE_URL`             | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings)) |
 
     > En producción, es necesario configurar las variables de entorno en el servidor donde se desplegará la aplicación, dado que las variables de entorno no se leen desde el archivo `.env` en producción.
 
 ### Administración de la Base de Datos
 
-*La administración de la base de datos se realiza dentro del directorio `server`.*
+_La administración de la base de datos se realiza dentro del directorio `server`._
 
 Para ejecutar las migraciones de la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`).
 
@@ -75,9 +111,10 @@ Para añadir datos de prueba a la base de datos, se debe ejecutar el comando `np
 
 Ejecutar el comando `npm start` en la raíz del proyecto. Esto iniciará tanto el servidor como la aplicación web del proyecto.
 
-Para usar la aplicación, se dispone de una cuenta de usuario invitado con las siguientes credenciales:
-- **Correo electrónico**: `guest@test.com`
-- **Contraseña**: `guest123`
+Para usar la aplicación, se dispone de una cuenta de usuario administrador con las siguientes credenciales:
+
+-   **Correo electrónico**: `admin@test.com`
+-   **Contraseña**: `admin123`
 
 ## Desplegar el proyecto
 
@@ -86,6 +123,8 @@ Para desplegar el cliente en producción, se debe ejecutar el comando `npm run b
 Para desplegar el servidor en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `server`. Esto generará una carpeta `build`, la cual contiene los archivos compilados del servidor. Previo a la ejecución del servidor, debemos configurar la instancia de la base de datos PostgreSQL y las variables de entorno en el servidor de producción, así como el comando `npm run db:restore` para restaurar la base de datos. Para iniciar el servidor en producción, se debe ejecutar el comando `npm start:production` en la raíz del directorio `server`.
 
 ## Contribuciones
+
+Los commits del proyecto utilizan la convención de [Commits Convencionales](https://www.conventionalcommits.org/) y un esquema de [Versionado Semántico](https://semver.org/).
 
 Las contribuciones al proyecto y el reporte de errores no son aceptados en este momento.
 
