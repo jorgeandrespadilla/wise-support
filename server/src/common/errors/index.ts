@@ -1,6 +1,6 @@
 import { StatusCode } from '@/constants/http';
 
-export type ErrorData = { [key: string]: any };
+export type ErrorData = Record<string, unknown>;
 
 export class ServerError extends Error {
     constructor(

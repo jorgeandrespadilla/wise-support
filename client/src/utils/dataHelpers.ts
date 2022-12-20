@@ -22,8 +22,8 @@ export const pluralize = (count: number, singular: string, plural: string) => {
 
 export const sortDescByDateTime = <T>(data: T[], key: (item: T) => string) => {
     return data.sort((a, b) => {
-        const aDate = tryParseDate(key(a));
-        const bDate = tryParseDate(key(b));
+        const aDate = tryParseDate(key(a)) ?? new Date(0);
+        const bDate = tryParseDate(key(b)) ?? new Date(0);
         if (aDate > bDate) {
             return -1;
         }

@@ -5,10 +5,11 @@ import {
     FieldPath,
 } from 'react-hook-form';
 import zod from 'zod';
-import { z, ZodType } from 'zod/lib';
+import { z, ZodType, ZodTypeDef } from 'zod/lib';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { formatDateForDisplay } from './dateHelpers';
+import { ServerError } from 'shared/errors';
 
 //#region Error handling
 
@@ -47,17 +48,24 @@ interface FormOptions<TFields extends FieldValues = FieldValues> {
  * @param options The options to handle the error
  */
 export const handleAPIError = <TFields extends FieldValues = FieldValues>(
-    error: any,
+    error: unknown,
     options?: ErrorHandlerOptions<TFields>,
 ) => {
     const { form, toastId = undefined } = options || {};
 
-    if (error?.code === 'VALIDATION_ERROR' && error?.data?.fields && form) {
+    if (
+        form &&
+        error instanceof ServerError &&
+        error?.code === 'VALIDATION_ERROR' &&
+        error?.data?.fields
+    ) {
         const fieldErrors = error.data.fields as FieldError[];
         handleFormError(fieldErrors, form);
-    } else {
+    } else if (error instanceof Error) {
         console.error(error);
         toast.error(error?.message ?? 'Algo salió mal.', { id: toastId });
+    } else {
+        toast.error('Algo salió mal.', { id: toastId });
     }
 };
 
@@ -164,6 +172,7 @@ export const schemaResolver = zodResolver;
 /**
  * Infer the type of a Zod schema.
  */
-export type InferSchemaType<T extends ZodType<any, any, any>> = z.infer<T>;
+export type InferSchemaType<T extends ZodType<unknown, ZodTypeDef>> =
+    z.infer<T>;
 
 //#endregion

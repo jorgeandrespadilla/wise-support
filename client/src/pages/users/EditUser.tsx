@@ -75,6 +75,7 @@ function EditUser() {
     });
     const { mutate: handleUpdate } = useMutation(
         async (user: FormData) => {
+            if (!id) return;
             editUserToast.loading();
             const request: UpdateUserRequest = {
                 firstName: user.firstName,
@@ -84,7 +85,7 @@ function EditUser() {
                 password: user.password,
                 birthDate: user.birthDate,
             };
-            await updateUser(id!, request);
+            await updateUser(id, request);
         },
         {
             onSuccess: () => {

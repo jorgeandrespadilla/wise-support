@@ -102,7 +102,7 @@ function CategoriesList() {
                             <TableLoader />
                         ) : isDefined(filteredCategories) &&
                           !filteredCategories.isEmpty() ? (
-                            filteredCategories!.map((category, index) => {
+                            filteredCategories.map((category, index) => {
                                 return (
                                     <tr
                                         key={category.id}

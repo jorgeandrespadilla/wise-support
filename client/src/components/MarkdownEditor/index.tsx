@@ -79,7 +79,10 @@ function MarkdownEditor({
         return () => {
             quill.off('text-change', handleContentsChange);
             // Remove quill from the editor container
-            editorContainer!.removeChild(editorContainer!.firstChild!);
+            if (!editorContainer?.firstChild) {
+                return;
+            }
+            editorContainer.removeChild(editorContainer.firstChild);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

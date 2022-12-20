@@ -1,25 +1,25 @@
 {
-  "short_name": "Wise Support App",
-  "name": "Wise Support App",
-  "icons": [
-    {
-      "src": "favicon-light.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#026ed9",
-  "background_color": "#ffffff"
+    "short_name": "Wise Support App",
+    "name": "Wise Support App",
+    "icons": [
+        {
+            "src": "favicon-light.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "logo-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "logo-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#026ed9",
+    "background_color": "#ffffff"
 }

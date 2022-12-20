@@ -105,7 +105,7 @@ function UsersList() {
                             <TableLoader />
                         ) : isDefined(filteredUsers) &&
                           !filteredUsers.isEmpty() ? (
-                            filteredUsers!.map((user, index) => {
+                            filteredUsers.map((user, index) => {
                                 return (
                                     <tr
                                         key={user.id}

@@ -119,7 +119,7 @@ function TasksList() {
                     {tasks.isLoading ? (
                         <TableLoader />
                     ) : isDefined(filteredTasks) && !filteredTasks.isEmpty() ? (
-                        filteredTasks!.map((task, index) => {
+                        filteredTasks.map((task, index) => {
                             return (
                                 <tr
                                     key={task.id}

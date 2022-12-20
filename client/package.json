@@ -35,7 +35,7 @@
         "preview": "http-server build -p 3000 -P http://localhost:3000?",
         "lint": "eslint . --ext .js,.ts,.tsx",
         "lint:fix": "eslint . --fix --ext .js,.ts,.tsx",
-        "format": "prettier --write '**/*.{js,ts,tsx,json,css,scss,html}'",
+        "format": "prettier --write **/*.{js,ts,tsx,json,css,scss,html}",
         "pre-commit": "lint-staged"
     },
     "eslintConfig": {

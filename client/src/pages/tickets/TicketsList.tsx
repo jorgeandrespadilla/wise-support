@@ -126,7 +126,7 @@ function TicketsList() {
                                     <tr
                                         key={ticket.id}
                                         className={`table-row ${
-                                            !tickets.data!.isLast(index)
+                                            !tickets.data?.isLast(index)
                                                 ? 'border-b'
                                                 : ''
                                         }`}

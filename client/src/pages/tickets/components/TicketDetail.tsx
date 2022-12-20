@@ -109,6 +109,7 @@ function TicketDetail() {
     });
     const { mutate: handleUpdate } = useMutation(
         async (ticket: FormData) => {
+            if (!id) return;
             editTicketToast.loading();
             const request: UpdateTicketRequest = {
                 title: ticket.title,
@@ -120,7 +121,7 @@ function TicketDetail() {
                 supervisorId: Number(ticket.supervisorId),
                 timeEstimated: ticket.timeEstimated,
             };
-            await updateTicket(id!, request);
+            await updateTicket(id, request);
         },
         {
             onSuccess: () => {

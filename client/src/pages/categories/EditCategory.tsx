@@ -57,13 +57,14 @@ function EditCategory() {
     });
     const { mutate: handleUpdate } = useMutation(
         async (category: FormData) => {
+            if (!id) return;
             editCategoryToast.loading();
             const request: UpdateCategoryRequest = {
                 name: category.name,
                 code: category.code,
                 description: category.description,
             };
-            await updateCategory(id!, request);
+            await updateCategory(id, request);
         },
         {
             onSuccess: () => {

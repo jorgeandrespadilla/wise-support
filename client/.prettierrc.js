@@ -4,38 +4,38 @@ module.exports = {
     useTabs: false,
     semi: true,
     singleQuote: true,
-    quoteProps: "as-needed",
+    quoteProps: 'as-needed',
     jsxSingleQuote: false,
-    trailingComma: "all",
+    trailingComma: 'all',
     bracketSpacing: true,
     jsxBracketSameLine: false,
-    arrowParens: "avoid",
+    arrowParens: 'avoid',
     rangeStart: 0,
     rangeEnd: Infinity,
     requirePragma: false,
     insertPragma: false,
-    proseWrap: "preserve",
-    htmlWhitespaceSensitivity: "css",
+    proseWrap: 'preserve',
+    htmlWhitespaceSensitivity: 'css',
     vueIndentScriptAndStyle: false,
-    endOfLine: "lf",
+    endOfLine: 'lf',
     overrides: [
         {
-            files: "*.css",
+            files: '*.css',
             options: {
-                tabWidth: 4
-            }
+                tabWidth: 4,
+            },
         },
         {
-            files: "*.json",
+            files: '*.json',
             options: {
-                tabWidth: 4
-            }
+                tabWidth: 4,
+            },
         },
         {
-            files: "*.{md,markdown}",
+            files: '*.{md,markdown}',
             options: {
-                tabWidth: 4
-            }
-        }
-    ]
+                tabWidth: 4,
+            },
+        },
+    ],
 };

@@ -69,21 +69,21 @@ describe('dateHelpers', () => {
     describe('tryParseDate', () => {
         it('should parse a date string in ISO format to a date object', () => {
             const isoDate = '2020-01-01T00:00:00.000Z';
-            const date: Date = tryParseDate(isoDate);
+            const date = tryParseDate(isoDate) as Date;
             expect(date.toISOString()).toBe(isoDate);
         });
         it('should parse a simple date string to a date object', () => {
             const simpleDate = '2020-01-01';
-            const date: Date = tryParseDate(simpleDate);
+            const date = tryParseDate(simpleDate) as Date;
             expect(date.toISOString()).toBe('2020-01-01T00:00:00.000Z');
         });
     });
     describe('normalizeTimezone', () => {
         it('should normalize a date in ISO format to a date in ISO format subtracting the timezone offset', () => {
             const initialIsoDate = '2020-01-01T00:00:00.000Z';
-            const initialDate: Date = tryParseDate(initialIsoDate);
+            const initialDate = tryParseDate(initialIsoDate) as Date;
             const finalIsoDate = normalizeTimezone(initialIsoDate);
-            const finalDate: Date = tryParseDate(finalIsoDate);
+            const finalDate = tryParseDate(finalIsoDate) as Date;
             const offset = initialDate.getTimezoneOffset() * 60 * 1000;
             expect(finalDate.getTime()).toBe(initialDate.getTime() + offset);
         });

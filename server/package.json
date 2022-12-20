@@ -15,7 +15,7 @@
         "db:restore": "prisma migrate dev",
         "lint": "eslint . --ext .js,.ts",
         "lint:fix": "eslint . --fix --ext .js,.ts",
-        "format": "prettier --write '**/*.{js,ts,json,css,scss,html}'",
+        "format": "prettier --write **/*.{js,ts,json,css,scss,html}",
         "pre-commit": "npm run sync-env && git add .env.example && lint-staged"
     },
     "dependencies": {

@@ -19,7 +19,7 @@ const defaultConfig = {
     },
 };
 
-const httpClient = <T>(method: string, url: string, variables?: any) =>
+const httpClient = <T>(method: string, url: string, variables?: unknown) =>
     new Promise<T>((resolve, reject) => {
         axios({
             url: `${defaultConfig.baseURL}${url}`,
@@ -42,13 +42,13 @@ const httpClient = <T>(method: string, url: string, variables?: any) =>
     });
 
 const api = {
-    get: <T>(url: string, variables?: any) =>
+    get: <T>(url: string, variables?: unknown) =>
         httpClient<T>('get', url, variables),
-    post: <T>(url: string, variables?: any) =>
+    post: <T>(url: string, variables?: unknown) =>
         httpClient<T>('post', url, variables),
-    put: <T>(url: string, variables?: any) =>
+    put: <T>(url: string, variables?: unknown) =>
         httpClient<T>('put', url, variables),
-    delete: <T>(url: string, variables?: any) =>
+    delete: <T>(url: string, variables?: unknown) =>
         httpClient<T>('delete', url, variables),
 };
 

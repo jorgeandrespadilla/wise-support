@@ -83,14 +83,20 @@ export const today = (format: DateFormat = 'default'): string => {
  * Parses a date (mainly ISO date strings and simple date strings) to a Date object.
  * Useful for parsing dates from a form schema.
  * No need to normalize the date.
- * @param date Date to parse
+ * @param input Data to parse as date
  * @returns Date object
  */
-export const tryParseDate = (date: any) => {
-    if (typeof date === 'string' || date instanceof Date) {
-        return new Date(date);
+export const tryParseDate = (input: unknown) => {
+    if (input instanceof Date) {
+        return input;
     }
-    return date;
+    if (typeof input === 'string' || typeof input === 'number') {
+        const date = new Date(input);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+    }
+    return null;
 };
 
 /**
