@@ -3,7 +3,7 @@ import { useAuth } from 'hooks/useAuth';
 import LoginForm from './components/LoginForm';
 import LoginLayout from './components/LoginLayout';
 import { useCallback, useEffect } from 'react';
-import logoLight from 'assets/logo-light.svg';
+import { logo } from 'assets';
 
 function Login() {
     const { isAuthenticated } = useAuth();
@@ -32,7 +32,7 @@ function Login() {
             <div className="max-w-md mx-auto mb-8">
                 <div className="flex flex-col gap-8 justify-center mb-12">
                     <img
-                        src={logoLight}
+                        src={logo.light}
                         alt={'Wise Support'}
                         title={'Wise Support'}
                         className="h-20"

@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useTheme } from 'hooks';
-import logoLight from 'assets/logo-light.svg';
-import logoDark from 'assets/logo-dark.svg';
+import { logo } from 'assets';
 
 type HomeLinkProps = {
     appTitle: string;
@@ -13,21 +12,12 @@ function HomeLink({ appTitle, onClick = () => {} }: HomeLinkProps) {
 
     return (
         <NavLink to="/" onClick={onClick}>
-            {isDarkTheme ? (
-                <img
-                    src={logoDark}
-                    alt={appTitle}
-                    title={appTitle}
-                    className="h-10"
-                />
-            ) : (
-                <img
-                    src={logoLight}
-                    alt={appTitle}
-                    title={appTitle}
-                    className="h-10"
-                />
-            )}
+            <img
+                src={isDarkTheme ? logo.dark : logo.light}
+                alt={appTitle}
+                title={appTitle}
+                className="h-10"
+            />
         </NavLink>
     );
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import brokenImage from 'assets/images/broken.png';
 import Button from 'components/Button';
+import { brokenImage } from 'assets';
 
 function NotFound() {
     const navigate = useNavigate();

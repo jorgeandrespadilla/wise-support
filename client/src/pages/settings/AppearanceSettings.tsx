@@ -1,9 +1,7 @@
 import { RadioGroup } from '@headlessui/react';
+import { themeImage } from 'assets';
 import { useTheme } from 'hooks';
 import { RadioGroupOption, Theme } from 'types';
-import systemTheme from 'assets/images/system-theme.png';
-import lightTheme from 'assets/images/light-theme.png';
-import darkTheme from 'assets/images/dark-theme.png';
 import ThemeOption from './components/ThemeOption';
 
 type RadioOptionParams = {
@@ -14,17 +12,17 @@ const themeOptions: RadioGroupOption<Theme>[] = [
     {
         value: 'system',
         label: 'Predeterminado',
-        image: systemTheme,
+        image: themeImage.system,
     },
     {
         value: 'light',
         label: 'Claro',
-        image: lightTheme,
+        image: themeImage.light,
     },
     {
         value: 'dark',
         label: 'Oscuro',
-        image: darkTheme,
+        image: themeImage.dark,
     },
 ];
 

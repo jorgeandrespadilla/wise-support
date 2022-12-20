@@ -1,5 +1,5 @@
+import { secureImage } from 'assets';
 import Button from 'components/Button';
-import secureImage from 'assets/images/secure.png';
 import { useNavigate } from 'react-router-dom';
 
 function Unauthorized() {
