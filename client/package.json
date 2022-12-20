@@ -32,7 +32,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "preview": "http-server build -p 3000 -P http://localhost:3000?"
+    "preview": "http-server build -p 3000 -P http://localhost:3000?",
+    "lint": "eslint . --ext .js,.ts,.tsx",
+    "lint:fix": "eslint . --fix --ext .js,.ts,.tsx",
+    "format": "prettier --write '**/*.{js,ts,tsx,json,css,scss,html}'"
   },
   "eslintConfig": {
     "extends": [
@@ -57,10 +60,16 @@
     "@types/jest": "^29.2.4",
     "@types/luxon": "^3.1.0",
     "@types/quill": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "http-server": "^14.1.1",
     "jest": "^29.3.1",
     "postcss": "^8.4.20",
+    "prettier": "^2.8.1",
     "tailwindcss": "^3.2.4"
   }
 }
