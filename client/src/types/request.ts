@@ -73,3 +73,8 @@ export interface GetPerformanceStatsRequest {
     startDate: string;
     endDate: string;
 }
+
+export interface GetCategoriesStatsRequest {
+    startDate: string;
+    endDate: string;
+}

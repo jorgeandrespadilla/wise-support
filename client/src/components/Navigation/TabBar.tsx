@@ -9,7 +9,7 @@ type TabBarProps = {
 
 function TabBar({ tabs }: TabBarProps) {
     return (
-        <div className="my-6 mb-8 w-full">
+        <div className="my-6 mb-8 overflow-x-auto w-full">
             <div className="flex flex-row justify-start w-full">
                 {tabs.map((tab, index) => (
                     <Authorize roles={tab.roles} key={index}>

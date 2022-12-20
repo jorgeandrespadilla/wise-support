@@ -1,5 +1,10 @@
 import { ReactNode } from 'react';
-import { Path, FieldValues, RegisterOptions, Control } from 'react-hook-form';
+import { FieldValues, RegisterOptions, Control, FieldPath } from 'react-hook-form';
+
+export type ColorScheme = "light" | "dark";
+export type Theme = ColorScheme | "system";
+
+export type ThemeBreakpoint = "sm" | "md" | "lg" | "xl";
 
 export interface LinkConfig {
     /** The URL of the link */
@@ -17,6 +22,15 @@ export interface DropdownOption {
     value: string;
     /** The text to show in the dropdown */
     label: string;
+}
+
+export interface RadioGroupOption<T = string> {
+    /** The value of the option */
+    value: T;
+    /** The text to show in the option */
+    label: string;
+    /** The image to show in the option */
+    image: string;
 }
 
 export interface DropdownMenuOption {
@@ -69,7 +83,7 @@ export type InputDecorationProps = {
 };
 
 export type BaseFormInputProps<TFormValues extends FieldValues = FieldValues> = {
-    name: Path<TFormValues>;
+    name: FieldPath<TFormValues>;
     control?: Control<TFormValues>;
     rules?: RegisterOptions;
 };

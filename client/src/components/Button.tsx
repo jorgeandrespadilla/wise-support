@@ -19,10 +19,18 @@ type ButtonProps = {
 
 export const buttonType = {
     primary: "bg-primary hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
-    secondary: "bg-white hover:bg-gray-200 text-primary border border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-white",
+    secondary: "bg-white dark:bg-transparent hover:bg-gray-200 dark:hover:bg-blue-100 dark:hover:bg-opacity-5 text-primary border border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-white",
     text: "bg-transparent hover:bg-gray-100 text-primary underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent",
     minimal: "bg-transparent text-primary hover:underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent", // Link look-alike
     danger: "bg-danger hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
+};
+
+export const disabledLinkByButtonType = {
+    primary: "opacity-50 hover:bg-opacity-100",
+    secondary: "opacity-50 hover:bg-white",
+    text: "opacity-50 hover:bg-transparent",
+    minimal: "opacity-50 hover:bg-transparent",
+    danger: "opacity-50 hover:bg-opacity-100",
 };
 
 export const buttonSize = {
@@ -49,14 +57,13 @@ function Button({
     disabled = false,
     children,
     onClick = () => { },
-    navigateTo,
+    navigateTo = "#",
 }: ButtonProps) {
     return (
         as === "link"
             ? <Link
                 to={navigateTo}
-                disabled={disabled}
-                className={`${buttonType[type]} ${buttonSize[size]} ${type === "minimal" ? "px-1 py-1" : ""} text-center font-bold rounded ${borderRadius[rounded]}`}>
+                className={`${buttonType[type]} ${buttonSize[size]} ${type === "minimal" ? "px-1 py-1" : ""} text-center font-bold rounded ${borderRadius[rounded]} ${disabled ? `${disabledLinkByButtonType[type]} pointer-events-none` : ""}`}>
                 {children}
             </Link>
             : <button 

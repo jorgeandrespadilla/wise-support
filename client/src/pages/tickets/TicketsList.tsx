@@ -66,11 +66,9 @@ function TicketsList() {
     return (
         <>
             <Card>
-                <div className="flex flex-row justify-between items-center">
-                    <CardHeader title="Tickets" />
-                </div>
+                <CardHeader title="Tickets" />
                 <Divider vertical="lg" showRule />
-                <div className="flex flex-row justify-between items-end pb-4 space-x-2">
+                <div className="flex flex-row justify-between items-end pb-4 gap-4">
                     <Dropdown width="half" label="Estado" placeholder="Seleccione un estado" value={selectedStatusFilter} onChange={setSelectedStatusFilter}>
                         {statusFilterOptions.map((status) => (
                             <option key={status.value} value={status.value}>{status.label}</option>
@@ -104,9 +102,9 @@ function TicketsList() {
                                                 <Cell>{ticketPriority[ticket.priority]}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/tickets/${ticket.id}/detail`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Editar ticket" as="link" navigateTo={`/tickets/${ticket.id}/detail`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
                                                         <Authorize roles={[role.ADMIN, role.SUPERVISOR]}>
-                                                            <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                            <IconButton title="Eliminar ticket" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                                 setSelectedTicketId(ticket.id);
                                                                 confirmDialog.open();
                                                             }} />

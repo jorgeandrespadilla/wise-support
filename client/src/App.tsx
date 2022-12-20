@@ -2,12 +2,13 @@ import './App.css';
 import Router from './routes';
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
-import { useAuth } from 'hooks';
+import { useAuth, useTheme } from 'hooks';
 
 let firstLoad = true;
 
 function App() {
   const { isAuthenticated, refreshSession } = useAuth();
+  const { isDarkTheme } = useTheme();
 
   // Refresh session on first load
   useEffect(() => {
@@ -23,7 +24,7 @@ function App() {
       <Toaster position="top-center" toastOptions={{
         className: "font-sans text-sm",
         style: {
-          background: '#363636',
+          background: isDarkTheme ? "#232323" : '#363636',
           color: '#fff',
         },
         duration: 3000,

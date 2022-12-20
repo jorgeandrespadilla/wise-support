@@ -52,7 +52,7 @@ function LoginForm() {
     );
 
     return (
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <form onSubmit={handleSubmit(data => handleLogin(data))}>
             <Card>
                 <div className="flex flex-col pb-10 space-y-4">
                     <TextField name="email" label="Correo" control={control} />

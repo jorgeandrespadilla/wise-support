@@ -29,7 +29,7 @@ function Divider({
 }: DividerProps) {
     return (
         showRule
-            ? <hr className={`border-gray-200 ${horizontalSpacing[horizontal]} ${verticalSpacing[vertical]}`} />
+            ? <hr className={`border-gray-200 dark:border-gray-700 ${horizontalSpacing[horizontal]} ${verticalSpacing[vertical]}`} />
             : <div className={`w-full ${horizontalSpacing[horizontal]} ${verticalSpacing[vertical]}`} />
     );
 }

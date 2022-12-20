@@ -16,3 +16,18 @@ export const PerformanceStatsRequestSchema = v.object({
             .max(today("endOfDay"), message.maxDateToday)
     ),
 }).refine((data) => data.startDate <= data.endDate, message.minDateLessThanMaxDate);
+
+export const CategoriesStatsRequestSchema = v.object({
+    startDate: v.preprocess(
+        tryParseDate,
+        v.date(message.date)
+            .min(DATE_CONFIG.minDate, message.minDate(DATE_CONFIG.minDate))
+            .max(today("endOfDay"), message.maxDateToday)
+    ),
+    endDate: v.preprocess(
+        tryParseDate,
+        v.date(message.date)
+            .min(DATE_CONFIG.minDate, message.minDate(DATE_CONFIG.minDate))
+            .max(today("endOfDay"), message.maxDateToday)
+    ),
+}).refine((data) => data.startDate <= data.endDate, message.minDateLessThanMaxDate);

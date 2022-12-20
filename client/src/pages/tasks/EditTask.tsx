@@ -83,7 +83,7 @@ function EditTask() {
                 <NumberField name="timeSpent" label="Tiempo empleado (en horas)" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleUpdate(data))}>Guardar</Button>
                 <Link to="../tasks">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

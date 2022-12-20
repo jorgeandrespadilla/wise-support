@@ -8,6 +8,7 @@ import { UpdateCategoryRequest } from "types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useLoadingToast } from "hooks/useLoadingToast";
 import { getCategory, updateCategory } from "services/categories";
+import CardHeader from "components/CardHeader";
 
 type FormData = {
     name: string;
@@ -19,7 +20,7 @@ function EditCategory() {
 
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    
+
     const { control, reset, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
             name: "",
@@ -35,7 +36,7 @@ function EditCategory() {
             return {
                 name: res.name,
                 code: res.code,
-                description: res.description,
+                description: res.description ?? "",
             } as FormData;
         },
         {
@@ -78,14 +79,14 @@ function EditCategory() {
 
     return (
         <Card>
-            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Categoría</h1>
-            <div className="flex flex-col pb-8 space-y-4">
+            <CardHeader title="Categoría" />
+            <div className="flex flex-col pt-8 pb-8 space-y-4">
                 <TextField name="name" label="Nombre" control={control} />
                 <TextField name="code" label="Código" control={control} />
                 <TextAreaField name="description" label="Descripción" control={control} />
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleUpdate(data))}>Guardar</Button>
                 <Button as="link" navigateTo="/categories" type="secondary">Cancelar</Button>
             </div>
         </Card>

@@ -96,6 +96,8 @@ export interface GetTaskResponse {
 
 /** Statistics **/
 
+//#region Users performance
+
 export interface StatsUserResponse {
     id: number;
     firstName: string;
@@ -116,3 +118,26 @@ export interface GetPerformanceStatsResponse {
     averagePerformanceScore: number;
     users: UserPerformanceResponse[];
 }
+
+//#endregion
+
+//#region Categories statistics
+
+export interface StatsCategoryDetail {
+    id: number;
+    name: string;
+    code: string;
+    description: string | null;
+}
+
+export interface StatsCategoryResponse {
+    category: StatsCategoryDetail;
+    totalTickets: number;
+}
+
+export interface GetCategoriesStatsResponse {
+    categories: StatsCategoryResponse[];
+    totalCategories: number;
+}
+
+//#endregion

@@ -62,11 +62,9 @@ function UsersList() {
     return (
         <>
             <Card>
-                <div className="flex flex-row justify-between items-center">
-                    <CardHeader title="Usuarios" />
-                </div>
+                <CardHeader title="Usuarios" />
                 <Divider vertical="lg" showRule />
-                <div className="flex flex-row justify-between items-center pb-4 space-x-2">
+                <div className="flex flex-row justify-between items-center pb-4 gap-4">
                     <Input value={search} onChange={setSearch} placeholder="Buscar" width="half" prefixContent={
                         <div className="pl-3">
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
@@ -100,8 +98,8 @@ function UsersList() {
                                                 <Cell>{formatDateForDisplay(new Date(user.birthDate))}</Cell>
                                                 <Cell>
                                                     <div className="flex space-x-2">
-                                                        <IconButton as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
-                                                        <IconButton icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
+                                                        <IconButton title="Editar usuario" as="link" navigateTo={`/users/${user.id}`} icon={<PencilSquareIcon className="h-5 w-5 text-blue-500" />} />
+                                                        <IconButton title="Eliminar usuario" icon={<TrashIcon className="h-5 w-5 text-danger" />} onClick={() => {
                                                             setSelectedUserId(user.id);
                                                             confirmDialog.open();
                                                         }} />

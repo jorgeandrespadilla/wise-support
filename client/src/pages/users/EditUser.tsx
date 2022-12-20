@@ -10,6 +10,7 @@ import { UpdateUserRequest } from "types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRolesData } from "hooks/useRolesData";
 import { useLoadingToast } from "hooks/useLoadingToast";
+import CardHeader from "components/CardHeader";
 
 type FormData = {
     firstName: string;
@@ -94,8 +95,8 @@ function EditUser() {
 
     return (
         <Card>
-            <h1 className="font-bold font-poppins text-2xl text-gray-800 pb-4">Usuario</h1>
-            <div className="flex flex-col pb-8 space-y-4">
+            <CardHeader title="Usuario" />
+            <div className="flex flex-col pt-8 pb-8 space-y-4">
                 <TextField name="firstName" label="Nombre" control={control} />
                 <TextField name="lastName" label="Apellido" control={control} />
                 <TextField type="email" name="email" label="Correo" control={control} />
@@ -108,7 +109,7 @@ function EditUser() {
                 </DropdownField>
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(handleUpdate)}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleUpdate(data))}>Guardar</Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

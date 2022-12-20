@@ -1,7 +1,7 @@
 import { round } from "lodash";
 import { db } from "@/database/client";
-import { PerformanceStatsRequestSchema } from "@/schemas/statistics";
-import { PerformanceStatsResponse, SelectFields, StatsTicket, StatsUser, TicketPerformance, UserPerformance, UserPerformanceResponse } from "@/types";
+import { CategoriesStatsRequestSchema, PerformanceStatsRequestSchema } from "@/schemas/statistics";
+import { CategoriesStatsResponse, PerformanceStatsResponse, SelectFields, StatsCategoryDetail, StatsCategoryResponse, StatsTicket, StatsTicketWithCategory, StatsUser, TicketPerformance, UserPerformance, UserPerformanceResponse } from "@/types";
 import { catchErrors } from "@/utils/catchErrors";
 import { validateAndParse } from "@/utils/validation";
 import { addDaysToDate } from "@/utils/dateHelpers";
@@ -49,8 +49,23 @@ const ticketFieldsToSelect: SelectFields<StatsTicket> = {
     },
 };
 
+const categoryFieldsToSelect: SelectFields<StatsCategoryDetail> = {
+    id: true,
+    code: true,
+    name: true,
+    description: true,
+};
+
+const ticketWithCategoryFieldsToSelect: SelectFields<StatsTicketWithCategory> = {
+    category: {
+        select: categoryFieldsToSelect,
+    }
+};
+
 //#endregion
 
+
+//#region Users performance
 
 export const getUsersPerformance = catchErrors(async (req, res) => {
     const requestData = validateAndParse(PerformanceStatsRequestSchema, req.query);
@@ -166,3 +181,44 @@ async function getTotalAttentionTimeByTicketId(ticketId: number) {
     });
     return associatedTasks.reduce((acc, task) => acc + task.timeSpent, 0);
 }
+
+//#endregion
+
+
+//#region Categories
+
+export const getCategoriesStats = catchErrors(async (req, res) => {
+    const requestData = validateAndParse(CategoriesStatsRequestSchema, req.query);
+
+    const tickets = await db.ticket.findMany({
+        select: ticketWithCategoryFieldsToSelect,
+        where: {
+            status: ticketStatus.CLOSED,
+            endedAt: {
+                gte: requestData.startDate,
+                lte: addDaysToDate(requestData.endDate, 1),
+            },
+        }
+    });
+
+    let categories: Record<number, StatsCategoryResponse> = {};
+    for (let ticket of tickets) {
+        const associatedCategory = ticket.category;
+        if (!categories[associatedCategory.id]) {
+            categories[associatedCategory.id] = {
+                category: associatedCategory,
+                totalTickets: 0,
+            };
+        }
+        categories[associatedCategory.id].totalTickets += 1;
+    }
+
+    const response: CategoriesStatsResponse = {
+        categories: Object.values(categories),
+        totalCategories: Object.keys(categories).length,
+    };
+    
+    res.send(response);
+});
+
+//#endregion

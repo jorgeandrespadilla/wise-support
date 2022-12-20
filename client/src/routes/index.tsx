@@ -21,6 +21,9 @@ import AddCategory from 'pages/categories/AddCategory';
 import EditCategory from 'pages/categories/EditCategory';
 import StatsHome from 'pages/statistics/StatsHome';
 import PerformanceStats from 'pages/statistics/PerformanceStats';
+import SettingsHome from 'pages/settings/SettingsHome';
+import AppearanceSettings from 'pages/settings/AppearanceSettings';
+import CategoriesStats from 'pages/statistics/CategoriesStats';
 
 const Router = () => (
     <Routes>
@@ -28,7 +31,6 @@ const Router = () => (
         <Route path="/" element={<ProtectedRoute>< MainLayout /></ProtectedRoute>}>
             <Route index element={<Navigate replace to="/tickets" />} />
 
-            <Route path="/profile" element={<ProtectedRoute allowed={allRoles}>< Profile /></ProtectedRoute>} />
             <Route path="/users" element={<ProtectedRoute allowed={[role.ADMIN]}>< UsersList /></ProtectedRoute>} />
             <Route path="/users/new" element={<ProtectedRoute allowed={[role.ADMIN]}>< AddUser /></ProtectedRoute>} />
             <Route path="/users/:id" element={<ProtectedRoute allowed={[role.ADMIN]}>< EditUser /></ProtectedRoute>} />
@@ -50,6 +52,15 @@ const Router = () => (
                 <Route index element={<Navigate replace to="/stats/performance" />} />
 
                 <Route path="/stats/performance" element={<ProtectedRoute allowed={[role.ADMIN, role.SUPERVISOR]}>< PerformanceStats /></ProtectedRoute>} />
+                <Route path="/stats/categories" element={<ProtectedRoute allowed={[role.ADMIN]}>< CategoriesStats /></ProtectedRoute>} />
+            </Route>
+
+            {/* Options dropdown */}
+            <Route path="/profile" element={<ProtectedRoute allowed={allRoles}>< Profile /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute allowed={allRoles}>< SettingsHome /></ProtectedRoute>} >
+                <Route index element={<Navigate replace to="/settings/appearance" />} />
+
+                <Route path="/settings/appearance" element={<ProtectedRoute allowed={allRoles}>< AppearanceSettings /></ProtectedRoute>} />
             </Route>
 
             <Route path="/unauthorized" element={< Unauthorized />} />
