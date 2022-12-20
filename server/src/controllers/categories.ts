@@ -1,9 +1,9 @@
-import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { db } from "@/database/client";
-import { CategoryRequestSchema } from "@/schemas/categories";
-import { Category, SelectFields } from "@/types";
-import { catchErrors } from "@/utils/catchErrors";
-import { validateAndParse } from "@/utils/validation";
+import { EntityNotFoundError, ValidationError } from '@/common/errors';
+import { db } from '@/database/client';
+import { CategoryRequestSchema } from '@/schemas/categories';
+import { Category, SelectFields } from '@/types';
+import { catchErrors } from '@/utils/catchErrors';
+import { validateAndParse } from '@/utils/validation';
 
 const fieldsToSelect: SelectFields<Category> = {
     id: true,
@@ -14,7 +14,7 @@ const fieldsToSelect: SelectFields<Category> = {
 
 export const getCategories = catchErrors(async (_req, res) => {
     const categories = await db.category.findMany({
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
 
     res.send(categories);
@@ -27,7 +27,7 @@ export const getCategoryById = catchErrors(async (req, res) => {
 
     const category = await db.category.findUnique({
         where: { id: categoryId },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
     res.send(category);
 });
@@ -41,7 +41,7 @@ export const createCategory = catchErrors(async (req, res) => {
         data: {
             ...data,
         },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
     res.send(category);
 });
@@ -57,7 +57,7 @@ export const updateCategory = catchErrors(async (req, res) => {
         data: {
             ...data,
         },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
     res.send(category);
 });
@@ -69,38 +69,38 @@ export const deleteCategory = catchErrors(async (req, res) => {
     await validateCategoryToDelete(categoryId);
 
     await db.category.delete({
-        where: { id: categoryId }
+        where: { id: categoryId },
     });
 
-    res.send({ message: "Categoría eliminada." });
+    res.send({ message: 'Categoría eliminada.' });
 });
-
 
 //#region Validation functions
 
 async function validateCategory(categoryId: number) {
     const category = await db.category.findUnique({
-        where: { id: categoryId }
+        where: { id: categoryId },
     });
 
-    if (!category) throw new EntityNotFoundError("Categoría", { id: categoryId });
+    if (!category)
+        throw new EntityNotFoundError('Categoría', { id: categoryId });
 }
 
 async function validateExistingCode(code: string) {
     const category = await db.category.findUnique({
-        where: { code }
+        where: { code },
     });
 
-    if (category) throw new ValidationError("El código de categoría ya existe");
+    if (category) throw new ValidationError('El código de categoría ya existe');
 }
 
 async function validateCategoryToDelete(categoryId: number) {
     const tickets = await db.ticket.findMany({
-        where: { categoryId }
+        where: { categoryId },
     });
 
     if (!tickets.isEmpty()) {
-        throw new ValidationError("La categoría tiene tickets asociados.");
+        throw new ValidationError('La categoría tiene tickets asociados.');
     }
 }
 

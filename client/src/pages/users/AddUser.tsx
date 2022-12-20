@@ -1,16 +1,21 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import Button from "components/Button";
-import Card from "components/Card";
-import { today } from "utils/dateHelpers";
-import { handleAPIError } from "utils/validation";
-import { DatePicker, DropdownField, PasswordField, TextField } from "components/Form";
-import { addUser } from "services/users";
-import { useRolesData } from "hooks/useRolesData";
-import { AddUserRequest } from "types";
-import { useLoadingToast } from "hooks/useLoadingToast";
-import { useMutation } from "@tanstack/react-query";
-import CardHeader from "components/CardHeader";
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import Button from 'components/Button';
+import Card from 'components/Card';
+import { today } from 'utils/dateHelpers';
+import { handleAPIError } from 'utils/validation';
+import {
+    DatePicker,
+    DropdownField,
+    PasswordField,
+    TextField,
+} from 'components/Form';
+import { addUser } from 'services/users';
+import { useRolesData } from 'hooks/useRolesData';
+import { AddUserRequest } from 'types';
+import { useLoadingToast } from 'hooks/useLoadingToast';
+import { useMutation } from '@tanstack/react-query';
+import CardHeader from 'components/CardHeader';
 
 type FormData = {
     firstName: string;
@@ -19,28 +24,27 @@ type FormData = {
     password: string;
     birthDate: string;
     roleId: string;
-}
+};
 
 function AddUser() {
-
     const navigate = useNavigate();
-    
+
     const { control, handleSubmit, ...form } = useForm<FormData>({
         defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            roleId: "",
-            password: "",
+            firstName: '',
+            lastName: '',
+            email: '',
+            roleId: '',
+            password: '',
             birthDate: today(),
         },
     });
 
     const roles = useRolesData();
 
-    const addUserToast = useLoadingToast("addUser", {
-        loading: "Agregando usuario...",
-        success: "Usuario agregado",
+    const addUserToast = useLoadingToast('addUser', {
+        loading: 'Agregando usuario...',
+        success: 'Usuario agregado',
     });
     const { mutate: handleAdd } = useMutation(
         async (user: FormData) => {
@@ -58,13 +62,12 @@ function AddUser() {
         {
             onSuccess: () => {
                 addUserToast.success();
-                navigate("/users");
+                navigate('/users');
             },
-            onError: (e) => {
+            onError: e => {
                 addUserToast.error();
                 handleAPIError(e, { form, toastId: addUserToast.toastId });
             },
-
         },
     );
 
@@ -74,17 +77,39 @@ function AddUser() {
             <div className="flex flex-col pt-8 pb-8 space-y-4">
                 <TextField name="firstName" label="Nombre" control={control} />
                 <TextField name="lastName" label="Apellido" control={control} />
-                <TextField type="email" name="email" label="Correo" control={control} />
-                <PasswordField name="password" label="Clave" control={control} />
-                <DatePicker name="birthDate" label="Fecha de nacimiento" control={control} />
-                <DropdownField name="roleId" label="Rol" placeholder="Seleccione un rol" control={control}>
-                    {roles.data?.map((role) => (
-                        <option key={role.id} value={role.id}>{role.name}</option>
+                <TextField
+                    type="email"
+                    name="email"
+                    label="Correo"
+                    control={control}
+                />
+                <PasswordField
+                    name="password"
+                    label="Clave"
+                    control={control}
+                />
+                <DatePicker
+                    name="birthDate"
+                    label="Fecha de nacimiento"
+                    control={control}
+                />
+                <DropdownField
+                    name="roleId"
+                    label="Rol"
+                    placeholder="Seleccione un rol"
+                    control={control}
+                >
+                    {roles.data?.map(role => (
+                        <option key={role.id} value={role.id}>
+                            {role.name}
+                        </option>
                     ))}
                 </DropdownField>
             </div>
             <div className="flex items-center space-x-2">
-                <Button onClick={handleSubmit(data => handleAdd(data))}>Guardar</Button>
+                <Button onClick={handleSubmit(data => handleAdd(data))}>
+                    Guardar
+                </Button>
                 <Link to="/users">
                     <Button type="secondary">Cancelar</Button>
                 </Link>

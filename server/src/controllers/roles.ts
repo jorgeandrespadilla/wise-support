@@ -1,6 +1,6 @@
-import { db } from "@/database/client";
-import { Role, SelectFields } from "@/types";
-import { catchErrors } from "@/utils/catchErrors";
+import { db } from '@/database/client';
+import { Role, SelectFields } from '@/types';
+import { catchErrors } from '@/utils/catchErrors';
 
 const fieldsToSelect: SelectFields<Role> = {
     id: true,
@@ -11,7 +11,7 @@ const fieldsToSelect: SelectFields<Role> = {
 
 export const getRoles = catchErrors(async (_req, res) => {
     const roles = await db.role.findMany({
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
 
     res.send(roles);

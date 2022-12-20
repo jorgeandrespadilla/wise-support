@@ -2,5 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 cd server
-npm run sync-env
-git add .env.example
+npm run pre-commit
+cd ../client
+npm run pre-commit

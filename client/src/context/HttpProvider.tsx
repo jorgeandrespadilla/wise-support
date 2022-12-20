@@ -1,7 +1,4 @@
-import {
-    QueryClient,
-    QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 type HttpProviderProps = {
@@ -16,8 +13,8 @@ export const HttpProvider = ({ children }: HttpProviderProps) => {
             },
             mutations: {
                 retry: 1,
-            }
-        }
+            },
+        },
     });
 
     return (
@@ -26,4 +23,4 @@ export const HttpProvider = ({ children }: HttpProviderProps) => {
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     );
-}
+};

@@ -10,8 +10,7 @@ export interface LoginResponse {
     refreshToken: TokenData;
 }
 
-export interface RefreshResponse extends LoginResponse {}
-
+export type RefreshResponse = LoginResponse;
 
 /** Roles **/
 
@@ -21,7 +20,6 @@ export interface RoleResponse {
     name: string;
     description: string | null;
 }
-
 
 /** Users **/
 
@@ -35,8 +33,7 @@ export interface GetUserResponse {
     role: RoleResponse;
 }
 
-export interface GetUserProfileResponse extends GetUserResponse {}
-
+export type GetUserProfileResponse = GetUserResponse;
 
 /** Tickets **/
 
@@ -83,7 +80,6 @@ export interface GetCategoryResponse {
     description: string | null;
 }
 
-
 /** Tasks **/
 
 export interface GetTaskResponse {
@@ -92,7 +88,6 @@ export interface GetTaskResponse {
     createdAt: string; // Date
     timeSpent: number;
 }
-
 
 /** Statistics **/
 

@@ -22,33 +22,33 @@ export const envParser: Record<string, ParserCallback> = {
     /**
      * Returns the value of the environment variable without altering it.
      */
-    default: (value) => value,
+    default: value => value,
     /**
      * Returns the value of the environment variable as a boolean.
      */
-    boolean: (value) => value === 'true',
+    boolean: value => value === 'true',
     /**
      * Returns the value of the environment variable as a number.
      */
-    number: (value) => parseInt(value),
+    number: value => parseInt(value),
     /**
      * Returns the value of the environment variable as a float.
      */
-    float: (value) => parseFloat(value),
+    float: value => parseFloat(value),
 };
 
 /**
  * Returns the value of the environment variable.
  * @param name Name of the environment variable.
- * @param options Options for loading the environment variable.  
+ * @param options Options for loading the environment variable.
  * @returns The value of the environment variable.
  */
-export function loadEnv<T = any>(name: string, {
-    parserCallback = envParser.default,
-    defaults,
-}: LoadEnvOptions = {}): T {
+export function loadEnv<T = any>(
+    name: string,
+    { parserCallback = envParser.default, defaults }: LoadEnvOptions = {},
+): T {
     const value = process.env[name] || defaults;
-    
+
     if (value === undefined) {
         const required = defaults === undefined;
         if (required) {

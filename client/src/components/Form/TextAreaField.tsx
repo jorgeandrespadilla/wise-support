@@ -1,8 +1,11 @@
-import { Controller, FieldValues } from "react-hook-form";
-import { BaseTextAreaType, FormInputProps } from "types";
-import TextArea from "components/TextArea";
+import { Controller, FieldValues } from 'react-hook-form';
+import { BaseTextAreaType, FormInputProps } from 'types';
+import TextArea from 'components/TextArea';
 
-type TextAreaFieldProps<TFields extends FieldValues, TValue> = FormInputProps<TFields> & {
+type TextAreaFieldProps<
+    TFields extends FieldValues,
+    TValue,
+> = FormInputProps<TFields> & {
     type?: BaseTextAreaType;
     /**
      * Minimum number of rows to display. If the type is not "text", this will be ignored.
@@ -34,13 +37,14 @@ function TextAreaField<TFields extends FieldValues, TValue = string>({
             name={name}
             control={control}
             rules={rules}
-            render={({
-                field: { value, onChange },
-                fieldState: { error },
-            }) => (
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
                 <TextArea
                     value={valueCallback ? valueCallback(value) : value}
-                    onChange={onChangeCallback ? (value) => onChange(onChangeCallback(value)) : onChange}
+                    onChange={
+                        onChangeCallback
+                            ? value => onChange(onChangeCallback(value))
+                            : onChange
+                    }
                     invalid={Boolean(error)}
                     feedback={error?.message}
                     {...props}

@@ -1,10 +1,12 @@
-import Cell from "./Cell";
+import Cell from './Cell';
 
 type TableEmptyProps = {
     label?: string;
-}
+};
 
-function TableEmpty({ label = "No se encontraron resultados" }: TableEmptyProps) {
+function TableEmpty({
+    label = 'No se encontraron resultados',
+}: TableEmptyProps) {
     return (
         <tr>
             <Cell colSpan={100} align="center">

@@ -1,1 +1,1 @@
-export { StatusCodes as StatusCode } from "http-status-codes";
+export { StatusCodes as StatusCode } from 'http-status-codes';

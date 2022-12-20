@@ -1,5 +1,5 @@
 import express from 'express';
-import { Application } from "express";
+import { Application } from 'express';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';

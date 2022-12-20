@@ -1,10 +1,10 @@
-import { EntityNotFoundError, ValidationError } from "@/common/errors";
-import { ticketStatus } from "@/constants/tickets";
-import { db } from "@/database/client";
-import { TaskRequestSchema } from "@/schemas/tasks";
-import { SelectFields, Task } from "@/types";
-import { catchErrors } from "@/utils/catchErrors";
-import { validateAndParse } from "@/utils/validation";
+import { EntityNotFoundError, ValidationError } from '@/common/errors';
+import { ticketStatus } from '@/constants/tickets';
+import { db } from '@/database/client';
+import { TaskRequestSchema } from '@/schemas/tasks';
+import { SelectFields, Task } from '@/types';
+import { catchErrors } from '@/utils/catchErrors';
+import { validateAndParse } from '@/utils/validation';
 
 const fieldsToSelect: SelectFields<Task> = {
     id: true,
@@ -20,7 +20,7 @@ export const getTasksByTicketId = catchErrors(async (_req, res) => {
 
     const tasks = await db.task.findMany({
         where: { ticketId },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
 
     res.send(tasks);
@@ -33,7 +33,7 @@ export const getTaskById = catchErrors(async (_req, res) => {
 
     const task = await db.task.findUnique({
         where: { id: taskId },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
     res.send(task);
 });
@@ -49,9 +49,9 @@ export const createTask = catchErrors(async (req, res) => {
             ...data,
             ticket: {
                 connect: { id: ticketId },
-            }
+            },
         },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
 
     res.send(task);
@@ -70,9 +70,9 @@ export const updateTask = catchErrors(async (req, res) => {
             ...data,
             ticket: {
                 connect: { id: ticketId },
-            }
+            },
         },
-        select: fieldsToSelect
+        select: fieldsToSelect,
     });
 
     res.send(task);
@@ -84,32 +84,31 @@ export const deleteTask = catchErrors(async (req, res) => {
     await validateTask(taskId);
     const task = await db.task.findUnique({
         where: { id: taskId },
-        select: { ticketId: true }
+        select: { ticketId: true },
     });
     await validateTicketStatus(task!.ticketId);
 
     await db.task.delete({
-        where: { id: taskId }
+        where: { id: taskId },
     });
 
-    res.send({ message: "Tarea eliminada." });
+    res.send({ message: 'Tarea eliminada.' });
 });
-
 
 //#region Validation functions
 
 async function validateTicket(ticketId: number) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId }
+        where: { id: ticketId },
     });
 
-    if (!ticket) throw new EntityNotFoundError("Ticket", { id: ticketId });
+    if (!ticket) throw new EntityNotFoundError('Ticket', { id: ticketId });
 }
 
 async function validateTicketStatus(ticketId: number) {
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId },
-        select: { status: true }
+        select: { status: true },
     });
     const currentStatus = ticket!.status;
 
@@ -120,10 +119,10 @@ async function validateTicketStatus(ticketId: number) {
 
 async function validateTask(taskId: number) {
     const task = await db.task.findUnique({
-        where: { id: taskId }
+        where: { id: taskId },
     });
 
-    if (!task) throw new EntityNotFoundError("Tarea", { id: taskId });
+    if (!task) throw new EntityNotFoundError('Tarea', { id: taskId });
 }
 
 //#endregion

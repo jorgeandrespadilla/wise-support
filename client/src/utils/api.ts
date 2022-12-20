@@ -1,5 +1,5 @@
-import axios from "axios";
-import { accessToken } from "./auth";
+import axios from 'axios';
+import { accessToken } from './auth';
 
 const apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
@@ -7,7 +7,9 @@ const defaultConfig = {
     baseURL: `${apiBaseUrl}/api`,
     headers: () => ({
         'Content-Type': 'application/json',
-        'Authorization': accessToken.get() ? `Bearer ${accessToken.get()}` : undefined
+        Authorization: accessToken.get()
+            ? `Bearer ${accessToken.get()}`
+            : undefined,
     }),
     error: {
         code: 'INTERNAL_ERROR',
@@ -17,7 +19,7 @@ const defaultConfig = {
     },
 };
 
-const httpClient = <T>(method: string, url: string, variables?: any) =>
+const httpClient = <T>(method: string, url: string, variables?: unknown) =>
     new Promise<T>((resolve, reject) => {
         axios({
             url: `${defaultConfig.baseURL}${url}`,
@@ -40,10 +42,14 @@ const httpClient = <T>(method: string, url: string, variables?: any) =>
     });
 
 const api = {
-    get: <T>(url: string, variables?: any) => httpClient<T>('get', url, variables),
-    post: <T>(url: string, variables?: any) => httpClient<T>('post', url, variables),
-    put: <T>(url: string, variables?: any) => httpClient<T>('put', url, variables),
-    delete: <T>(url: string, variables?: any) => httpClient<T>('delete', url, variables),
+    get: <T>(url: string, variables?: unknown) =>
+        httpClient<T>('get', url, variables),
+    post: <T>(url: string, variables?: unknown) =>
+        httpClient<T>('post', url, variables),
+    put: <T>(url: string, variables?: unknown) =>
+        httpClient<T>('put', url, variables),
+    delete: <T>(url: string, variables?: unknown) =>
+        httpClient<T>('delete', url, variables),
 };
 
 export default api;

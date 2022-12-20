@@ -1,16 +1,37 @@
-import { EntityNotFoundError, ForbiddenError, ValidationError } from "@/common/errors";
-import { db } from "@/database/client";
-import { catchErrors } from "@/utils/catchErrors";
-import { SelectFields, TicketCategory, TicketDetail, TicketTask, TicketUser, UserProfile } from "@/types";
-import { omit } from "lodash";
-import { validateAndParse } from "@/utils/validation";
-import { GetTicketsRequestSchema, CreateTicketRequestSchema, UpdateTicketRequestSchema } from "@/schemas/tickets";
-import { generateCode } from "@/utils/uuid";
-import { now } from "@/utils/dateHelpers";
-import { role } from "@/constants/roles";
-import { TicketPriority, TicketStatus } from "@prisma/client";
-import { allTicketStatuses, allTicketPriorities, allowedStatusByRole, friendlyTicketStatus, hasTicketEnded, ticketStatus } from "@/constants/tickets";
-
+import {
+    EntityNotFoundError,
+    ForbiddenError,
+    ValidationError,
+} from '@/common/errors';
+import { db } from '@/database/client';
+import { catchErrors } from '@/utils/catchErrors';
+import {
+    SelectFields,
+    TicketCategory,
+    TicketDetail,
+    TicketTask,
+    TicketUser,
+    UserProfile,
+} from '@/types';
+import { omit } from 'lodash';
+import { validateAndParse } from '@/utils/validation';
+import {
+    GetTicketsRequestSchema,
+    CreateTicketRequestSchema,
+    UpdateTicketRequestSchema,
+} from '@/schemas/tickets';
+import { generateCode } from '@/utils/uuid';
+import { now } from '@/utils/dateHelpers';
+import { role } from '@/constants/roles';
+import { TicketPriority, TicketStatus } from '@prisma/client';
+import {
+    allTicketStatuses,
+    allTicketPriorities,
+    allowedStatusByRole,
+    friendlyTicketStatus,
+    hasTicketEnded,
+    ticketStatus,
+} from '@/constants/tickets';
 
 //#region Data selection
 
@@ -62,7 +83,6 @@ const ticketFieldsToSelect: SelectFields<TicketDetail> = {
 
 //#endregion
 
-
 //#region Data filters
 
 const getTicketFiltersByRole = (userId: number, roleCode: string) => {
@@ -73,13 +93,12 @@ const getTicketFiltersByRole = (userId: number, roleCode: string) => {
         },
         [role.AGENT]: {
             assigneeId: userId,
-        }
-    }
+        },
+    };
     return filters[roleCode];
 };
 
 //#endregion
-
 
 export const getTickets = catchErrors(async (req, res) => {
     const requestData = validateAndParse(GetTicketsRequestSchema, req.query);
@@ -90,8 +109,11 @@ export const getTickets = catchErrors(async (req, res) => {
         select: ticketFieldsToSelect,
         where: {
             status: ticketStatusFilter,
-            ...getTicketFiltersByRole(req.currentUser.id, req.currentUser.role.code),
-        }
+            ...getTicketFiltersByRole(
+                req.currentUser.id,
+                req.currentUser.role.code,
+            ),
+        },
     });
 
     res.send(tickets.map(mapToTicketResponse));
@@ -105,13 +127,14 @@ export const getTicketById = catchErrors(async (req, res) => {
 
     const ticket = await db.ticket.findUnique({
         where: { id: ticketId },
-        select: ticketFieldsToSelect
+        select: ticketFieldsToSelect,
     });
     res.send(mapToTicketResponse(ticket!));
 });
 
 export const createTicket = catchErrors(async (req, res) => {
-    const { assigneeId, supervisorId, categoryId, ...requestData } = validateAndParse(CreateTicketRequestSchema, req.body);
+    const { assigneeId, supervisorId, categoryId, ...requestData } =
+        validateAndParse(CreateTicketRequestSchema, req.body);
 
     const newTicketPriority = validateTicketPriority(requestData.priority);
 
@@ -122,30 +145,37 @@ export const createTicket = catchErrors(async (req, res) => {
             priority: newTicketPriority,
             status: ticketStatus.OPEN,
             assignee: {
-                connect: { id: assigneeId }
+                connect: { id: assigneeId },
             },
             supervisor: {
-                connect: { id: supervisorId }
+                connect: { id: supervisorId },
             },
             category: {
-                connect: { id: categoryId }
+                connect: { id: categoryId },
             },
         },
-        select: ticketFieldsToSelect
+        select: ticketFieldsToSelect,
     });
     res.send(mapToTicketResponse(ticket));
 });
 
 export const updateTicket = catchErrors(async (req, res) => {
     const ticketId = Number(req.params.ticketId);
-    const { assigneeId, supervisorId, categoryId, ...data } = validateAndParse(UpdateTicketRequestSchema, req.body);
+    const { assigneeId, supervisorId, categoryId, ...data } = validateAndParse(
+        UpdateTicketRequestSchema,
+        req.body,
+    );
 
     await validateTicket(ticketId);
     await validateAccessToTicket(ticketId, req.currentUser);
 
     const newTicketStatus = validateTicketStatus(data.status)!;
     const newTicketPriority = validateTicketPriority(data.priority)!;
-    await validateTicketStatusToUpdate(ticketId, newTicketStatus, req.currentUser.role.code);
+    await validateTicketStatusToUpdate(
+        ticketId,
+        newTicketStatus,
+        req.currentUser.role.code,
+    );
 
     const ticket = await db.ticket.update({
         where: { id: ticketId },
@@ -155,16 +185,16 @@ export const updateTicket = catchErrors(async (req, res) => {
             priority: newTicketPriority,
             endedAt: hasTicketEnded(newTicketStatus) ? now() : null,
             assignee: {
-                connect: { id: assigneeId }
+                connect: { id: assigneeId },
             },
             supervisor: {
-                connect: { id: supervisorId }
+                connect: { id: supervisorId },
             },
             category: {
-                connect: { id: categoryId }
+                connect: { id: categoryId },
             },
         },
-        select: ticketFieldsToSelect
+        select: ticketFieldsToSelect,
     });
     res.send(mapToTicketResponse(ticket));
 });
@@ -177,15 +207,15 @@ export const deleteTicket = catchErrors(async (req, res) => {
     await validateTicketToDelete(ticketId);
 
     await db.ticket.delete({
-        where: { id: ticketId }
+        where: { id: ticketId },
     });
 
-    res.send({ message: "Ticket eliminado." });
+    res.send({ message: 'Ticket eliminado.' });
 });
 
 function mapToTicketResponse(ticket: TicketDetail) {
     return {
-        ...omit(ticket, "tasks"),
+        ...omit(ticket, 'tasks'),
         timeSpent: ticket.tasks.reduce((acc, task) => acc + task.timeSpent, 0),
         assignee: {
             ...ticket.assignee,
@@ -198,7 +228,6 @@ function mapToTicketResponse(ticket: TicketDetail) {
     };
 }
 
-
 //#region Validation functions
 
 /**
@@ -206,9 +235,9 @@ function mapToTicketResponse(ticket: TicketDetail) {
  */
 async function validateTicket(ticketId: number) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId }
+        where: { id: ticketId },
     });
-    if (!ticket) throw new EntityNotFoundError("Ticket", { id: ticketId });
+    if (!ticket) throw new EntityNotFoundError('Ticket', { id: ticketId });
 }
 
 /**
@@ -218,8 +247,9 @@ async function validateTicket(ticketId: number) {
  */
 function validateTicketStatus(status: string | undefined) {
     if (status === undefined) return undefined;
-    if (allTicketStatuses.includes(status as TicketStatus)) return status as TicketStatus;
-    throw new EntityNotFoundError("Estado de ticket", { code: status });
+    if (allTicketStatuses.includes(status as TicketStatus))
+        return status as TicketStatus;
+    throw new EntityNotFoundError('Estado de ticket', { code: status });
 }
 
 /**
@@ -229,16 +259,21 @@ function validateTicketStatus(status: string | undefined) {
  */
 function validateTicketPriority(priority: string | undefined) {
     if (!priority) return undefined;
-    if (allTicketPriorities.includes(priority as TicketPriority)) return priority as TicketPriority;
-    throw new EntityNotFoundError("Prioridad de ticket", { code: priority });
+    if (allTicketPriorities.includes(priority as TicketPriority))
+        return priority as TicketPriority;
+    throw new EntityNotFoundError('Prioridad de ticket', { code: priority });
 }
 
 /**
  * Validates if the ticket can be updated based on the ticket status, the user role and the tasks.
  */
-async function validateTicketStatusToUpdate(ticketId: number, newStatus: TicketStatus, roleCode: string) {
+async function validateTicketStatusToUpdate(
+    ticketId: number,
+    newStatus: TicketStatus,
+    roleCode: string,
+) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId }
+        where: { id: ticketId },
     });
     const currentStatus = ticket!.status;
 
@@ -249,18 +284,27 @@ async function validateTicketStatusToUpdate(ticketId: number, newStatus: TicketS
             throw new ValidationError(`El ticket ha sido finalizado.`);
         }
         if (!allowedStatusByRole[roleCode].includes(newStatus)) {
-            throw new ValidationError(`El usuario no puede cambiar el estado a ${friendlyTicketStatus[newStatus]}.`);
+            throw new ValidationError(
+                `El usuario no puede cambiar el estado a ${friendlyTicketStatus[newStatus]}.`,
+            );
         }
     }
 
     // Validate the ticket status based on the associated tasks.
     const hasTasks = await hasAssociatedTasks(ticketId);
     if (newStatus === ticketStatus.OPEN && hasTasks) {
-        throw new ValidationError('No se puede reabrir un ticket con tareas asociadas.');
+        throw new ValidationError(
+            'No se puede reabrir un ticket con tareas asociadas.',
+        );
     }
-    const finalStatuses: string[] = [ticketStatus.RESOLVED, ticketStatus.CLOSED]; // CANCELED is not included because a ticket can be canceled even if it has not tasks.
+    const finalStatuses: string[] = [
+        ticketStatus.RESOLVED,
+        ticketStatus.CLOSED,
+    ]; // CANCELED is not included because a ticket can be canceled even if it has not tasks.
     if (finalStatuses.includes(newStatus) && !hasTasks) {
-        throw new ValidationError('No se puede marcar un ticket sin tareas asociadas como resuelto o cerrado.');
+        throw new ValidationError(
+            'No se puede marcar un ticket sin tareas asociadas como resuelto o cerrado.',
+        );
     }
 }
 
@@ -269,7 +313,7 @@ async function validateTicketStatusToUpdate(ticketId: number, newStatus: TicketS
  */
 async function validateTicketToDelete(ticketId: number) {
     const ticket = await db.ticket.findUnique({
-        where: { id: ticketId }
+        where: { id: ticketId },
     });
     const currentStatus = ticket!.status;
 
@@ -278,7 +322,7 @@ async function validateTicketToDelete(ticketId: number) {
     }
 
     if (await hasAssociatedTasks(ticketId)) {
-        throw new ValidationError("El ticket tiene tareas asociadas.");
+        throw new ValidationError('El ticket tiene tareas asociadas.');
     }
 }
 
@@ -287,7 +331,8 @@ async function validateTicketToDelete(ticketId: number) {
  */
 async function validateAccessToTicket(ticketId: number, user: UserProfile) {
     const hasAccess = await hasAccessToTicket(ticketId, user);
-    if (!hasAccess) throw new ForbiddenError("No tiene permisos para acceder al ticket.");
+    if (!hasAccess)
+        throw new ForbiddenError('No tiene permisos para acceder al ticket.');
 }
 
 /**
@@ -295,7 +340,7 @@ async function validateAccessToTicket(ticketId: number, user: UserProfile) {
  */
 async function hasAssociatedTasks(ticketId: number) {
     const tasks = await db.task.findMany({
-        where: { ticketId }
+        where: { ticketId },
     });
 
     return !tasks.isEmpty();
@@ -303,7 +348,7 @@ async function hasAssociatedTasks(ticketId: number) {
 
 /**
  * Checks if the user has access to the ticket.
- * 
+ *
  * 1. If role is ADMIN, has access to all tickets.
  * 2. If role is SUPERVISOR, has access all tickets where he is the supervisor.
  * 3. If role is AGENT, has access all tickets where he is the assignee.
@@ -315,8 +360,8 @@ async function hasAccessToTicket(ticketId: number, user: UserProfile) {
         where: { id: ticketId },
         select: {
             assigneeId: true,
-            supervisorId: true
-        }
+            supervisorId: true,
+        },
     });
     return ticket!.supervisorId === user.id || ticket!.assigneeId === user.id;
 }

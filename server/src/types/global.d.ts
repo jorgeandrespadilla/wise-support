@@ -1,8 +1,7 @@
-import { UserProfile } from "./data";
-import { isEmpty, last } from "@/common/extensions";
+import { UserProfile } from './data';
+import { isEmpty, last } from '@/common/extensions';
 
 declare global {
-    
     namespace Express {
         interface Request {
             currentUser: UserProfile;
@@ -13,5 +12,4 @@ declare global {
         isEmpty: typeof isEmpty;
         last: typeof last;
     }
-
 }
