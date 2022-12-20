@@ -32,13 +32,18 @@ type DisplayFormat = 'date' | 'datetime';
  * @param date Date to format
  * @returns Date string
  */
-export const formatDateForDisplay = (date: Date, zone: TimezoneFormat = "utc", display: DisplayFormat = "date"): string => {
-    const displayFormat = display === "date" ? dateDisplayFormat : datetimeDisplayFormat;
-    if (zone === "utc") {
+export const formatDateForDisplay = (
+    date: Date,
+    zone: TimezoneFormat = 'utc',
+    display: DisplayFormat = 'date',
+): string => {
+    const displayFormat =
+        display === 'date' ? dateDisplayFormat : datetimeDisplayFormat;
+    if (zone === 'utc') {
         return normalizeDate(date).toFormat(displayFormat);
     }
     return DateTime.fromJSDate(date).toFormat(displayFormat);
-}
+};
 
 /**
  * Converts a date picker string to a ISO date string.
@@ -46,8 +51,8 @@ export const formatDateForDisplay = (date: Date, zone: TimezoneFormat = "utc", d
  * @returns ISO date string
  */
 export const datePickerToISODate = (date: string): string => {
-    return DateTime.fromFormat(date, datePickerFormat, {zone: "utc"}).toISO();
-}
+    return DateTime.fromFormat(date, datePickerFormat, { zone: 'utc' }).toISO();
+};
 
 /**
  * Converts a ISO date string to a date picker string.
@@ -55,7 +60,7 @@ export const datePickerToISODate = (date: string): string => {
  * @returns Date picker string
  */
 export function isoDateToDatePicker(date: string): string {
-    return DateTime.fromISO(date, { zone: "utc" }).toFormat(datePickerFormat);
+    return DateTime.fromISO(date, { zone: 'utc' }).toFormat(datePickerFormat);
 }
 
 /**
@@ -63,28 +68,36 @@ export function isoDateToDatePicker(date: string): string {
  * @param format Format of the date to return
  * @returns Current date
  */
-export const today = (format: DateFormat = "default"): string => {
+export const today = (format: DateFormat = 'default'): string => {
     const currentDate = new Date();
-    if (format === "iso") {
-        const date = DateTime.fromJSDate(currentDate).plus({ minutes: timezoneOffset() }).toJSDate();
+    if (format === 'iso') {
+        const date = DateTime.fromJSDate(currentDate)
+            .plus({ minutes: timezoneOffset() })
+            .toJSDate();
         return normalizeDate(date).toISO();
     }
-    return normalizeDate(currentDate, "local").toFormat(datePickerFormat);
-}
+    return normalizeDate(currentDate, 'local').toFormat(datePickerFormat);
+};
 
-/** 
+/**
  * Parses a date (mainly ISO date strings and simple date strings) to a Date object.
  * Useful for parsing dates from a form schema.
  * No need to normalize the date.
- * @param date Date to parse
+ * @param input Data to parse as date
  * @returns Date object
  */
-export const tryParseDate = (date: any) => {
-    if (typeof date === "string" || date instanceof Date) {
-        return new Date(date);
+export const tryParseDate = (input: unknown) => {
+    if (input instanceof Date) {
+        return input;
     }
-    return date;
-}
+    if (typeof input === 'string' || typeof input === 'number') {
+        const date = new Date(input);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+    }
+    return null;
+};
 
 /**
  * Normalizes a date in ISO format to a date in ISO format subtracting the timezone offset.
@@ -92,21 +105,21 @@ export const tryParseDate = (date: any) => {
  * @returns A date without time and with UTC timezone
  */
 export const normalizeTimezone = (dateStr: string) => {
-    const date = DateTime.fromISO(dateStr, { zone: "utc" });
+    const date = DateTime.fromISO(dateStr, { zone: 'utc' });
     return date.minus({ minutes: timezoneOffset() }).toISO();
-}
+};
 
 /**
  * Normalizes a date to a date without time and with UTC timezone.
  * @param date Date to normalize
  * @returns A date without time and with UTC timezone
  */
-const normalizeDate = (date: Date, zone: TimezoneFormat = "utc") => {
-    if (zone === "utc") {
+const normalizeDate = (date: Date, zone: TimezoneFormat = 'utc') => {
+    if (zone === 'utc') {
         return DateTime.fromJSDate(date).toUTC().startOf('day');
     }
     return DateTime.fromJSDate(date).startOf('day');
-}
+};
 
 /**
  * Gets the local timezone offset.
@@ -114,4 +127,4 @@ const normalizeDate = (date: Date, zone: TimezoneFormat = "utc") => {
  */
 const timezoneOffset = () => {
     return DateTime.local().offset;
-}
+};

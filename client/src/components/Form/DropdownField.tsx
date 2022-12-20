@@ -1,8 +1,11 @@
-import { Controller, FieldValues } from "react-hook-form";
-import { FormInputProps } from "types";
-import Dropdown from "components/Dropdown";
+import { Controller, FieldValues } from 'react-hook-form';
+import { FormInputProps } from 'types';
+import Dropdown from 'components/Dropdown';
 
-type DropdownFieldProps<TFields extends FieldValues, TValue> = FormInputProps<TFields> & {
+type DropdownFieldProps<
+    TFields extends FieldValues,
+    TValue,
+> = FormInputProps<TFields> & {
     /**
      * Callback to transform the value before it is passed to the dropdown.
      */
@@ -33,13 +36,14 @@ function DropdownField<TFields extends FieldValues, TValue = string>({
             name={name}
             control={control}
             rules={rules}
-            render={({
-                field: { value, onChange },
-                fieldState: { error },
-            }) => (
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
                 <Dropdown
                     value={valueCallback ? valueCallback(value) : value}
-                    onChange={onChangeCallback ? (value) => onChange(onChangeCallback(value)) : onChange}
+                    onChange={
+                        onChangeCallback
+                            ? value => onChange(onChangeCallback(value))
+                            : onChange
+                    }
                     invalid={Boolean(error)}
                     feedback={error?.message}
                     {...props}

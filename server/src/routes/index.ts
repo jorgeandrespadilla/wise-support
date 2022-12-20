@@ -1,12 +1,12 @@
-import { BASE_API_URL } from "@/constants/settings";
-import { Application } from "express";
-import authentication from "./authentication";
-import roles from "./roles";
-import users from "./users";
-import categories from "./categories";
-import tickets from "./tickets";
-import tasks from "./tasks";
-import stats from "./statistics";
+import { BASE_API_URL } from '@/constants/settings';
+import { Application } from 'express';
+import authentication from './authentication';
+import roles from './roles';
+import users from './users';
+import categories from './categories';
+import tickets from './tickets';
+import tasks from './tasks';
+import stats from './statistics';
 
 export const configureRoutes = (app: Application) => {
     app.use(BASE_API_URL, authentication);
@@ -16,4 +16,4 @@ export const configureRoutes = (app: Application) => {
     app.use(BASE_API_URL, tickets);
     app.use(BASE_API_URL, tasks);
     app.use(BASE_API_URL, stats);
-}
+};

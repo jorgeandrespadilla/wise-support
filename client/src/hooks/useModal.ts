@@ -5,11 +5,11 @@ export const useModal = (isVisible = false) => {
 
     const open = () => setVisible(true);
     const close = () => setVisible(false);
-   
+
     return {
         visible,
         setVisible,
         open,
-        close
+        close,
     };
-}
+};

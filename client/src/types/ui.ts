@@ -1,10 +1,15 @@
 import { ReactNode } from 'react';
-import { FieldValues, RegisterOptions, Control, FieldPath } from 'react-hook-form';
+import {
+    FieldValues,
+    RegisterOptions,
+    Control,
+    FieldPath,
+} from 'react-hook-form';
 
-export type ColorScheme = "light" | "dark";
-export type Theme = ColorScheme | "system";
+export type ColorScheme = 'light' | 'dark';
+export type Theme = ColorScheme | 'system';
 
-export type ThemeBreakpoint = "sm" | "md" | "lg" | "xl";
+export type ThemeBreakpoint = 'sm' | 'md' | 'lg' | 'xl';
 
 export interface LinkConfig {
     /** The URL of the link */
@@ -15,7 +20,7 @@ export interface LinkConfig {
     icon?: ReactNode;
     /** The allowed roles to see the link */
     roles: string[];
-};
+}
 
 export interface DropdownOption {
     /** The value of the option */
@@ -38,12 +43,12 @@ export interface DropdownMenuOption {
     label: string;
     /** The icon to display next to the option */
     icon?: ReactNode;
-    /** 
+    /**
      * The action to perform when the option is clicked.
      * If this is set, the option will act as a button.
      */
     action?: () => void;
-    /** 
+    /**
      * The URL to navigate to when the option is clicked.
      * If this is set, the action will not be called, and the option will act as a link.
      */
@@ -52,13 +57,13 @@ export interface DropdownMenuOption {
 
 //#region Inputs
 
-export type BaseInputType = "text" | "password" | "date" | "email" | "url";
+export type BaseInputType = 'text' | 'password' | 'date' | 'email' | 'url';
 
-export type BaseTextAreaType = "text" | "markdown";
+export type BaseTextAreaType = 'text' | 'markdown';
 
-export type InputMode = "text" | "numeric" | "decimal";
+export type InputMode = 'text' | 'numeric' | 'decimal';
 
-export type DateFormat = "default" | "iso";
+export type DateFormat = 'default' | 'iso';
 
 export type BaseInputProps = {
     /** The label to show above the input */
@@ -72,7 +77,7 @@ export type BaseInputProps = {
     /** Whether the input is disabled */
     disabled?: boolean;
     /** The width of the input */
-    width?: "full" | "half";
+    width?: 'full' | 'half';
 };
 
 export type InputDecorationProps = {
@@ -82,12 +87,14 @@ export type InputDecorationProps = {
     clickableSuffix?: boolean;
 };
 
-export type BaseFormInputProps<TFormValues extends FieldValues = FieldValues> = {
-    name: FieldPath<TFormValues>;
-    control?: Control<TFormValues>;
-    rules?: RegisterOptions;
-};
+export type BaseFormInputProps<TFormValues extends FieldValues = FieldValues> =
+    {
+        name: FieldPath<TFormValues>;
+        control?: Control<TFormValues>;
+        rules?: RegisterOptions;
+    };
 
-export type FormInputProps<TFields extends FieldValues> = BaseInputProps & BaseFormInputProps<TFields>;
+export type FormInputProps<TFields extends FieldValues> = BaseInputProps &
+    BaseFormInputProps<TFields>;
 
 //#endregion

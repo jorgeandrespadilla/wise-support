@@ -1,5 +1,5 @@
 import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file'; 
+import DailyRotateFile from 'winston-daily-rotate-file';
 import { LOG_CONFIG } from '@/constants/settings';
 
 const logger: winston.Logger = configureLogger();
@@ -11,7 +11,7 @@ function configureLogger() {
             winston.format.timestamp(),
             winston.format.printf(({ level, message, timestamp }) => {
                 return `[${timestamp}] ${level.toUpperCase()}: ${message}`;
-            })
+            }),
         ),
         transports: [
             new winston.transports.Console({
@@ -20,17 +20,17 @@ function configureLogger() {
                     winston.format.timestamp(),
                     winston.format.printf(({ level, message, timestamp }) => {
                         return `[${timestamp}] ${level}: ${message}`;
-                    })
-                )
+                    }),
+                ),
             }),
             new DailyRotateFile({
                 filename: LOG_CONFIG.outputPath,
-                datePattern: "YYYY-MM-DD",
+                datePattern: 'YYYY-MM-DD',
                 zippedArchive: true,
-                maxSize: "20m",
-                maxFiles: "14d"
-            })
-        ]
+                maxSize: '20m',
+                maxFiles: '14d',
+            }),
+        ],
     });
 }
 
@@ -54,5 +54,5 @@ export default {
     /**
      * Events related to errors and exceptions that prevent the application from working properly.
      */
-    error: (message: string) => logger.error(message)
-}
+    error: (message: string) => logger.error(message),
+};

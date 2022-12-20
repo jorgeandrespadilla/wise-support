@@ -1,8 +1,14 @@
-import { useSessionRefresh } from "hooks/useRefreshSession";
-import { createContext, useCallback, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
-import { accessToken, refreshToken } from "utils/auth";
-import { addStorageListener, getStorageUpdate, listenForStorageUpdates, removeStorageListener, triggerStorageEvent } from "utils/storageHelpers";
+import { useSessionRefresh } from 'hooks/useRefreshSession';
+import { createContext, useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { accessToken, refreshToken } from 'utils/auth';
+import {
+    addStorageListener,
+    getStorageUpdate,
+    listenForStorageUpdates,
+    removeStorageListener,
+    triggerStorageEvent,
+} from 'utils/storageHelpers';
 
 // see https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
@@ -24,14 +30,14 @@ type AuthProviderProps = {
 };
 
 const authEvent = {
-    logout: "logout",
+    logout: 'logout',
 };
 
 export const AuthContext = createContext<AuthContextData>({
     isAuthenticated: false,
-    syncLogin: () => { },
-    syncLogout: () => { },
-    refreshSession: () => { },
+    syncLogin: () => {},
+    syncLogout: () => {},
+    refreshSession: () => {},
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -39,10 +45,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return accessToken.get() !== null;
     });
 
-    const [sessionTimeout, setSessionTimeout] = useState<NodeJS.Timeout | null>(null);
+    const [sessionTimeout, setSessionTimeout] = useState<NodeJS.Timeout | null>(
+        null,
+    );
 
     const { handleRefresh } = useSessionRefresh({
-        onSuccess: (data) => {
+        onSuccess: data => {
             syncLogin({
                 accessToken: data.accessToken.token,
                 refreshToken: data.refreshToken.token,
@@ -50,7 +58,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             });
         },
         onError: () => {
-            toast.error("La sesión ha expirado");
+            toast.error('La sesión ha expirado');
             syncLogout();
         },
     });
@@ -82,17 +90,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (sessionTimeout) {
             clearTimeout(sessionTimeout);
         }
-        setSessionTimeout(setTimeout(() => {
-            const token = refreshToken.get();
-            if (token) {
-                handleRefresh(token);
-            }
-            else {
-                toast.error("La sesión ha expirado");
-                syncLogout();
-            }
-        }, data.expiresInMilliseconds - 1000));
-    }
+        setSessionTimeout(
+            setTimeout(() => {
+                const token = refreshToken.get();
+                if (token) {
+                    handleRefresh(token);
+                } else {
+                    toast.error('La sesión ha expirado');
+                    syncLogout();
+                }
+            }, data.expiresInMilliseconds - 1000),
+        );
+    };
 
     /**
      * Logout and synchronize session across tabs
@@ -100,7 +109,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const syncLogout = () => {
         logout();
         triggerStorageEvent(authEvent.logout, String(Date.now()));
-    }
+    };
 
     /**
      * Refresh the session
@@ -112,14 +121,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }, [handleRefresh]);
 
-
     //#region Effects
 
     // Synchronize and validate session
     useEffect(() => {
         const onUpdateCompleted = () => {
             // Validate token
-            setIsAuthenticated(accessToken.get() !== null && refreshToken.get() !== null);
+            setIsAuthenticated(
+                accessToken.get() !== null && refreshToken.get() !== null,
+            );
         };
         const removeListener = listenForStorageUpdates(onUpdateCompleted);
         getStorageUpdate();
@@ -134,7 +144,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             if (event.key === authEvent.logout) {
                 logout();
             }
-        }
+        };
 
         addStorageListener(handleLogoutEvent);
         return () => {
@@ -144,15 +154,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // #endregion Effects
 
-
     return (
-        <AuthContext.Provider value={{
-            isAuthenticated,
-            syncLogin,
-            syncLogout,
-            refreshSession,
-        }}>
+        <AuthContext.Provider
+            value={{
+                isAuthenticated,
+                syncLogin,
+                syncLogout,
+                refreshSession,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
-}
+};

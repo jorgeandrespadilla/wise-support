@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { DATE_CONFIG } from '@/constants/settings';
 
-type DayType = "startOfDay" | "endOfDay";
+type DayType = 'startOfDay' | 'endOfDay';
 
 /**
  * Formats a date to a string for JSON responses or date string representations.
@@ -11,7 +11,7 @@ type DayType = "startOfDay" | "endOfDay";
  */
 export const formatDate = (date: Date) => {
     return normalizeDate(date).toFormat(DATE_CONFIG.shortDateFormat);
-}
+};
 
 /**
  * Formats a date to a string for display purposes.
@@ -20,7 +20,7 @@ export const formatDate = (date: Date) => {
  */
 export const formatDateForDisplay = (date: Date) => {
     return normalizeDate(date).toFormat(DATE_CONFIG.dateDisplayFormat);
-}
+};
 
 /**
  * Parses a date (mainly ISO date strings and simple date strings) to a Date object.
@@ -30,11 +30,11 @@ export const formatDateForDisplay = (date: Date) => {
  * @returns Date object
  */
 export const tryParseDate = (date: any) => {
-    if (typeof date === "string" || date instanceof Date) {
+    if (typeof date === 'string' || date instanceof Date) {
         return new Date(date);
     }
     return date;
-}
+};
 
 /**
  * Adds a number of days to a date.
@@ -44,18 +44,18 @@ export const tryParseDate = (date: any) => {
  */
 export const addDaysToDate = (date: Date, days: number) => {
     return DateTime.fromJSDate(date).plus({ days }).toJSDate();
-}
+};
 
 /**
  * Gets the current date.
  * @returns Date object
  */
-export const today = (as: DayType = "startOfDay") => {
-    if (as === "startOfDay") {
+export const today = (as: DayType = 'startOfDay') => {
+    if (as === 'startOfDay') {
         return normalizeDate(new Date()).toJSDate();
     }
     return normalizeDate(new Date()).endOf('day').toJSDate();
-}
+};
 
 /**
  * Gets the current datetime.
@@ -63,7 +63,7 @@ export const today = (as: DayType = "startOfDay") => {
  */
 export const now = () => {
     return new Date();
-}
+};
 
 /**
  * Normalizes a date to a date without time and with UTC timezone.
@@ -72,4 +72,4 @@ export const now = () => {
  */
 const normalizeDate = (date: Date) => {
     return DateTime.fromJSDate(date).toUTC().startOf('day');
-}
+};

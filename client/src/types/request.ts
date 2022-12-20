@@ -9,7 +9,6 @@ export interface RefreshRequest {
     refreshToken: string;
 }
 
-
 /** Users **/
 
 export interface AddUserRequest {
@@ -21,8 +20,7 @@ export interface AddUserRequest {
     roleId: number;
 }
 
-export interface UpdateUserRequest extends AddUserRequest {}
-
+export type UpdateUserRequest = AddUserRequest;
 
 /** Tickets **/
 
@@ -44,7 +42,6 @@ export interface UpdateTicketRequest extends AddTicketRequest {
     status: string;
 }
 
-
 /** Categories **/
 
 export interface AddCategoryRequest {
@@ -53,8 +50,7 @@ export interface AddCategoryRequest {
     description: string;
 }
 
-export interface UpdateCategoryRequest extends AddCategoryRequest {}
-
+export type UpdateCategoryRequest = AddCategoryRequest;
 
 /** Tasks **/
 
@@ -64,8 +60,7 @@ export interface AddTaskRequest {
     ticketId: number;
 }
 
-export interface UpdateTaskRequest extends AddTaskRequest {}
-
+export type UpdateTaskRequest = AddTaskRequest;
 
 /** Statistics **/
 

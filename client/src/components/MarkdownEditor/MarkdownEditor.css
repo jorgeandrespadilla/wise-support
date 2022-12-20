@@ -50,7 +50,10 @@
     stroke: #fff;
 }
 
-.dark .ql-snow.ql-toolbar :is(button, .ql-picker) :is(.ql-fill, .ql-stroke.ql-fill) {
+.dark
+    .ql-snow.ql-toolbar
+    :is(button, .ql-picker)
+    :is(.ql-fill, .ql-stroke.ql-fill) {
     fill: #fff;
 }
 
@@ -73,7 +76,10 @@
     color: #3b82f6;
 }
 
-.dark .ql-snow.ql-toolbar .ql-expanded :is(.ql-picker-label, .ql-stroke, .ql-fill) {
+.dark
+    .ql-snow.ql-toolbar
+    .ql-expanded
+    :is(.ql-picker-label, .ql-stroke, .ql-fill) {
     color: #ccc !important;
     stroke: #ccc !important;
     fill: #ccc !important;

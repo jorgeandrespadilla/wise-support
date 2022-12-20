@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 type ButtonProps = {
-    as?: "button" | "submit" | "link";
-    type?: "primary" | "secondary" | "text" | "minimal" | "danger";
-    size?: "sm" | "md" | "lg";
-    rounded?: "none" | "md" | "lg" | "full";
+    as?: 'button' | 'submit' | 'link';
+    type?: 'primary' | 'secondary' | 'text' | 'minimal' | 'danger';
+    size?: 'sm' | 'md' | 'lg';
+    rounded?: 'none' | 'md' | 'lg' | 'full';
     disabled?: boolean;
     /**
      * Only used when as="button" or as="submit"
@@ -18,19 +18,22 @@ type ButtonProps = {
 };
 
 export const buttonType = {
-    primary: "bg-primary hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
-    secondary: "bg-white dark:bg-transparent hover:bg-gray-200 dark:hover:bg-blue-100 dark:hover:bg-opacity-5 text-primary border border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-white",
-    text: "bg-transparent hover:bg-gray-100 text-primary underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent",
-    minimal: "bg-transparent text-primary hover:underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent", // Link look-alike
-    danger: "bg-danger hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100",
+    primary:
+        'bg-primary hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100',
+    secondary:
+        'bg-white dark:bg-transparent hover:bg-gray-200 dark:hover:bg-blue-100 dark:hover:bg-opacity-5 text-primary border border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-white',
+    text: 'bg-transparent hover:bg-gray-100 text-primary underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent',
+    minimal:
+        'bg-transparent text-primary hover:underline border-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-transparent', // Link look-alike
+    danger: 'bg-danger hover:bg-opacity-80 text-white border-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:ring-opacity-50 disabled:opacity-50 disabled:hover:bg-opacity-100',
 };
 
 export const disabledLinkByButtonType = {
-    primary: "opacity-50 hover:bg-opacity-100",
-    secondary: "opacity-50 hover:bg-white",
-    text: "opacity-50 hover:bg-transparent",
-    minimal: "opacity-50 hover:bg-transparent",
-    danger: "opacity-50 hover:bg-opacity-100",
+    primary: 'opacity-50 hover:bg-opacity-100',
+    secondary: 'opacity-50 hover:bg-white',
+    text: 'opacity-50 hover:bg-transparent',
+    minimal: 'opacity-50 hover:bg-transparent',
+    danger: 'opacity-50 hover:bg-opacity-100',
 };
 
 export const buttonSize = {
@@ -43,36 +46,46 @@ export const borderRadius = {
     none: 'rounded-none',
     md: 'rounded-md',
     lg: 'rounded-xl',
-    full: 'rounded-full'
+    full: 'rounded-full',
 };
 
 /**
  * Button component that can be used as a button, submit button, or link.
  */
 function Button({
-    as = "button",
-    type = "primary",
-    size = "md",
-    rounded = "md",
+    as = 'button',
+    type = 'primary',
+    size = 'md',
+    rounded = 'md',
     disabled = false,
     children,
-    onClick = () => { },
-    navigateTo = "#",
+    onClick = () => {},
+    navigateTo = '#',
 }: ButtonProps) {
-    return (
-        as === "link"
-            ? <Link
-                to={navigateTo}
-                className={`${buttonType[type]} ${buttonSize[size]} ${type === "minimal" ? "px-1 py-1" : ""} text-center font-bold rounded ${borderRadius[rounded]} ${disabled ? `${disabledLinkByButtonType[type]} pointer-events-none` : ""}`}>
-                {children}
-            </Link>
-            : <button 
-                type={as}
-                disabled={disabled}
-                onClick={onClick}
-                className={`${buttonType[type]} ${buttonSize[size]} ${type === "minimal" ? "px-1 py-1" : ""} text-center font-bold rounded ${borderRadius[rounded]}`}>
-                {children}
-            </button>
+    return as === 'link' ? (
+        <Link
+            to={navigateTo}
+            className={`${buttonType[type]} ${buttonSize[size]} ${
+                type === 'minimal' ? 'px-1 py-1' : ''
+            } text-center font-bold rounded ${borderRadius[rounded]} ${
+                disabled
+                    ? `${disabledLinkByButtonType[type]} pointer-events-none`
+                    : ''
+            }`}
+        >
+            {children}
+        </Link>
+    ) : (
+        <button
+            type={as}
+            disabled={disabled}
+            onClick={onClick}
+            className={`${buttonType[type]} ${buttonSize[size]} ${
+                type === 'minimal' ? 'px-1 py-1' : ''
+            } text-center font-bold rounded ${borderRadius[rounded]}`}
+        >
+            {children}
+        </button>
     );
 }
 

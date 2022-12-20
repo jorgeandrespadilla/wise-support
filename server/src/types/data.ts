@@ -6,9 +6,8 @@ import {
     Category as DbCategory,
     TicketStatus,
     TicketPriority,
-} from "@prisma/client";
-import { SubsetOf } from "./utilities";
-
+} from '@prisma/client';
+import { SubsetOf } from './utilities';
 
 /** Authentication **/
 
@@ -16,32 +15,37 @@ export interface TokenData {
     userId?: number;
 }
 
-
 /** Roles **/
 
-export interface Role extends SubsetOf<DbRole, {
-    id: number;
-    code: string,
-    name: string,
-    description: string | null,
-}> { }
-
+export type Role = SubsetOf<
+    DbRole,
+    {
+        id: number;
+        code: string;
+        name: string;
+        description: string | null;
+    }
+>;
 
 /** Users **/
 
-export interface User extends SubsetOf<DbUser, {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-    birthDate: Date;
-    createdAt: Date;
-    roleId: number;
-}> {
+export interface User
+    extends SubsetOf<
+        DbUser,
+        {
+            id: number;
+            email: string;
+            firstName: string;
+            lastName: string;
+            birthDate: Date;
+            createdAt: Date;
+            roleId: number;
+        }
+    > {
     role: Role;
 }
 
-export interface UserProfile extends User {}
+export type UserProfile = User;
 
 export interface UserResponse extends Omit<User, 'birthDate'> {
     fullName: string;
@@ -53,85 +57,107 @@ export interface UserProfileResponse extends Omit<UserProfile, 'birthDate'> {
     birthDate: string;
 }
 
-
 /** Categories **/
 
-export interface Category extends SubsetOf<DbCategory, {
-    id: number;
-    code: string;
-    name: string;
-    description: string | null;
-}> { }
-
+export type Category = SubsetOf<
+    DbCategory,
+    {
+        id: number;
+        code: string;
+        name: string;
+        description: string | null;
+    }
+>;
 
 /** Tasks **/
 
-export interface Task extends SubsetOf<DbTask, {
-    id: number;
-    description: string;
-    timeSpent: number;
-    createdAt: Date;
-}> { }
-
+export type Task = SubsetOf<
+    DbTask,
+    {
+        id: number;
+        description: string;
+        timeSpent: number;
+        createdAt: Date;
+    }
+>;
 
 /** Tickets **/
 
-export interface TicketUser extends SubsetOf<DbUser, {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-}> { }
+export type TicketUser = SubsetOf<
+    DbUser,
+    {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email: string;
+    }
+>;
 
-export interface TicketCategory extends SubsetOf<DbCategory, {
-    id: number;
-    name: string;
-    code: string;
-    description: string | null;
-}> { }
+export type TicketCategory = SubsetOf<
+    DbCategory,
+    {
+        id: number;
+        name: string;
+        code: string;
+        description: string | null;
+    }
+>;
 
-export interface TicketTask extends SubsetOf<DbTask, {
-    id: number;
-    timeSpent: number;
-}> { }
+export type TicketTask = SubsetOf<
+    DbTask,
+    {
+        id: number;
+        timeSpent: number;
+    }
+>;
 
-export interface TicketDetail extends SubsetOf<DbTicket, {
-    id: number;
-    code: string;
-    title: string;
-    description: string | null;
-    status: TicketStatus;
-    priority: TicketPriority;
-    timeEstimated: number;
-    createdAt: Date;
-    endedAt: Date | null;
-    assigneeId: number;
-    supervisorId: number;
-    categoryId: number;
-}> {
+export interface TicketDetail
+    extends SubsetOf<
+        DbTicket,
+        {
+            id: number;
+            code: string;
+            title: string;
+            description: string | null;
+            status: TicketStatus;
+            priority: TicketPriority;
+            timeEstimated: number;
+            createdAt: Date;
+            endedAt: Date | null;
+            assigneeId: number;
+            supervisorId: number;
+            categoryId: number;
+        }
+    > {
     assignee: TicketUser;
     supervisor: TicketUser;
     category: TicketCategory;
     tasks: TicketTask[];
 }
 
-
 /** Statistics **/
 
 //#region Users performance
 
-export interface StatsUser extends SubsetOf<DbUser, {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-}> { }
+export type StatsUser = SubsetOf<
+    DbUser,
+    {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email: string;
+    }
+>;
 
-export interface StatsTicket extends SubsetOf<DbTicket, {
-    id: number;
-    priority: TicketPriority;
-    timeEstimated: number;
-}> {
+export interface StatsTicket
+    extends SubsetOf<
+        DbTicket,
+        {
+            id: number;
+            priority: TicketPriority;
+            timeEstimated: number;
+        }
+    > {
     assignee: StatsUser;
 }
 
@@ -170,14 +196,17 @@ export interface PerformanceStatsResponse extends PerformanceStats {
 
 //#region Categories statistics
 
-export interface StatsCategoryDetail extends SubsetOf<DbCategory, {
-    id: number;
-    name: string;
-    code: string;
-    description: string | null;
-}> { }
+export type StatsCategoryDetail = SubsetOf<
+    DbCategory,
+    {
+        id: number;
+        name: string;
+        code: string;
+        description: string | null;
+    }
+>;
 
-export interface StatsTicketWithCategory extends SubsetOf<DbTicket, {}> {
+export interface StatsTicketWithCategory {
     category: StatsCategoryDetail;
 }
 

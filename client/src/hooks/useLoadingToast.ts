@@ -22,40 +22,37 @@ interface UseLoadingOptions {
 }
 
 // https://theodorusclarence.com/blog/react-loading-state-pattern
-export const useLoadingToast = (toastId: string, {
-    loading = "Cargando...",
-    success,
-    error,
-}: UseLoadingOptions) => {
+export const useLoadingToast = (
+    toastId: string,
+    { loading = 'Cargando...', success, error }: UseLoadingOptions,
+) => {
     const [status, setStatus] = useState<Status>('idle');
 
     const startLoading = () => {
         setStatus('loading');
         toast.loading(loading, {
             duration: 0,
-            id: toastId
+            id: toastId,
         });
-    }
+    };
 
     const markAsSuccess = () => {
         setStatus('success');
         if (success) {
             toast.success(success, { id: toastId });
-        }
-        else {
+        } else {
             toast.dismiss(toastId);
         }
-    }
+    };
 
     const markAsError = () => {
         setStatus('error');
         if (error) {
             toast.error(error, { id: toastId });
-        }
-        else {
+        } else {
             toast.dismiss(toastId);
         }
-    }
+    };
 
     return {
         toastId,
@@ -64,4 +61,4 @@ export const useLoadingToast = (toastId: string, {
         success: markAsSuccess,
         error: markAsError,
     };
-}
+};
