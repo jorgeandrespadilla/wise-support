@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { envParser, loadEnv } from '@/utils/dotenvHelpers';
 
 export const IS_DEV = loadEnv<boolean>('NODE_ENV', {
-    defaults: 'development',
+    defaults: true,
     parserCallback: value => value === 'development',
 });
 

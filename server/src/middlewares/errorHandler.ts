@@ -4,7 +4,7 @@ import { PrismaClientInitializationError } from '@prisma/client/runtime';
 import { ServerError } from '@/common/errors';
 import logger from '@/utils/logger';
 
-const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
+const errorHandler: ErrorRequestHandler = (error, _req, res) => {
     const isServerError = error instanceof ServerError;
     const isDbInitializationError =
         error instanceof PrismaClientInitializationError;

@@ -27,13 +27,19 @@ export const formatDateForDisplay = (date: Date) => {
  * This function should be used to parse dates from JSON requests through data schemas.
  * No need to normalize the date.
  * @param date Date to parse
- * @returns Date object
+ * @returns Date object or null if the input is not a valid date
  */
-export const tryParseDate = (date: any) => {
-    if (typeof date === 'string' || date instanceof Date) {
-        return new Date(date);
+export const tryParseDate = (input: unknown) => {
+    if (input instanceof Date) {
+        return input;
     }
-    return date;
+    if (typeof input === 'string' || typeof input === 'number') {
+        const date = new Date(input);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+    }
+    return null;
 };
 
 /**

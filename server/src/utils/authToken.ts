@@ -42,7 +42,7 @@ const generateToken = <T extends object>(
     return jwt.sign(payload, secret, options);
 };
 
-const verifyToken = <T = Record<string, any>>(
+const verifyToken = <T = Record<string, unknown>>(
     token: string,
     secret: string,
 ): T & jwt.JwtPayload => {

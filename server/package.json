@@ -7,7 +7,7 @@
         "seed": "ts-node -r tsconfig-paths/register --files src/database/seed.ts"
     },
     "scripts": {
-        "start": "nodemon --exec ts-node -r tsconfig-paths/register --files ./src/index.ts",
+        "start": "nodemon --exec \"npm run lint && ts-node -r tsconfig-paths/register --files src/index.ts\" ./src/index.ts",
         "start:production": "cross-env NODE_ENV=production TS_NODE_BASEURL=build/src node -r tsconfig-paths/register build/src/index.js",
         "build": "rimraf build && tsc",
         "test": "jest --config jest.config.js --runInBand --forceExit",

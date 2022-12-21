@@ -1,4 +1,4 @@
-import zod, { z, ZodType } from 'zod';
+import zod, { z, ZodType, ZodTypeDef } from 'zod';
 import { ValidationError } from '@/common/errors';
 import { formatDateForDisplay } from './dateHelpers';
 
@@ -97,7 +97,7 @@ export const isValidPassword = (password: string) => {
  */
 export const validateAndParse = <T extends zod.ZodTypeAny>(
     schema: T,
-    data: any,
+    data: unknown,
 ): zod.infer<T> => {
     const result = schema.safeParse(data);
     if (!result.success) {
@@ -133,4 +133,5 @@ export const v = zod;
 /**
  * Infer the type of a Zod schema.
  */
-export type InferSchemaType<T extends ZodType<any, any, any>> = z.infer<T>;
+export type InferSchemaType<T extends ZodType<unknown, ZodTypeDef>> =
+    z.infer<T>;

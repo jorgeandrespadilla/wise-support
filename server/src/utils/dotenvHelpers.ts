@@ -1,61 +1,64 @@
-export type ParserCallback = (value: string) => any;
-
-export interface LoadEnvOptions {
+export interface LoadEnvOptions<T> {
     /**
      * Default value to use if the environment variable is not defined.
      * This value will not be parsed by the **parserCallback**.
      * If this value is not set, the environment variable is set as required.
      */
-    defaults?: any;
+    defaults?: T;
     /**
      * Callback to parse the environment variable value.
      * This is not necessary if the value is a string, but it is recommended for types such as numbers and booleans.
      */
-    parserCallback?: ParserCallback;
+    parserCallback?: (value: string) => T;
 }
 
 /**
  * This object contains functions to parse environment variables.
  * They can be used as the **parserCallback** parameter of the **loadEnv** function.
  */
-export const envParser: Record<string, ParserCallback> = {
+export const envParser = {
     /**
      * Returns the value of the environment variable without altering it.
      */
-    default: value => value,
+    default: (value: string) => value,
     /**
      * Returns the value of the environment variable as a boolean.
      */
-    boolean: value => value === 'true',
+    boolean: (value: string) => value === 'true',
     /**
      * Returns the value of the environment variable as a number.
      */
-    number: value => parseInt(value),
+    number: (value: string) => parseInt(value),
     /**
      * Returns the value of the environment variable as a float.
      */
-    float: value => parseFloat(value),
+    float: (value: string) => parseFloat(value),
 };
 
 /**
  * Returns the value of the environment variable.
- * @param name Name of the environment variable.
+ * @param variableName Name of the environment variable.
  * @param options Options for loading the environment variable.
  * @returns The value of the environment variable.
  */
-export function loadEnv<T = any>(
-    name: string,
-    { parserCallback = envParser.default, defaults }: LoadEnvOptions = {},
+export function loadEnv<T>(
+    variableName: string,
+    options: LoadEnvOptions<T> | undefined = {},
 ): T {
-    const value = process.env[name] || defaults;
+    const { parserCallback, defaults } = options;
+    const value = process.env[variableName];
 
-    if (value === undefined) {
-        const required = defaults === undefined;
-        if (required) {
-            throw new Error(`La variable de entorno '${name}' es requerida.`);
+    if (value === undefined || value === '') {
+        if (defaults === undefined) {
+            throw new Error(
+                `La variable de entorno '${variableName}' es requerida.`,
+            );
         }
         return defaults;
     }
 
-    return parserCallback(value);
+    if (parserCallback) {
+        return parserCallback(value);
+    }
+    return value as T;
 }

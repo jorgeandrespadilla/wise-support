@@ -8,7 +8,7 @@ declare global {
         }
     }
 
-    interface Array<T> {
+    interface Array {
         isEmpty: typeof isEmpty;
         last: typeof last;
     }

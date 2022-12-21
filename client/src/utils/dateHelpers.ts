@@ -84,7 +84,7 @@ export const today = (format: DateFormat = 'default'): string => {
  * Useful for parsing dates from a form schema.
  * No need to normalize the date.
  * @param input Data to parse as date
- * @returns Date object
+ * @returns Date object or null if the input is not a valid date
  */
 export const tryParseDate = (input: unknown) => {
     if (input instanceof Date) {
