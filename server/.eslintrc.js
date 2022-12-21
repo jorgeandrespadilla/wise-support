@@ -14,5 +14,11 @@ module.exports = {
             'warn',
             { allow: ['arrowFunctions'] },
         ],
+        'prettier/prettier': [
+            'error',
+            {
+                endOfLine: 'auto',
+            },
+        ],
     },
 };
