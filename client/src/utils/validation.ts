@@ -53,19 +53,21 @@ export const handleAPIError = <TFields extends FieldValues = FieldValues>(
 ) => {
     const { form, toastId = undefined } = options || {};
 
-    if (
-        form &&
-        error instanceof ServerError &&
-        error?.code === 'VALIDATION_ERROR' &&
-        error?.data?.fields
-    ) {
-        const fieldErrors = error.data.fields as FieldError[];
-        handleFormError(fieldErrors, form);
-    } else if (error instanceof Error) {
-        console.error(error);
-        toast.error(error?.message ?? 'Algo salió mal.', { id: toastId });
-    } else {
+    if (!error) {
         toast.error('Algo salió mal.', { id: toastId });
+        return;
+    }
+
+    const serverError = error as ServerError;
+    const errorMessage = serverError?.message ?? 'Algo salió mal.';
+    const errorCode = serverError?.code ?? '';
+    const errorData = serverError?.data ?? {};
+
+    if (errorCode === 'VALIDATION_ERROR' && errorData?.fields && form) {
+        const fieldErrors = errorData.fields as FieldError[];
+        handleFormError(fieldErrors, form);
+    } else {
+        toast.error(errorMessage, { id: toastId });
     }
 };
 
