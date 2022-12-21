@@ -79,7 +79,7 @@ El repositorio está compuesto por dos componentes:
 
 1. Variables de entorno del proyecto `client`:
 
-    Actualmente, el proyecto `client` no posee variables de entorno para el ambiente de desarrollo. Sin embargo, al momento de generar la aplicación para el ambiente de producción, se debe configurar la variable de entorno `API_BASE_URL` con la URL base del servidor de producción donde se alojará la API (la URL base del servidor debe tener el formato `https://www.example.com`).
+    Actualmente, el proyecto `client` no posee variables de entorno para el ambiente de desarrollo. Sin embargo, al momento de generar la aplicación para el ambiente de producción, se debe configurar la variable de entorno `REACT_APP_API_URL` con la URL base del servidor de producción donde se alojará la API (la URL base del servidor debe tener el formato `https://www.example.com`).
 
 2. Variables de entorno del proyecto `server`:
 
