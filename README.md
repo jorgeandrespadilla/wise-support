@@ -6,6 +6,8 @@
   </p>
 </p>
 
+See the [Spanish version](README.es.md) of this file.
+
 ## Preview
 
 ![Modo claro](preview/light-mode.png)

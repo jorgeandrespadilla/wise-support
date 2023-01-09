@@ -1,7 +1,6 @@
 <p align="center">
   <img src="preview/logo.png" alt="Wise Support Logo" width="100" />
   <h1 align="center">Wise Support</h1>
-  <p align="center"><i>Jorge Andrés Padilla</i></p>
   <p align="center">
     Sistema para la gestión de tickets de soporte creado con TypeScript, Express y React.
   </p>
