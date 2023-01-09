@@ -1,133 +1,137 @@
 <p align="center">
   <img src="preview/logo.png" alt="Wise Support Logo" width="100" />
   <h1 align="center">Wise Support</h1>
-  <p align="center"><i>Jorge Andrés Padilla</i></p>
   <p align="center">
-    Sistema para la gestión de tickets de soporte creado con TypeScript, Express y React.
+    Support ticket management system created with TypeScript, Express and React.
   </p>
 </p>
 
-## Previsualización
+## Preview
 
 ![Modo claro](preview/light-mode.png)
-_Modo claro_
+_Light mode_
 
 ![Modo oscuro](preview/dark-mode.png)
-_Modo oscuro_
+_Dark mode_
 
 ![Estadísticas](preview/stats.png)
-_Estadísticas_
+_Statistics_
 
 ![Ajustes](preview/settings.png)
-_Ajustes_
+_Settings_
 
 ## Descripción
 
-Este repositorio contiene el código fuente de la aplicación web desarrollada para el proyecto final de Ingeniería Web.
+Wise Support is a system focused on the management of support tickets that are generated within a company, with the aim of monitoring the level of productivity of each of the support agents over time based on the completed tickets. The application offers the following functionalities:
 
-Wise Support es un sistema enfocado en la gestión de tickets soporte que se generan dentro de una empresa, con el objetivo de dar seguimiento al nivel de productividad de cada uno de los usuarios de soporte a lo largo del tiempo en función de los tickets atendidos. Para ello, la aplicación ofrece las siguientes funcionalidades:
+-   User management.
+-   Ticket management.
+-   Category management.
+-   Task management associated with tickets.
+-   Statistics.
 
--   Gestión de usuarios.
--   Gestión de tickets.
--   Gestión de categorías de tickets.
--   Gestión de tareas asociadas a los tickets.
--   Visualización de estadísticas.
+The system handles three user roles:
 
-El sistema maneja tres tipos de usuarios:
+-   **Administrator**: has access to all system functionalities.
+-   **Supervisor**: assigns tickets to support users and tracks assigned tickets. In addition, it can see the productivity statistics of support users.
+-   **Agent** (support user): handles the tickets assigned by the supervisor and registers the tasks performed to solve the tickets.
 
--   **Administrador**: tiene acceso a todas las funcionalidades del sistema.
--   **Supervisor**: asigna tickets a los usuarios de soporte y da seguimiento a los tickets asignados. Además, puede ver las estadísticas de productividad de los usuarios de soporte.
--   **Agente** (usuario de soporte): atiende los tickets asignados por el supervisor y registra las tareas realizadas para dar solución a los tickets.
+## Structure
 
-## Estructura
+The repository has two components:
 
-El repositorio está compuesto por dos componentes:
+-   Backend that contains the API of the project (located in the `server` directory).
+-   Frontend that contains the SPAs of the project (located in the `client` directory).
 
--   Backend que contiene la API del proyecto (código fuente ubicado en el directorio `server`).
--   Frontend que contiene la aplicación SPA del proyecto (código fuente ubicado en el directorio `client`).
+## Features
 
-## Características
+-   User management.
+-   Statistics.
+-   Authentication and role-based access control.
+-   Use of migrations for database administration.
+-   Responsive and accessible design.
 
--   Manejo de usuarios.
--   Visualización de estadísticas.
--   Autenticación y control de acceso basado en roles.
--   Uso de migraciones para la administración de la base de datos.
--   Diseño responsivo y accesible.
+### What's missing?
 
-## Tecnologías y Herramientas
+-   Internationalization.
+-   Better accessibility.
+-   Unit/Integration tests.
 
--   Los proyectos fueron desarrollados en TypeScript\*\* usando la versión 16 de Node.js, y son gestionados usando NPM Workspaces.
--   El **Backend** utiliza Express.js y Prisma (ORM).
--   El **Frontend** utiliza React.js y Tailwind CSS para el diseño de la aplicación.
--   El proyecto utiliza PostgreSQL para el almacenamiento de los datos.
--   El sistema de autenticación se implementa usando JWT (JSON Web Tokens).
--   El proyecto utiliza Jest para la ejecución de pruebas unitarias.
--   El proyecto utiliza ESLint y Prettier para la verificación y formateo del código fuente.
+## Technologies
 
-## Instalaciones y Configuraciones Previas
+-   The solution was developed using TypeScript using Node.js version 16, and is managed using NPM Workspaces.
+-   **Backend**: Express.js and Prisma (ORM).
+-   **Frontend**: React.js and Tailwind CSS.
+-   PostgreSQL.
+-   JWT (JSON Web Tokens).
+-   Jest.
+-   ESLint and Prettier.
 
-1. Instalar PostgreSQL y crear una base de datos llamada `wise_support`.
-2. Clonar el repositorio.
+## Quick Start
 
-3. Instalar las dependencias de Node.js ejecutando el comando `npm install` en la raíz del proyecto.
+1. Install PostgreSQL and create a database called `wise_support`.
 
-4. Configurar las variables de entorno dentro del proyecto `server`. Para ello, se debe crear un archivo `.env` en el directorio raíz del proyecto y configurar todas las variables descritas en el archivo `.env.example` (ver [Configuración de Variables de Entorno](#configuración-de-variables-de-entorno)).
+2. Clone the repository.
 
-5. Restaurar la base de datos ejecutando el comando `npm run db:restore` en la raíz del proyecto (ver [Administración de la Base de Datos](#administración-de-la-base-de-datos)).
+3. Install the Node.js dependencies by running `npm install` command in the root of the project.
 
-### Configuración de Variables de Entorno
+4. Set environment variables within the `server` project. You must create a `.env` file in the root directory of the project and configure all the variables described in the `.env.example` file (see [Environment Variables Configuration](#environment-variables-configuration)).
 
-1. Variables de entorno del proyecto `client`:
+5. Run the database migrations by running the `npm run db:restore` command in the root of the project (see [Database Management](#database-management)).
 
-    Actualmente, el proyecto `client` no posee variables de entorno para el ambiente de desarrollo. Sin embargo, al momento de generar la aplicación para el ambiente de producción, se debe configurar la variable de entorno `REACT_APP_API_URL` con la URL base del servidor de producción donde se alojará la API (la URL base del servidor debe tener el formato `https://www.example.com`).
+### Environment Variables Configuration
 
-2. Variables de entorno del proyecto `server`:
+1. `client` project environment variables:
 
-    | Variable                   | Descripción                                                                                                            |
-    | -------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-    | `SERVER_PORT`              | Número de puerto para escuchar las peticiones HTTP                                                                     |
-    | `SERVER_BASE_URL`          | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)                                          |
-    | `JWT_ACCESS_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)                             |
-    | `JWT_REFRESH_TOKEN_SECRET` | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)                     |
-    | `DATABASE_URL`             | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings)) |
+    The project does not handle environment variables for the development environment. However, when generating the application for the production environment, the `REACT_APP_API_URL` environment variable must be set to the base URL of the production server where the API will be hosted (the server's base URL must have the format `https://www.example.com`).
 
-    > En producción, es necesario configurar las variables de entorno en el servidor donde se desplegará la aplicación, dado que las variables de entorno no se leen desde el archivo `.env` en producción.
+2. `server` project environment variables:
 
-### Administración de la Base de Datos
+    | Environment Variable       | Description                                                                                              |
+    | -------------------------- | -------------------------------------------------------------------------------------------------------- |
+    | `SERVER_PORT`              | Port number to listen for HTTP requests                                                                  |
+    | `SERVER_BASE_URL`          | Base path where the server is located (defaults to the root path)                                        |
+    | `JWT_ACCESS_TOKEN_SECRET`  | Secret key used to generate and verify the JWT access tokens (required variable)                         |
+    | `JWT_REFRESH_TOKEN_SECRET` | Secret key used to generate and verify JWT refresh tokens (required variable)                            |
+    | `DATABASE_URL`             | PostgreSQL database connection string (see [Prisma](https://pris.ly/d/connection-strings) documentation) |
 
-_La administración de la base de datos se realiza dentro del directorio `server`._
+    > In production, it is necessary to set the environment variables on the server where the application will be deployed, since the environment variables are not read from the `.env` file in production.
 
-Para ejecutar las migraciones de la base de datos, se debe ejecutar el comando `npx prisma migrate dev` (o `npm run db:restore`).
+### Database Management
 
-Para generar una nueva migración, se debe ejecutar el comando `npx prisma migrate dev --name <nombre>` (usar el formato `migration_name`). Para no incorporar datos de prueba, se debe añadir la opción `--skip-seed` al comando (esta opción es recomendada cuando se realiza un cambio en el modelo de datos que pueda afectar los datos de prueba generados con el comando `seed`).
+_Database administration is handled inside the `server` directory._
 
-Para restaurar/reiniciar la base de datos, se debe ejecutar el comando `npx prisma migrate reset`. Este comando eliminará todos los datos existentes de la base de datos y recreará la base de datos junto con los datos de prueba.
+To run database migrations, the `npx prisma migrate dev` (or `npm run db:restore`) command must be executed.
 
-Para añadir datos de prueba a la base de datos, se debe ejecutar el comando `npx prisma db seed`. Este comando se ejecuta automáticamente cuando se restaura o se genera una nueva migración de la base de datos.
+To generate a new migration, the `npx prisma migrate dev --name <name>` command must be executed (use the `migration_name` format). To skip test data, the `--skip-seed` option must be added to the command (this option is recommended when making a change to the data model that may affect the test data generated with the `seed` command).
 
-> Al modificar el esquema de la base de datos, se debe ejecutar el comando `npx prisma generate` para poder actualizar los archivos del ORM Prisma. Cabe destacar que, al instalar las dependencias de Node.js o restaurar la base de datos, el comando `npx prisma generate` se ejecuta automáticamente.
+In order to restore/reset the database, the `npx prisma migrate reset` command must be executed. This command will remove all existing data from the database and recreate the database along with the test data.
 
-## Correr el proyecto
+To add test data to the database, the `npx prisma db seed` command must be executed. This command runs automatically when a database is restored or a new migration is generated.
 
-Ejecutar el comando `npm start` en la raíz del proyecto. Esto iniciará tanto el servidor como la aplicación web del proyecto.
+> When modifying the database schema, the `npx prisma generate` command must be executed in order to update the Prisma ORM files. When installing Node.js dependencies or restoring the database, the `npx prisma generate` command is executed automatically.
 
-Para usar la aplicación, se dispone de una cuenta de usuario administrador con las siguientes credenciales:
+## Development
 
--   **Correo electrónico**: `admin@test.com`
--   **Contraseña**: `admin123`
+Run the `npm start` command in the root of the project. This will start both the server and the web application of the project.
 
-## Desplegar el proyecto
+These are the credentials of the administrator user account:
 
-Para desplegar el cliente en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `client`. Esto generará una carpeta `build`, la cual contiene los archivos estáticos de la aplicación web.
+-   **Email**: `admin@test.com`
+-   **Password**: `admin123`
 
-Para desplegar el servidor en producción, se debe ejecutar el comando `npm run build` en la raíz del directorio `server`. Esto generará una carpeta `build`, la cual contiene los archivos compilados del servidor. Previo a la ejecución del servidor, debemos configurar la instancia de la base de datos PostgreSQL y las variables de entorno en el servidor de producción, así como el comando `npm run db:restore` para restaurar la base de datos. Para iniciar el servidor en producción, se debe ejecutar el comando `npm start:production` en la raíz del directorio `server`.
+## Deployment
 
-## Contribuciones
+To deploy the client application to production, you must run the `npm run build` command at the root of the `client` directory. This will generate a `build` folder, which contains the static files of the web application.
 
-Los commits del proyecto utilizan la convención de [Commits Convencionales](https://www.conventionalcommits.org/) y un esquema de [Versionado Semántico](https://semver.org/).
+To deploy the server to production, you must run the `npm run build` command at the root of the `server` directory. This will generate a `build` folder, which contains the compiled files of the server. Prior to running the server, we need to set up the PostgreSQL database instance and environment variables on the production server, as well as the `npm run db:restore` command to restore the database. To start the server in production, the `npm start:production` command must be run at the root of the `server` directory.
 
-Las contribuciones al proyecto y el reporte de errores no son aceptados en este momento.
+## Contributing
 
-## Licencia
+The project commits use the [Conventional Commits](https://www.conventionalcommits.org/) convention and a [Semantic Versioning](https://semver.org/) scheme.
 
-Este proyecto está bajo la licencia [MIT](https://opensource.org/licenses/MIT).
+Contributions and bug reports are welcome. All contributions must be made through pull requests.
+
+## License
+
+This project is licensed under the [MIT](https://opensource.org/licenses/MIT) license.
