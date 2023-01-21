@@ -22,7 +22,7 @@ _Statistics_
 ![Ajustes](preview/settings.png)
 _Settings_
 
-## Descripción
+## Description
 
 Wise Support is a system focused on the management of support tickets that are generated within a company, with the aim of monitoring the level of productivity of each of the support agents over time based on the completed tickets. The application offers the following functionalities:
 
