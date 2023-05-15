@@ -14,6 +14,7 @@ module.exports = {
             'warn',
             { allow: ['arrowFunctions'] },
         ],
+        '@typescript-eslint/no-non-null-assertion': 'off',
         'prettier/prettier': [
             'error',
             {
