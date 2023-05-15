@@ -1,6 +1,6 @@
 {
     "name": "ingenieria-web",
-    "version": "1.8.0",
+    "version": "1.8.2",
     "description": "Proyecto Final de Ingenieria Web",
     "private": true,
     "author": "Jorge Andres Padilla",
@@ -16,9 +16,9 @@
         "server"
     ],
     "dependencies": {
-        "concurrently": "^7.6.0"
+        "concurrently": "^8.0.1"
     },
     "devDependencies": {
-        "husky": "^8.0.2"
+        "husky": "^8.0.3"
     }
 }
