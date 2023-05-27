@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from 'express';
 import { pick } from 'lodash';
-import { PrismaClientInitializationError } from '@prisma/client/runtime';
+import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
 import { ServerError } from '@/common/errors';
 import logger from '@/utils/logger';
 
