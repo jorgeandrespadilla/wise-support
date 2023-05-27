@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
     ArrowLeftOnRectangleIcon,
     Bars3Icon,
@@ -6,22 +7,21 @@ import {
     UserCircleIcon,
     XMarkIcon,
 } from '@heroicons/react/24/solid';
+import { Transition } from '@headlessui/react';
 import Authorize from 'components/Authorize';
 import Avatar from 'components/Avatar';
 import DropdownMenu from 'components/DropdownMenu';
 import NavItem from './components/NavItem';
-import { useAuth, useCurrentUser, useMediaQuery } from 'hooks';
-import { DropdownMenuOption, LinkConfig } from 'types/ui';
-import { breakpoints } from 'shared/constants/themes';
 import HomeLink from './components/HomeLink';
-import { useEffect, useState } from 'react';
-import Divider from 'components/Divider';
-import { Transition } from '@headlessui/react';
 import NavToggle from './components/NavToggle';
+import Divider from 'components/Divider';
+import { useAuth, useCurrentUser, useMediaQuery } from 'hooks';
+import { DropdownMenuConfig, LinksConfig } from 'types/ui';
+import { breakpoints } from 'shared/constants/themes';
 
 type NavigationProps = {
     appTitle: string;
-    links: LinkConfig[];
+    links: LinksConfig;
 };
 
 function TopBar({ appTitle = '', links = [] }: NavigationProps) {
@@ -52,26 +52,35 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
         setIsNavbarOpen(false);
     };
 
-    const dropdownMenuOptions: DropdownMenuOption[][] = [
-        [
-            {
-                label: 'Perfil',
-                icon: <UserCircleIcon className="h-5 w-5" />,
-                navigateTo: '/profile',
-            },
-            {
-                label: 'Ajustes',
-                icon: <Cog6ToothIcon className="h-5 w-5" />,
-                navigateTo: '/settings',
-            },
-        ],
-        [
-            {
-                label: 'Cerrar sesión',
-                icon: <ArrowLeftOnRectangleIcon className="w-5 h-5" />,
-                action: () => syncLogout(),
-            },
-        ],
+    const dropdownMenuConfig: DropdownMenuConfig = [
+        {
+            key: 1,
+            options: [
+                {
+                    key: 'profile',
+                    label: 'Perfil',
+                    icon: <UserCircleIcon className="h-5 w-5" />,
+                    navigateTo: '/profile',
+                },
+                {
+                    key: 'settings',
+                    label: 'Ajustes',
+                    icon: <Cog6ToothIcon className="h-5 w-5" />,
+                    navigateTo: '/settings',
+                },
+            ],
+        },
+        {
+            key: 2,
+            options: [
+                {
+                    key: 'logout',
+                    label: 'Cerrar sesión',
+                    icon: <ArrowLeftOnRectangleIcon className="w-5 h-5" />,
+                    action: () => syncLogout(),
+                },
+            ],
+        },
     ];
 
     return (
@@ -86,7 +95,7 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
                         <HomeLink appTitle={appTitle} />
                         <ul className="flex flex-row space-x-2">
                             {links.map((link, index) => (
-                                <Authorize roles={link.roles} key={index}>
+                                <Authorize roles={link.roles} key={link.key}>
                                     <NavItem
                                         to={link.to}
                                         icon={link.icon}
@@ -114,7 +123,7 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
                             <ChevronDownIcon className="w-5 h-5" />
                         </div>
                     }
-                    optionGroups={dropdownMenuOptions}
+                    config={dropdownMenuConfig}
                 />
             </header>
 
@@ -151,7 +160,10 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
                             <Divider vertical="lg" showRule />
                             <ul className="flex flex-col justify-center space-y-2 w-full">
                                 {links.map((link, index) => (
-                                    <Authorize roles={link.roles} key={index}>
+                                    <Authorize
+                                        roles={link.roles}
+                                        key={link.key}
+                                    >
                                         <NavItem
                                             size="lg"
                                             to={link.to}

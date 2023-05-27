@@ -1,29 +1,31 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Button from 'components/Button';
-import { handleAPIError } from 'utils/validation';
 import {
     DropdownField,
     NumberField,
     TextAreaField,
     TextField,
 } from 'components/Form';
-import { UpdateTicketRequest } from 'types';
-import { useLoadingToast } from 'hooks/useLoadingToast';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useCategoriesData } from 'hooks/useCategoriesData';
-import { useUsersData } from 'hooks/useUsersData';
-import { role } from 'shared/constants/roles';
 import { getTicket, updateTicket } from 'services/tickets';
 import {
     ticketPriorityOptions,
     ticketStatusOptions,
 } from 'shared/constants/options';
-import { useCurrentUser } from 'hooks/useCurrentUser';
-import { formatDateForDisplay } from 'utils/dateHelpers';
-import { isDefined } from 'utils/dataHelpers';
-import { useMediaQuery } from 'hooks';
 import { breakpoints } from 'shared/constants/themes';
+import { formatDateForDisplay } from 'utils/dateHelpers';
+import { handleAPIError } from 'utils/validation';
+import { isDefined } from 'utils/dataHelpers';
+import { role } from 'shared/constants/roles';
+import {
+    useCategoriesData,
+    useCurrentUser,
+    useLoadingToast,
+    useMediaQuery,
+    useUsersData,
+} from 'hooks';
+import { UpdateTicketRequest } from 'types';
 
 type FormData = {
     title: string;
@@ -65,13 +67,12 @@ function TicketDetail() {
     const limitedTicketStatus = ['OPEN', 'IN_PROGRESS', 'RESOLVED'];
     const readonlyStatus =
         readonly && !limitedTicketStatus.includes(watch('status'));
-    const statusOptions = readonly
-        ? limitedTicketStatus.includes(watch('status'))
+    const statusOptions =
+        readonly && limitedTicketStatus.includes(watch('status'))
             ? ticketStatusOptions.filter(option =>
                   limitedTicketStatus.includes(option.value),
               )
-            : ticketStatusOptions
-        : ticketStatusOptions;
+            : ticketStatusOptions;
 
     const ticket = useQuery(
         ['ticket', id],

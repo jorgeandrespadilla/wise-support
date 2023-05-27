@@ -15,9 +15,9 @@ import Divider from 'components/Divider';
 import {
     Cell,
     HeaderCell,
+    TableBody,
     TableContainer,
     TableEmpty,
-    TableLoader,
 } from 'components/Table';
 import { handleAPIError } from 'utils/validation';
 import { deleteUser, getUsers } from 'services/users';
@@ -100,11 +100,9 @@ function UsersList() {
                             <HeaderCell>Acciones</HeaderCell>
                         </tr>
                     </thead>
-                    <tbody>
-                        {users.isLoading ? (
-                            <TableLoader />
-                        ) : isDefined(filteredUsers) &&
-                          !filteredUsers.isEmpty() ? (
+                    <TableBody loading={users.isLoading}>
+                        {isDefined(filteredUsers) &&
+                        !filteredUsers.isEmpty() ? (
                             filteredUsers.map((user, index) => {
                                 return (
                                     <tr
@@ -153,7 +151,7 @@ function UsersList() {
                         ) : (
                             <TableEmpty />
                         )}
-                    </tbody>
+                    </TableBody>
                 </TableContainer>
             </Card>
             <ConfirmDialog

@@ -1,6 +1,12 @@
-import { createContext, useCallback, useEffect, useState } from 'react';
-import { allThemes } from 'shared/constants/themes';
+import {
+    createContext,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import { ColorScheme, Theme } from 'types';
+import { allThemes } from 'shared/constants/themes';
 import { itemStorage } from 'utils/storageHelpers';
 
 interface ThemeContextData {
@@ -74,15 +80,16 @@ export const ThemeProvider = ({
         };
     }, [theme, setColorScheme]);
 
+    const value = useMemo(
+        () => ({
+            theme: theme,
+            isDarkTheme: scheme === 'dark',
+            setTheme: setColorTheme,
+        }),
+        [scheme, theme],
+    );
+
     return (
-        <ThemeContext.Provider
-            value={{
-                theme: theme,
-                isDarkTheme: scheme === 'dark',
-                setTheme: setColorTheme,
-            }}
-        >
-            {children}
-        </ThemeContext.Provider>
+        <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
     );
 };

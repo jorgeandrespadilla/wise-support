@@ -11,11 +11,13 @@ function StatsHome() {
             <TabBar
                 tabs={[
                     {
+                        key: 'performance',
                         to: './performance',
                         label: 'Productividad',
                         roles: [role.ADMIN, role.SUPERVISOR],
                     },
                     {
+                        key: 'categories',
                         to: './categories',
                         label: 'Categorías',
                         roles: [role.ADMIN],

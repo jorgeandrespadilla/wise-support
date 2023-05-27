@@ -1,25 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import {
     Cell,
     HeaderCell,
+    TableBody,
     TableContainer,
     TableEmpty,
-    TableLoader,
 } from 'components/Table';
+import { DatePicker } from 'components/Form';
+import StatsItem from 'components/StatsItem';
+import Divider from 'components/Divider';
+import StatsContainer from 'components/StatsContainer';
 import { handleAPIError } from 'utils/validation';
 import { pluralize } from 'utils/dataHelpers';
-import StatsItem from 'components/StatsItem';
-import { getUsersPerformance } from 'services/statistics';
-import { GetPerformanceStatsRequest } from 'types';
-import { useForm } from 'react-hook-form';
 import { normalizeTimezone, today } from 'utils/dateHelpers';
-import { DatePicker } from 'components/Form';
 import toast from 'utils/toast';
-import Divider from 'components/Divider';
-import { useMediaQuery } from 'hooks';
+import { getUsersPerformance } from 'services/statistics';
 import { breakpoints } from 'shared/constants/themes';
-import StatsContainer from 'components/StatsContainer';
+import { useMediaQuery } from 'hooks';
+import { GetPerformanceStatsRequest } from 'types';
 
 type FormData = {
     startDate: string;
@@ -122,10 +122,8 @@ function PerformanceStats() {
                         <HeaderCell>Puntuación</HeaderCell>
                     </tr>
                 </thead>
-                <tbody>
-                    {usersPerformance.isFetching ? (
-                        <TableLoader />
-                    ) : !stats.users.isEmpty() ? (
+                <TableBody loading={usersPerformance.isFetching}>
+                    {!stats.users.isEmpty() ? (
                         stats.users.map((userStats, index) => {
                             return (
                                 <tr
@@ -146,7 +144,7 @@ function PerformanceStats() {
                     ) : (
                         <TableEmpty />
                     )}
-                </tbody>
+                </TableBody>
             </TableContainer>
         </>
     );

@@ -97,7 +97,7 @@ export const listenForStorageUpdates = (onUpdateCompleted = () => {}) => {
         }
         if (event.key === storageEvent.update) {
             // sessionStorage should be updated -> update it
-            const data = JSON.parse(event.newValue || '{}');
+            const data = JSON.parse(event.newValue ?? '{}');
             for (const key in data) {
                 sessionStorage.setItem(key, data[key]);
             }

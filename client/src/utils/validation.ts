@@ -51,7 +51,7 @@ export const handleAPIError = <TFields extends FieldValues = FieldValues>(
     error: unknown,
     options?: ErrorHandlerOptions<TFields>,
 ) => {
-    const { form, toastId = undefined } = options || {};
+    const { form, toastId = undefined } = options ?? {};
 
     if (!error) {
         toast.error('Algo salió mal.', { id: toastId });

@@ -1,21 +1,21 @@
-import { Transition } from '@headlessui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DropdownMenuOption } from 'types';
+import { Transition } from '@headlessui/react';
+import { DropdownMenuConfig } from 'types';
 
 type DropdownMenuProps = {
     /** The element that will be used as the toggle for the menu */
     toggle: React.ReactNode;
     /** Where the menu will be aligned to the toggle */
     menuAlign?: 'left' | 'right';
-    /** Each array is a group of options (separated by a divider) */
-    optionGroups: DropdownMenuOption[][];
+    /** The configuration for the menu */
+    config: DropdownMenuConfig;
 };
 
 function DropdownMenu({
     toggle,
     menuAlign = 'right',
-    optionGroups,
+    config,
 }: DropdownMenuProps) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -69,13 +69,13 @@ function DropdownMenu({
                 <ul
                     className={`absolute ${menuAlign}-0 bg-white dark:bg-slate-800 shadow-md rounded py-1 mt-2 border w-48 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300`}
                 >
-                    {optionGroups.map((options, index) => (
-                        <React.Fragment key={index}>
+                    {config.map((section, index) => (
+                        <React.Fragment key={section.key}>
                             {index > 0 && (
                                 <li className="border-t dark:border-gray-700 border-gray-200 my-1"></li>
                             )}
-                            {options.map((option, index) => (
-                                <li key={index} className="px-1">
+                            {section.options.map(option => (
+                                <li key={option.key} className="px-1">
                                     <div onClick={() => setIsOpen(false)}>
                                         {option.navigateTo ? (
                                             <Link
