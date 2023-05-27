@@ -51,7 +51,10 @@ export const formatDateForDisplay = (
  * @returns ISO date string
  */
 export const datePickerToISODate = (date: string): string => {
-    return DateTime.fromFormat(date, datePickerFormat, { zone: 'utc' }).toISO();
+    return (
+        DateTime.fromFormat(date, datePickerFormat, { zone: 'utc' }).toISO() ??
+        ''
+    );
 };
 
 /**
@@ -74,7 +77,7 @@ export const today = (format: DateFormat = 'default'): string => {
         const date = DateTime.fromJSDate(currentDate)
             .plus({ minutes: timezoneOffset() })
             .toJSDate();
-        return normalizeDate(date).toISO();
+        return normalizeDate(date).toISO() ?? '';
     }
     return normalizeDate(currentDate, 'local').toFormat(datePickerFormat);
 };
@@ -106,7 +109,7 @@ export const tryParseDate = (input: unknown) => {
  */
 export const normalizeTimezone = (dateStr: string) => {
     const date = DateTime.fromISO(dateStr, { zone: 'utc' });
-    return date.minus({ minutes: timezoneOffset() }).toISO();
+    return date.minus({ minutes: timezoneOffset() }).toISO() ?? '';
 };
 
 /**
