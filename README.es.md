@@ -1,10 +1,13 @@
-<p align="center">
+<div align="center">
   <img src="preview/logo.png" alt="Wise Support Logo" width="100" />
   <h1 align="center">Wise Support</h1>
+    <div align="center">
+    <img src="https://sonarcloud.io/api/project_badges/measure?project=jorgeandrespadilla_wise-support&metric=alert_status"/>
+  </div>
   <p align="center">
     Sistema para la gestión de tickets de soporte creado con TypeScript, Express y React.
   </p>
-</p>
+</div>
 
 ## Previsualización
 
