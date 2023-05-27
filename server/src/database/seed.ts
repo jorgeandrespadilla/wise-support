@@ -15,10 +15,6 @@ type IdFn = (value: string) => number | undefined;
 
 const prisma = new PrismaClient();
 
-// const randomDate = (start: Date, end: Date) => {
-//     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-// }
-
 const seedRoles = async () => {
     const roleData: Prisma.RoleCreateInput[] = [
         {

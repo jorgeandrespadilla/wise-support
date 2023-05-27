@@ -1,5 +1,4 @@
 import express from 'express';
-import { Application } from 'express';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -8,7 +7,7 @@ import httpLogger from '@/middlewares/httpLogger';
 import { RouteNotFoundError } from '@/common/errors';
 import { configureRoutes } from '@/routes';
 
-function configureBaseMiddlewares(app: Application) {
+function configureBaseMiddlewares(app: express.Application) {
     // CORS configuration
     app.use(cors());
     app.use(express.json());

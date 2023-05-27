@@ -150,11 +150,7 @@ function mapToUserResponse(user: User): UserResponse {
 }
 
 function mapToUserProfileResponse(user: UserProfile): UserProfileResponse {
-    return {
-        ...user,
-        fullName: `${user.firstName} ${user.lastName}`,
-        birthDate: formatDate(user.birthDate),
-    };
+    return mapToUserResponse(user);
 }
 
 //#region Validation functions
