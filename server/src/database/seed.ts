@@ -605,7 +605,7 @@ const seedTestTasks = async ({ ticketId }: { ticketId: IdFn }) => {
 async function main() {
     console.log(`Start seeding...`);
     const { roleId } = await seedRoles();
-    const {} = await seedUsers({ roleId });
+    await seedUsers({ roleId });
     if (IS_DEV) {
         const { userId: testUserId } = await seedTestUsers({ roleId });
         const { categoryId } = await seedTestCategories();
