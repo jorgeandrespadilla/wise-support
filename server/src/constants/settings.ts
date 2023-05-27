@@ -14,6 +14,7 @@ export const PORT = loadEnv<number>('SERVER_PORT', {
 });
 export const BASE_URL = loadEnv<string>('SERVER_BASE_URL', { defaults: '' }); // Should include leading slash
 export const BASE_API_URL = `${BASE_URL}/api`;
+export const CORS_ORIGIN = loadEnv<string>('CORS_ORIGIN', { defaults: '*' });
 
 export const JWT_CONFIG = {
     accessToken: {

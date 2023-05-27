@@ -6,10 +6,15 @@ import errorHandler from '@/middlewares/errorHandler';
 import httpLogger from '@/middlewares/httpLogger';
 import { RouteNotFoundError } from '@/common/errors';
 import { configureRoutes } from '@/routes';
+import { CORS_ORIGIN } from '@/constants/settings';
 
 function configureBaseMiddlewares(app: express.Application) {
     // CORS configuration
-    app.use(cors());
+    app.use(
+        cors({
+            origin: CORS_ORIGIN,
+        }),
+    );
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     // GZIP compression

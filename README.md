@@ -96,6 +96,7 @@ The repository has two components:
     | -------------------------- | -------------------------------------------------------------------------------------------------------- |
     | `SERVER_PORT`              | Port number to listen for HTTP requests                                                                  |
     | `SERVER_BASE_URL`          | Base path where the server is located (defaults to the root path)                                        |
+    | `CORS_ORIGIN`              | Allowed origin for CORS (defaults to all origins `*`)                                                    |
     | `JWT_ACCESS_TOKEN_SECRET`  | Secret key used to generate and verify the JWT access tokens (required variable)                         |
     | `JWT_REFRESH_TOKEN_SECRET` | Secret key used to generate and verify JWT refresh tokens (required variable)                            |
     | `DATABASE_URL`             | PostgreSQL database connection string (see [Prisma](https://pris.ly/d/connection-strings) documentation) |

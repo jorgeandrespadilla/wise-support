@@ -90,6 +90,7 @@ El repositorio está compuesto por dos componentes:
     | -------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
     | `SERVER_PORT`              | Número de puerto para escuchar las peticiones HTTP                                                                     |
     | `SERVER_BASE_URL`          | Ruta base donde se encuentra el servidor (por defecto, apunta a la ruta raíz)                                          |
+    | `CORS_ORIGIN`              | Origen permitido para CORS (por defecto, permite todos los orígenes `*`)                                               |
     | `JWT_ACCESS_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)                             |
     | `JWT_REFRESH_TOKEN_SECRET` | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)                     |
     | `DATABASE_URL`             | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings)) |
