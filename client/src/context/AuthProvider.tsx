@@ -1,5 +1,11 @@
 import { useSessionRefresh } from 'hooks/useRefreshSession';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+    createContext,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import { toast } from 'react-hot-toast';
 import { accessToken, refreshToken } from 'utils/auth';
 import {
@@ -79,37 +85,40 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }, [isAuthenticated, sessionTimeout]);
 
     /**
-     * Login and synchronize session across tabs
-     */
-    const syncLogin = (data: LoginData) => {
-        accessToken.set(data.accessToken);
-        refreshToken.set(data.refreshToken);
-        setIsAuthenticated(true);
-
-        // Add a timeout to logout the user when the token expires
-        if (sessionTimeout) {
-            clearTimeout(sessionTimeout);
-        }
-        setSessionTimeout(
-            setTimeout(() => {
-                const token = refreshToken.get();
-                if (token) {
-                    handleRefresh(token);
-                } else {
-                    toast.error('La sesión ha expirado');
-                    syncLogout();
-                }
-            }, data.expiresInMilliseconds - 1000),
-        );
-    };
-
-    /**
      * Logout and synchronize session across tabs
      */
-    const syncLogout = () => {
+    const syncLogout = useCallback(() => {
         logout();
         triggerStorageEvent(authEvent.logout, String(Date.now()));
-    };
+    }, [logout]);
+
+    /**
+     * Login and synchronize session across tabs
+     */
+    const syncLogin = useCallback(
+        (data: LoginData) => {
+            accessToken.set(data.accessToken);
+            refreshToken.set(data.refreshToken);
+            setIsAuthenticated(true);
+
+            // Add a timeout to logout the user when the token expires
+            if (sessionTimeout) {
+                clearTimeout(sessionTimeout);
+            }
+            setSessionTimeout(
+                setTimeout(() => {
+                    const token = refreshToken.get();
+                    if (token) {
+                        handleRefresh(token);
+                    } else {
+                        toast.error('La sesión ha expirado');
+                        syncLogout();
+                    }
+                }, data.expiresInMilliseconds - 1000),
+            );
+        },
+        [handleRefresh, sessionTimeout, syncLogout],
+    );
 
     /**
      * Refresh the session
@@ -154,16 +163,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // #endregion Effects
 
+    const value = useMemo(
+        () => ({
+            isAuthenticated,
+            syncLogin,
+            syncLogout,
+            refreshSession,
+        }),
+        [isAuthenticated, syncLogin, syncLogout, refreshSession],
+    );
+
     return (
-        <AuthContext.Provider
-            value={{
-                isAuthenticated,
-                syncLogin,
-                syncLogout,
-                refreshSession,
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );
 };

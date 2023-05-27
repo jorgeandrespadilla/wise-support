@@ -10,8 +10,18 @@ function EditTicket() {
             <CardHeader title="Ticket" />
             <TabBar
                 tabs={[
-                    { to: './detail', label: 'Detalle', roles: allRoles },
-                    { to: './tasks', label: 'Tareas', roles: allRoles },
+                    {
+                        key: 'detail',
+                        to: './detail',
+                        label: 'Detalle',
+                        roles: allRoles,
+                    },
+                    {
+                        key: 'tasks',
+                        to: './tasks',
+                        label: 'Tareas',
+                        roles: allRoles,
+                    },
                 ]}
             />
             <Outlet />

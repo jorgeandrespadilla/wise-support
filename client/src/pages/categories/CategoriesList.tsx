@@ -15,14 +15,14 @@ import Divider from 'components/Divider';
 import {
     Cell,
     HeaderCell,
+    TableBody,
     TableContainer,
     TableEmpty,
-    TableLoader,
 } from 'components/Table';
 import { handleAPIError } from 'utils/validation';
+import { isDefined, sortAsc } from 'utils/dataHelpers';
 import { useModal } from 'hooks/useModal';
 import { useLoadingToast } from 'hooks/useLoadingToast';
-import { isDefined, sortAsc } from 'utils/dataHelpers';
 import { deleteCategory, getCategories } from 'services/categories';
 
 function CategoriesList() {
@@ -97,11 +97,9 @@ function CategoriesList() {
                             <HeaderCell>Acciones</HeaderCell>
                         </tr>
                     </thead>
-                    <tbody>
-                        {categories.isLoading ? (
-                            <TableLoader />
-                        ) : isDefined(filteredCategories) &&
-                          !filteredCategories.isEmpty() ? (
+                    <TableBody loading={categories.isLoading}>
+                        {isDefined(filteredCategories) &&
+                        !filteredCategories.isEmpty() ? (
                             filteredCategories.map((category, index) => {
                                 return (
                                     <tr
@@ -147,7 +145,7 @@ function CategoriesList() {
                         ) : (
                             <TableEmpty />
                         )}
-                    </tbody>
+                    </TableBody>
                 </TableContainer>
             </Card>
             <ConfirmDialog

@@ -1,24 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import {
     Cell,
     HeaderCell,
+    TableBody,
     TableContainer,
     TableEmpty,
-    TableLoader,
 } from 'components/Table';
-import { handleAPIError } from 'utils/validation';
-import StatsItem from 'components/StatsItem';
-import { getCategoriesStats } from 'services/statistics';
-import { GetCategoriesStatsRequest, GetCategoriesStatsResponse } from 'types';
-import { useForm } from 'react-hook-form';
-import { normalizeTimezone, today } from 'utils/dateHelpers';
 import { DatePicker } from 'components/Form';
-import toast from 'utils/toast';
-import Divider from 'components/Divider';
-import { useMediaQuery } from 'hooks/useMediaQuery';
-import { breakpoints } from 'shared/constants/themes';
+import StatsItem from 'components/StatsItem';
 import StatsContainer from 'components/StatsContainer';
+import Divider from 'components/Divider';
+import { normalizeTimezone, today } from 'utils/dateHelpers';
+import { handleAPIError } from 'utils/validation';
+import toast from 'utils/toast';
+import { getCategoriesStats } from 'services/statistics';
+import { breakpoints } from 'shared/constants/themes';
+import { useMediaQuery } from 'hooks/useMediaQuery';
+import { GetCategoriesStatsRequest, GetCategoriesStatsResponse } from 'types';
 
 type FormData = {
     startDate: string;
@@ -106,10 +106,8 @@ function CategoriesStats() {
                         <HeaderCell>Tickets</HeaderCell>
                     </tr>
                 </thead>
-                <tbody>
-                    {categoriesStats.isFetching ? (
-                        <TableLoader />
-                    ) : !stats.categories.isEmpty() ? (
+                <TableBody loading={categoriesStats.isFetching}>
+                    {!stats.categories.isEmpty() ? (
                         stats.categories.map((categoryStats, index) => {
                             return (
                                 <tr
@@ -136,7 +134,7 @@ function CategoriesStats() {
                     ) : (
                         <TableEmpty />
                     )}
-                </tbody>
+                </TableBody>
             </TableContainer>
         </>
     );

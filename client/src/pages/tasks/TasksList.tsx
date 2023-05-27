@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import {
     MagnifyingGlassIcon,
     PencilSquareIcon,
     TrashIcon,
 } from '@heroicons/react/24/solid';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import Button from 'components/Button';
 import ConfirmDialog from 'components/ConfirmDialog';
 import IconButton from 'components/IconButton';
@@ -13,19 +13,19 @@ import Input from 'components/Input';
 import {
     Cell,
     HeaderCell,
+    TableBody,
     TableContainer,
     TableEmpty,
-    TableLoader,
 } from 'components/Table';
-import { handleAPIError } from 'utils/validation';
-import { useModal } from 'hooks/useModal';
-import { useLoadingToast } from 'hooks/useLoadingToast';
-import { isDefined, pluralize, sortDescByDateTime } from 'utils/dataHelpers';
-import { deleteTask, getTasksByTicketId } from 'services/tasks';
 import Authorize from 'components/Authorize';
-import { role } from 'shared/constants/roles';
 import StatsItem from 'components/StatsItem';
 import StatsContainer from 'components/StatsContainer';
+import { useModal } from 'hooks/useModal';
+import { useLoadingToast } from 'hooks/useLoadingToast';
+import { handleAPIError } from 'utils/validation';
+import { isDefined, pluralize, sortDescByDateTime } from 'utils/dataHelpers';
+import { deleteTask, getTasksByTicketId } from 'services/tasks';
+import { role } from 'shared/constants/roles';
 
 function TasksList() {
     const { id } = useParams<{ id: string }>();
@@ -115,10 +115,8 @@ function TasksList() {
                         </Authorize>
                     </tr>
                 </thead>
-                <tbody>
-                    {tasks.isLoading ? (
-                        <TableLoader />
-                    ) : isDefined(filteredTasks) && !filteredTasks.isEmpty() ? (
+                <TableBody loading={tasks.isLoading}>
+                    {isDefined(filteredTasks) && !filteredTasks.isEmpty() ? (
                         filteredTasks.map((task, index) => {
                             return (
                                 <tr
@@ -163,7 +161,7 @@ function TasksList() {
                     ) : (
                         <TableEmpty />
                     )}
-                </tbody>
+                </TableBody>
             </TableContainer>
             <ConfirmDialog
                 title="Eliminar tarea"

@@ -16,6 +16,7 @@ function SettingsHome() {
             <TabBar
                 tabs={[
                     {
+                        key: 'appearance',
                         to: './appearance',
                         label: 'Apariencia',
                         roles: allRoles,

@@ -157,7 +157,7 @@ export const getUsersPerformance = catchErrors(async (req, res) => {
         newTickets: newTickets,
         overallAttentionTime: overallAttentionTime,
         averagePerformanceScore: round(averagePerformanceScore, 2),
-        users: usersPerformance.sort(
+        users: [...usersPerformance].sort(
             (a, b) => b.performanceScore - a.performanceScore,
         ),
     };

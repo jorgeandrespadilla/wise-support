@@ -16,11 +16,10 @@ const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
             `(${error.constructor.name}) Cannot connect to database \n${error.message}`,
         );
     } else {
-        logger.error(
-            `(${error?.constructor?.name ?? 'Error'}) ${
-                error?.message ?? 'Desconocido'
-            }${error?.stack ? `\n${error.stack}` : ''}`,
-        );
+        const errorType = error?.constructor?.name ?? 'Error';
+        const errorMessage = error?.message ?? 'Desconocido';
+        const errorStack = error?.stack ? `\n${error.stack}` : '';
+        logger.error(`(${errorType}) ${errorMessage}${errorStack}`);
     }
 
     const clientError = isServerError

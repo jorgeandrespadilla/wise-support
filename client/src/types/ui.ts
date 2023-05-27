@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Key } from 'react';
 import {
     FieldValues,
     RegisterOptions,
@@ -11,7 +11,11 @@ export type Theme = ColorScheme | 'system';
 
 export type ThemeBreakpoint = 'sm' | 'md' | 'lg' | 'xl';
 
+export type LinksConfig = LinkConfig[];
+
 export interface LinkConfig {
+    /** The key of the link */
+    key: Key;
     /** The URL of the link */
     to: string;
     /** The text to show in the link */
@@ -38,7 +42,19 @@ export interface RadioGroupOption<T = string> {
     image: string;
 }
 
+export type DropdownMenuConfig = DropdownMenuSection[];
+
+//  Each section is a group of options (separated by a divider)
+export interface DropdownMenuSection {
+    /** The key of the section */
+    key: Key;
+    /** The options in the section */
+    options: DropdownMenuOption[];
+}
+
 export interface DropdownMenuOption {
+    /** The key of the option */
+    key: Key;
     /** The text to show in the dropdown */
     label: string;
     /** The icon to display next to the option */

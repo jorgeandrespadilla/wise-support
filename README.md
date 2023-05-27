@@ -1,10 +1,13 @@
-<p align="center">
+<div align="center">
   <img src="preview/logo.png" alt="Wise Support Logo" width="100" />
   <h1 align="center">Wise Support</h1>
+  <div align="center">
+    <img src="https://sonarcloud.io/api/project_badges/measure?project=jorgeandrespadilla_wise-support&metric=alert_status"/>
+  </div>
   <p align="center">
     Support ticket management system created with TypeScript, Express and React.
   </p>
-</p>
+</div>
 
 See the [Spanish version](README.es.md) of this file.
 
@@ -93,6 +96,7 @@ The repository has two components:
     | -------------------------- | -------------------------------------------------------------------------------------------------------- |
     | `SERVER_PORT`              | Port number to listen for HTTP requests                                                                  |
     | `SERVER_BASE_URL`          | Base path where the server is located (defaults to the root path)                                        |
+    | `CORS_ORIGIN`              | Allowed origin for CORS (defaults to all origins `*`)                                                    |
     | `JWT_ACCESS_TOKEN_SECRET`  | Secret key used to generate and verify the JWT access tokens (required variable)                         |
     | `JWT_REFRESH_TOKEN_SECRET` | Secret key used to generate and verify JWT refresh tokens (required variable)                            |
     | `DATABASE_URL`             | PostgreSQL database connection string (see [Prisma](https://pris.ly/d/connection-strings) documentation) |

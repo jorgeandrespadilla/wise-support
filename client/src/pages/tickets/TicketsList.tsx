@@ -1,23 +1,25 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import {
+    Cell,
+    HeaderCell,
+    TableBody,
+    TableContainer,
+    TableEmpty,
+} from 'components/Table';
 import Button from 'components/Button';
 import Card from 'components/Card';
 import ConfirmDialog from 'components/ConfirmDialog';
 import IconButton from 'components/IconButton';
 import CardHeader from 'components/CardHeader';
 import Divider from 'components/Divider';
-import {
-    Cell,
-    HeaderCell,
-    TableContainer,
-    TableEmpty,
-    TableLoader,
-} from 'components/Table';
+import Authorize from 'components/Authorize';
+import Dropdown from 'components/Dropdown';
 import { handleAPIError } from 'utils/validation';
+import { isDefined, sortDescByDateTime } from 'utils/dataHelpers';
 import { useModal } from 'hooks/useModal';
 import { useLoadingToast } from 'hooks/useLoadingToast';
-import { isDefined, sortDescByDateTime } from 'utils/dataHelpers';
 import { deleteTicket, getTickets } from 'services/tickets';
 import {
     showAllFilter,
@@ -25,9 +27,7 @@ import {
     ticketStatus,
     ticketStatusOptions,
 } from 'shared/constants/options';
-import Authorize from 'components/Authorize';
 import { role } from 'shared/constants/roles';
-import Dropdown from 'components/Dropdown';
 import { GetTicketsRequest } from 'types';
 
 const statusFilterOptions = [
@@ -116,11 +116,8 @@ function TicketsList() {
                             <HeaderCell>Acciones</HeaderCell>
                         </tr>
                     </thead>
-                    <tbody>
-                        {tickets.isLoading ? (
-                            <TableLoader />
-                        ) : isDefined(tickets.data) &&
-                          !tickets.data.isEmpty() ? (
+                    <TableBody loading={tickets.isLoading}>
+                        {isDefined(tickets.data) && !tickets.data.isEmpty() ? (
                             tickets.data.map((ticket, index) => {
                                 return (
                                     <tr
@@ -175,7 +172,7 @@ function TicketsList() {
                         ) : (
                             <TableEmpty />
                         )}
-                    </tbody>
+                    </TableBody>
                 </TableContainer>
             </Card>
             <ConfirmDialog
