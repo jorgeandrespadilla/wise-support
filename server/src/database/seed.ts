@@ -46,7 +46,21 @@ const seedRoles = async () => {
     };
 };
 
-const seedUsers = async ({ roleId }: { roleId: IdFn }) => {
+const seedUsers = async (userData: Prisma.UserCreateInput[]) => {
+    const users: User[] = [];
+    for (const user of userData) {
+        const newUser = await prisma.user.create({
+            data: user,
+        });
+        users.push(newUser);
+    }
+    return {
+        users,
+        userId: (email: string) => users.find(user => user.email === email)?.id,
+    };
+};
+
+const seedDefaultUsers = async ({ roleId }: { roleId: IdFn }) => {
     const userData: Prisma.UserCreateInput[] = [
         {
             firstName: 'Usuario',
@@ -61,18 +75,7 @@ const seedUsers = async ({ roleId }: { roleId: IdFn }) => {
             },
         },
     ];
-
-    const users: User[] = [];
-    for (const user of userData) {
-        const newUser = await prisma.user.create({
-            data: user,
-        });
-        users.push(newUser);
-    }
-    return {
-        users,
-        userId: (email: string) => users.find(user => user.email === email)?.id,
-    };
+    return await seedUsers(userData);
 };
 
 const seedTestUsers = async ({ roleId }: { roleId: IdFn }) => {
@@ -162,17 +165,7 @@ const seedTestUsers = async ({ roleId }: { roleId: IdFn }) => {
             },
         },
     ];
-    const users: User[] = [];
-    for (const user of userData) {
-        const newUser = await prisma.user.create({
-            data: user,
-        });
-        users.push(newUser);
-    }
-    return {
-        users,
-        userId: (email: string) => users.find(user => user.email === email)?.id,
-    };
+    return await seedUsers(userData);
 };
 
 const seedTestCategories = async () => {
@@ -601,7 +594,7 @@ const seedTestTasks = async ({ ticketId }: { ticketId: IdFn }) => {
 async function main() {
     console.log(`Start seeding...`);
     const { roleId } = await seedRoles();
-    await seedUsers({ roleId });
+    await seedDefaultUsers({ roleId });
     if (IS_DEV) {
         const { userId: testUserId } = await seedTestUsers({ roleId });
         const { categoryId } = await seedTestCategories();
