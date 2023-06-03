@@ -1,4 +1,5 @@
 import {
+    BookOpenIcon,
     ChartPieIcon,
     RectangleStackIcon,
     TagIcon,
@@ -35,6 +36,13 @@ const navLinks: LinkConfig[] = [
         label: 'Estadísticas',
         icon: <ChartPieIcon className="h-5 w-5" />,
         roles: [role.ADMIN, role.SUPERVISOR],
+    },
+    {
+        key: 'articles',
+        to: '/articles',
+        label: 'Base de conocimientos',
+        icon: <BookOpenIcon className="h-5 w-5" />,
+        roles: [role.ADMIN],
     },
 ];
 

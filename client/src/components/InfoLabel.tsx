@@ -1,14 +1,16 @@
 type InfoLabelProps = {
-    label: string;
+    label?: string;
     value: string;
 };
 
 function InfoLabel({ label, value }: InfoLabelProps) {
     return (
         <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                {label}
-            </label>
+            {label ? (
+                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                    {label}
+                </label>
+            ) : null}
             <label className="font-medium text-gray-900 dark:text-white">
                 {value}
             </label>
