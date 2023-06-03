@@ -221,3 +221,25 @@ export interface CategoriesStatsResponse {
 }
 
 //#endregion
+
+//#region Articles
+
+export interface BlogPost {
+    id: number;
+    title: string;
+    category: string;
+    content: string;
+    created_at: string; // Date
+    updated_at: string; // Date
+}
+
+export interface Article {
+    id: number;
+    title: string;
+    category: string;
+    content: string;
+    createdAt: string; // Date
+    updatedAt: string; // Date
+}
+
+//#endregion

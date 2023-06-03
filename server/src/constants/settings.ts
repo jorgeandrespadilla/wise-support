@@ -27,6 +27,8 @@ export const JWT_CONFIG = {
     },
 };
 
+export const KNOWLEDGE_BASE_URL = loadEnv<string>('KNOWLEDGE_BASE_URL');
+
 export const LOG_CONFIG = {
     outputPath: 'logs/server_%DATE%.log', // DATE is replaced with the current date based on log file rotation
     logLevel: IS_DEV ? 'debug' : 'info',
