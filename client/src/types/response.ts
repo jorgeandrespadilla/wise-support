@@ -136,3 +136,16 @@ export interface GetCategoriesStatsResponse {
 }
 
 //#endregion
+
+//#region Articles
+
+export interface GetArticleResponse {
+    id: number;
+    title: string;
+    category: string;
+    content: string;
+    createdAt: string; // Date
+    updatedAt: string; // Date
+}
+
+//#endregion

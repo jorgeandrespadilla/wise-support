@@ -24,6 +24,8 @@ import PerformanceStats from 'pages/statistics/PerformanceStats';
 import SettingsHome from 'pages/settings/SettingsHome';
 import AppearanceSettings from 'pages/settings/AppearanceSettings';
 import CategoriesStats from 'pages/statistics/CategoriesStats';
+import ArticlesList from 'pages/articles/ArticlesList';
+import ArticleDetail from 'pages/articles/ArticleDetail';
 
 const Router = () => (
     <Routes>
@@ -176,6 +178,23 @@ const Router = () => (
                     }
                 />
             </Route>
+
+            <Route
+                path="/articles"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <ArticlesList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/articles/:id"
+                element={
+                    <ProtectedRoute allowed={[role.ADMIN]}>
+                        <ArticleDetail />
+                    </ProtectedRoute>
+                }
+            />
 
             {/* Options dropdown */}
             <Route
