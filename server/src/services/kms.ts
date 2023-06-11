@@ -26,11 +26,14 @@ export const encrypt = async (plaintext: string): Promise<string> => {
  * @param ciphertext The ciphertext to decrypt
  * @return The decrypted plaintext
  */
-export const decrypt = async (ciphertext: string): Promise<string> => {
-    const ciphertextBuffer = Buffer.from(ciphertext);
+export const decrypt = async (
+    ciphertext: string,
+    encoding?: BufferEncoding,
+): Promise<string> => {
+    const ciphertextBuffer = Buffer.from(ciphertext, encoding);
     const [decryptResponse] = await client.decrypt({
         name: KMS_CONFIG.cryptoKeyId,
-        ciphertext: ciphertextBuffer.toString(),
+        ciphertext: ciphertextBuffer.toString(encoding),
     });
     return decryptResponse.plaintext?.toString() ?? '';
 };

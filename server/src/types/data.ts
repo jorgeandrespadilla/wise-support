@@ -224,6 +224,11 @@ export interface CategoriesStatsResponse {
 
 //#region Articles
 
+// Raw encrypted data
+export interface EncryptedData {
+    chunks: string[];
+}
+
 export interface BlogPost {
     id: number;
     title: string;

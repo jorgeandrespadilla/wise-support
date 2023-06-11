@@ -8,7 +8,7 @@ type HttpClientOptions = {
 
 export function buildHttpClient(
     apiBaseUrl: string,
-    { accessToken, contentType = 'application/json' }: HttpClientOptions,
+    { accessToken, contentType = 'application/json' }: HttpClientOptions = {},
 ) {
     const headers = {
         'Content-Type': contentType,
