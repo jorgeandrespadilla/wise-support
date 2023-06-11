@@ -94,6 +94,9 @@ El repositorio está compuesto por dos componentes:
     | `JWT_ACCESS_TOKEN_SECRET`  | Clave secreta usada para generar y verificar los tokens de acceso JWT (variable requerida)                             |
     | `JWT_REFRESH_TOKEN_SECRET` | Clave secreta usada para generar y verificar los tokens de refrescamiento JWT (variable requerida)                     |
     | `DATABASE_URL`             | Cadena de conexión a la base de datos PostgreSQL (ver documentación de [Prisma](https://pris.ly/d/connection-strings)) |
+    | `KNOWLEDGE_BASE_URL`       | URL de la base de conocimiento externa                                                                                 |
+    | `KMS_CRYPTO_KEY_ID`        | Ruta a la clave criptográfica usada para cifrar datos sensibles (ver [Google KMS](https://cloud.google.com/kms))       |
+    | `KMS_CREDENTIALS`          | Credenciales JSON codificadas en Base64 de la cuenta de servicio de Google Cloud usada para acceder a Google KMS       |
 
     > En producción, es necesario configurar las variables de entorno en el servidor donde se desplegará la aplicación, dado que las variables de entorno no se leen desde el archivo `.env` en producción.
 

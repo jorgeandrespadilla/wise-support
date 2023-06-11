@@ -1,9 +1,17 @@
 import { ServerError } from '@/common/errors';
 import axios from 'axios';
 
-export function buildHttpClient(apiBaseUrl: string, accessToken?: string) {
+type HttpClientOptions = {
+    accessToken?: string;
+    contentType?: string;
+};
+
+export function buildHttpClient(
+    apiBaseUrl: string,
+    { accessToken, contentType = 'application/json' }: HttpClientOptions,
+) {
     const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
     };
 

@@ -92,14 +92,17 @@ The repository has two components:
 
 2. `server` project environment variables:
 
-    | Environment Variable       | Description                                                                                              |
-    | -------------------------- | -------------------------------------------------------------------------------------------------------- |
-    | `SERVER_PORT`              | Port number to listen for HTTP requests                                                                  |
-    | `SERVER_BASE_URL`          | Base path where the server is located (defaults to the root path)                                        |
-    | `CORS_ORIGIN`              | Allowed origin for CORS (defaults to all origins `*`)                                                    |
-    | `JWT_ACCESS_TOKEN_SECRET`  | Secret key used to generate and verify the JWT access tokens (required variable)                         |
-    | `JWT_REFRESH_TOKEN_SECRET` | Secret key used to generate and verify JWT refresh tokens (required variable)                            |
-    | `DATABASE_URL`             | PostgreSQL database connection string (see [Prisma](https://pris.ly/d/connection-strings) documentation) |
+    | Environment Variable       | Description                                                                                                  |
+    | -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+    | `SERVER_PORT`              | Port number to listen for HTTP requests                                                                      |
+    | `SERVER_BASE_URL`          | Base path where the server is located (defaults to the root path)                                            |
+    | `CORS_ORIGIN`              | Allowed origin for CORS (defaults to all origins `*`)                                                        |
+    | `JWT_ACCESS_TOKEN_SECRET`  | Secret key used to generate and verify the JWT access tokens (required variable)                             |
+    | `JWT_REFRESH_TOKEN_SECRET` | Secret key used to generate and verify JWT refresh tokens (required variable)                                |
+    | `DATABASE_URL`             | PostgreSQL database connection string (see [Prisma](https://pris.ly/d/connection-strings) documentation)     |
+    | `KNOWLEDGE_BASE_URL`       | URL of the external knowledge base                                                                           |
+    | `KMS_CRYPTO_KEY_ID`        | Path to the cryptography key used to encrypt sensitive data (see [Google KMS](https://cloud.google.com/kms)) |
+    | `KMS_CREDENTIALS`          | Base64-encoded JSON credentials of the Google Cloud service account used to access Google KMS                |
 
     > In production, it is necessary to set the environment variables on the server where the application will be deployed, since the environment variables are not read from the `.env` file in production.
 

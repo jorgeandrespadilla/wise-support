@@ -1,5 +1,8 @@
 import dotenv from 'dotenv';
 import { envParser, loadEnv } from '@/utils/dotenvHelpers';
+import { loadSecret } from '@/utils/secretHelpers';
+
+//#region General settings
 
 export const IS_DEV = loadEnv<boolean>('NODE_ENV', {
     defaults: true,
@@ -15,19 +18,6 @@ export const PORT = loadEnv<number>('SERVER_PORT', {
 export const BASE_URL = loadEnv<string>('SERVER_BASE_URL', { defaults: '' }); // Should include leading slash
 export const BASE_API_URL = `${BASE_URL}/api`;
 export const CORS_ORIGIN = loadEnv<string>('CORS_ORIGIN', { defaults: '*' });
-
-export const JWT_CONFIG = {
-    accessToken: {
-        secret: loadEnv<string>('JWT_ACCESS_TOKEN_SECRET'),
-        expiresIn: '1h',
-    },
-    refreshToken: {
-        secret: loadEnv<string>('JWT_REFRESH_TOKEN_SECRET'),
-        expiresIn: '1d',
-    },
-};
-
-export const KNOWLEDGE_BASE_URL = loadEnv<string>('KNOWLEDGE_BASE_URL');
 
 export const LOG_CONFIG = {
     outputPath: 'logs/server_%DATE%.log', // DATE is replaced with the current date based on log file rotation
@@ -48,3 +38,33 @@ export const DATE_CONFIG = {
      */
     minDate: new Date('1900-01-01'),
 };
+
+//#endregion
+
+//#region Authentication
+
+export const JWT_CONFIG = {
+    accessToken: {
+        secret: loadEnv<string>('JWT_ACCESS_TOKEN_SECRET'),
+        expiresIn: '1h',
+    },
+    refreshToken: {
+        secret: loadEnv<string>('JWT_REFRESH_TOKEN_SECRET'),
+        expiresIn: '1d',
+    },
+};
+
+//#endregion
+
+//#region Knowledge base and KMS
+
+export const KNOWLEDGE_BASE_URL = loadEnv<string>('KNOWLEDGE_BASE_URL');
+
+const encodedCredentials = loadEnv<string>('KMS_CREDENTIALS');
+
+export const KMS_CONFIG = {
+    credentialsFilePath: loadSecret(encodedCredentials),
+    cryptoKeyId: loadEnv<string>('KMS_CRYPTO_KEY_ID'),
+};
+
+//#endregion
