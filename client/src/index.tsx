@@ -2,26 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from 'context/AuthProvider';
 import { HttpProvider } from 'context/HttpProvider';
 import { ThemeProvider } from 'context/ThemeProvider';
 import App from './App';
 import 'shared/extensions'; // Load extension methods
 import './index.css';
+import { Auth0ProviderWithNavigate } from 'Auth0ProviderWithNavigate';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
 );
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>
-            <HttpProvider>
-                <AuthProvider>
+            <Auth0ProviderWithNavigate>
+                <HttpProvider>
                     <ThemeProvider defaultTheme="system">
                         <App />
                     </ThemeProvider>
-                </AuthProvider>
-            </HttpProvider>
+                </HttpProvider>
+            </Auth0ProviderWithNavigate>
         </BrowserRouter>
     </React.StrictMode>,
 );
