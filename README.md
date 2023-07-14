@@ -88,7 +88,13 @@ The repository has two components:
 
 1. `client` project environment variables:
 
-    The project does not handle environment variables for the development environment. However, when generating the application for the production environment, the `REACT_APP_API_URL` environment variable must be set to the base URL of the production server where the API will be hosted (the server's base URL must have the format `https://www.example.com`).
+    | Environment Variable        | Description                                                                                |
+    | --------------------------- | ------------------------------------------------------------------------------------------ |
+    | `REACT_APP_API_URL`         | Base URL of the API (the server's base URL must have the format `https://www.example.com`) |
+    | `REACT_APP_AUTH0_DOMAIN`    | Auth0 domain                                                                               |
+    | `REACT_APP_AUTH0_CLIENT_ID` | Auth0 client ID                                                                            |
+
+    > In production, it is necessary to set the environment variables on the server where the application will be deployed, since the environment variables are not read from the `.env` file in production.
 
 2. `server` project environment variables:
 

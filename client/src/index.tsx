@@ -8,6 +8,7 @@ import { ThemeProvider } from 'context/ThemeProvider';
 import App from './App';
 import 'shared/extensions'; // Load extension methods
 import './index.css';
+import { Auth0ProviderWithNavigate } from 'context/Auth0ProviderWithNavigate';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -16,11 +17,13 @@ root.render(
     <React.StrictMode>
         <BrowserRouter>
             <HttpProvider>
-                <AuthProvider>
-                    <ThemeProvider defaultTheme="system">
-                        <App />
-                    </ThemeProvider>
-                </AuthProvider>
+                <Auth0ProviderWithNavigate>
+                    <AuthProvider>
+                        <ThemeProvider defaultTheme="system">
+                            <App />
+                        </ThemeProvider>
+                    </AuthProvider>
+                </Auth0ProviderWithNavigate>
             </HttpProvider>
         </BrowserRouter>
     </React.StrictMode>,

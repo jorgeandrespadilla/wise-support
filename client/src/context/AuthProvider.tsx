@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             clearTimeout(sessionTimeout);
         }
         setSessionTimeout(null);
-    }, [isAuthenticated, sessionTimeout]);
+    }, [isAuthenticated, sessionTimeout, setIsAuthenticated]);
 
     /**
      * Logout and synchronize session across tabs
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 }, data.expiresInMilliseconds - 1000),
             );
         },
-        [handleRefresh, sessionTimeout, syncLogout],
+        [handleRefresh, sessionTimeout, syncLogout, setIsAuthenticated],
     );
 
     /**
@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return () => {
             removeListener();
         };
-    }, []);
+    }, [setIsAuthenticated]);
 
     // Listen for logout events
     useEffect(() => {

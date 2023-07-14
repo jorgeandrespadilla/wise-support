@@ -1,8 +1,4 @@
-import {
-    InvalidTokenError,
-    UnauthorizedError,
-    ValidationError,
-} from '@/common/errors';
+import { InvalidTokenError, UnauthorizedError } from '@/common/errors';
 import { db } from '@/database/client';
 import {
     LoginRequestSchema,
@@ -11,23 +7,23 @@ import {
 import {
     generateAccessToken,
     generateRefreshToken,
+    readToken,
     verifyRefreshToken,
 } from '@/utils/authToken';
 import { catchErrors } from '@/utils/catchErrors';
-import { verifyHash } from '@/utils/crypto';
 import { validateAndParse } from '@/utils/validation';
 
 export const authenticate = catchErrors(async (req, res) => {
     const data = validateAndParse(LoginRequestSchema, req.body);
+    const tokenData = readToken(data.token);
+    const userEmail = tokenData?.['email'];
+    if (!userEmail) throw new InvalidTokenError('Token inválido.');
     const user = await db.user.findUnique({
         where: {
-            email: data.email,
+            email: userEmail,
         },
     });
     if (!user) throw new UnauthorizedError('El usuario no existe.');
-
-    const isValidPassword = await verifyHash(data.password, user.password);
-    if (!isValidPassword) throw new ValidationError('Credenciales inválidas.');
 
     res.send({
         message: 'Inicio de sesión exitoso.',
