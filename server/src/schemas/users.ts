@@ -32,7 +32,11 @@ const UserRequestSchema = v.object({
     email: v
         .string(message.required)
         .min(1, message.nonEmpty)
-        .email(message.email)
+        .regex(
+            new RegExp(
+                "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
+            ),
+        )
         .transform(sanitizeEmail),
     roleId: v.number(message.required).min(1, message.nonEmpty),
 });
