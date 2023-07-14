@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'hooks/useAuth';
 import LoginLayout from './components/LoginLayout';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { logo } from 'assets';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useLoadingToast } from 'hooks';
@@ -9,14 +9,18 @@ import { useMutation } from '@tanstack/react-query';
 import { handleAPIError } from 'utils/validation';
 import { authenticate } from 'services/authentication';
 import { LoginRequest } from 'types';
+import Loader from 'components/Loader';
+import { set } from 'lodash';
 
 function Login() {
     const { isAuthenticated, syncLogin } = useAuth();
+    const [isValidating, setIsValidating] = useState(true);
     const {
         isLoading,
         loginWithRedirect,
         isAuthenticated: isAuth0Authenticated,
         getIdTokenClaims,
+        logout,
     } = useAuth0();
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,6 +36,7 @@ function Login() {
     const { mutate: handleLogin } = useMutation(
         async () => {
             loginToast.loading();
+            setIsValidating(true);
             const tokenClaims = await getIdTokenClaims();
             if (!tokenClaims) {
                 throw new Error(
@@ -46,6 +51,7 @@ function Login() {
         {
             onSuccess: data => {
                 loginToast.success();
+                setIsValidating(false);
                 syncLogin({
                     accessToken: data.accessToken.token,
                     refreshToken: data.refreshToken.token,
@@ -54,7 +60,11 @@ function Login() {
             },
             onError: e => {
                 loginToast.error();
+                setIsValidating(false);
                 handleAPIError(e, { toastId: loginToast.toastId });
+                setTimeout(() => {
+                    logout();
+                }, 2000);
             },
         },
     );
@@ -94,11 +104,16 @@ function Login() {
                         src={logo.light}
                         alt={'Wise Support'}
                         title={'Wise Support'}
-                        className="h-20"
+                        className="h-20 reveal"
                     />
-                    <h1 className="font-bold font-poppins text-3xl text-primary text-center">
+                    <h1 className="font-bold font-poppins text-3xl text-black dark:text-white text-center">
                         Wise Support
                     </h1>
+                    {isValidating && (
+                        <div className="flex justify-center">
+                            <Loader />
+                        </div>
+                    )}
                 </div>
             </div>
         </LoginLayout>
