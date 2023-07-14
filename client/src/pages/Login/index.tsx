@@ -10,7 +10,6 @@ import { handleAPIError } from 'utils/validation';
 import { authenticate } from 'services/authentication';
 import { LoginRequest } from 'types';
 import Loader from 'components/Loader';
-import { set } from 'lodash';
 
 function Login() {
     const { isAuthenticated, syncLogin } = useAuth();
