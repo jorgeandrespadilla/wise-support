@@ -57,6 +57,20 @@ const verifyToken = <T = Record<string, unknown>>(
     }
 };
 
+export const readToken = <T = Record<string, unknown>>(
+    token: string,
+): T & jwt.JwtPayload => {
+    try {
+        const payload = jwt.decode(token);
+        if (isPlainObject(payload)) {
+            return payload as T & jwt.JwtPayload;
+        }
+        throw new InvalidTokenError();
+    } catch (err) {
+        throw new InvalidTokenError();
+    }
+};
+
 export const generateSecret = (): string => {
     // If your secret is simple, the token verification process
     // will be much easier to break by an unauthorized user.
