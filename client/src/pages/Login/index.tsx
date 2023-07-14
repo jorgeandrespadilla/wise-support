@@ -63,7 +63,9 @@ function Login() {
                 handleAPIError(e, { toastId: loginToast.toastId });
                 setTimeout(() => {
                     logout({
-                        openUrl: false,
+                        logoutParams: {
+                            returnTo: window.location.origin,
+                        },
                     });
                 }, 2000);
             },

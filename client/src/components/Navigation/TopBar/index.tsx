@@ -81,7 +81,9 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
                     icon: <ArrowLeftOnRectangleIcon className="w-5 h-5" />,
                     action: () => {
                         logoutAuth0({
-                            openUrl: false,
+                            logoutParams: {
+                                returnTo: window.location.origin,
+                            },
                         });
                         syncLogout();
                     },
