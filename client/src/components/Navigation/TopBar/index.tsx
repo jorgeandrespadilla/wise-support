@@ -80,7 +80,9 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
                     label: 'Cerrar sesión',
                     icon: <ArrowLeftOnRectangleIcon className="w-5 h-5" />,
                     action: () => {
-                        logoutAuth0();
+                        logoutAuth0({
+                            openUrl: false,
+                        });
                         syncLogout();
                     },
                 },

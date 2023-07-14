@@ -62,7 +62,9 @@ function Login() {
                 setIsValidating(false);
                 handleAPIError(e, { toastId: loginToast.toastId });
                 setTimeout(() => {
-                    logout();
+                    logout({
+                        openUrl: false,
+                    });
                 }, 2000);
             },
         },
