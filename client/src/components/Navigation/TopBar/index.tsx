@@ -18,6 +18,7 @@ import Divider from 'components/Divider';
 import { useAuth, useCurrentUser, useMediaQuery } from 'hooks';
 import { DropdownMenuConfig, LinksConfig } from 'types/ui';
 import { breakpoints } from 'shared/constants/themes';
+import { useAuth0 } from '@auth0/auth0-react';
 
 type NavigationProps = {
     appTitle: string;
@@ -29,6 +30,7 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
     const { user } = useCurrentUser();
     const isDesktop = useMediaQuery(breakpoints.up('md'));
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+    const { logout: logoutAuth0 } = useAuth0();
 
     useEffect(() => {
         if (isDesktop) {
@@ -77,7 +79,10 @@ function TopBar({ appTitle = '', links = [] }: NavigationProps) {
                     key: 'logout',
                     label: 'Cerrar sesión',
                     icon: <ArrowLeftOnRectangleIcon className="w-5 h-5" />,
-                    action: () => syncLogout(),
+                    action: () => {
+                        logoutAuth0();
+                        syncLogout();
+                    },
                 },
             ],
         },

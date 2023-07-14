@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { accessToken } from './auth';
-
-const apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+import { server } from 'shared/constants/config';
 
 const defaultConfig = {
-    baseURL: `${apiBaseUrl}/api`,
+    baseURL: `${server.url}/api`,
     headers: () => ({
         'Content-Type': 'application/json',
         Authorization: accessToken.get()

@@ -1,8 +1,7 @@
 /** Authentication **/
 
 export interface LoginRequest {
-    email: string;
-    password: string;
+    token: string;
 }
 
 export interface RefreshRequest {
